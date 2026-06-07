@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR Damage Numbers"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Shows floating damage numbers above enemies when the player deals damage."
+    },
+    {
+      "key": "section.General",
+      "value": "General"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Visual"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filter"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Performance"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Debug"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Enabled"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Enable damage number display."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Damage Display Mode"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal merges same-frame damage on the same target. PerHit shows every real damage event separately."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderer"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace is recommended. WorldTextMeshPro uses 3D text. Both enables both renderers for debugging."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Use Weakspot Colors"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Color damage numbers by hit multiplier. Weak hits are yellow/orange/red; normal damage is white when no multiplier is available."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Treat 1.0x as Normal"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Show multiplier 1.0 as white instead of orange. Enable this if ordinary body hits are reported as 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Merged Damage Color"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Color rule used when PerTargetTotal merges several hits into one number."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Require NPC Target"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Only show damage numbers on NPC targets. Keep enabled to avoid objects such as barrels."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Require Player Source Unit"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Require sourceData.sourceUnit to exist and be the player. Disabled by default for projectiles and explosions."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Show Player-Owned Secondary Effects"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Show player-owned explosions and similar secondary damage. Disable if fire, poison, or other DoT effects become too noisy."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Minimum Damage To Show"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Final damage below this value will not be shown."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Show Decimals"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Show one decimal place for non-integer damage. Whole numbers such as 5.0 are still shown as 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Lifetime"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "How long each damage number remains visible, in seconds."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "World Float Speed"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Upward speed for world-space damage numbers."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "World Scale"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Scale of world-space TextMeshPro damage numbers."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Random Jitter"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Random horizontal offset for damage numbers. Useful for PerHit shotgun pellets."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "World Font Size"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "TextMeshPro font size for the WorldTextMeshPro renderer."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Screen Font Size"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Font size for screen-space damage numbers."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Screen Float Speed"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Upward speed for screen-space numbers, in pixels per second."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Screen Jitter"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Random screen-space offset in pixels. Useful for PerHit shotgun pellets."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit Screen Spread"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Extra deterministic screen-space spread for multiple PerHit numbers created on the same target in the same frame."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit World Spread"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Extra deterministic world-space spread for multiple PerHit numbers created on the same target in the same frame."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Max Active Numbers"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Maximum active screen-space damage numbers. Oldest numbers are discarded first when the limit is exceeded."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Debug Log"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Print accepted and rejected damage events to LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 Test Number"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Press F8 in-game to spawn a test number at the screen center."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Per Target Total"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Per Hit"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Screen Space"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Both"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Highest Multiplier"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Damage-Weighted Average"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Last Hit"
+    }
+  ]
+}

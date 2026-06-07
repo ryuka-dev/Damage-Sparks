@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Liczby obrażeń SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Pokazuje unoszące się liczby obrażeń nad wrogami, gdy gracz zadaje obrażenia."
+    },
+    {
+      "key": "section.General",
+      "value": "Ogólne"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Wygląd"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtr"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Wydajność"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Debug"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Włączone"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Włącza wyświetlanie liczb obrażeń."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Tryb wyświetlania obrażeń"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal łączy obrażenia z tej samej klatki na tym samym celu. PerHit pokazuje każde realne zdarzenie obrażeń osobno."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderer"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "Zalecany jest ScreenSpace. WorldTextMeshPro używa tekstu 3D. Both włącza oba renderery do debugowania."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Użyj kolorów słabych punktów"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Koloruje liczby według mnożnika trafienia. Słabe punkty są żółte/pomarańczowe/czerwone; bez mnożnika obrażenia są białe."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Traktuj 1.0x jako normalne"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Pokazuje mnożnik 1.0 jako biały zamiast pomarańczowego. Włącz, jeśli zwykłe trafienia w ciało są zgłaszane jako 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Kolor obrażeń połączonych"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Reguła koloru używana, gdy PerTargetTotal łączy kilka trafień w jedną liczbę."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Wymagaj celu NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Pokazuje liczby tylko na celach NPC. Zostaw włączone, aby uniknąć obiektów takich jak beczki."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Wymagaj źródła gracza"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Wymaga, aby sourceData.sourceUnit istniało i było graczem. Domyślnie wyłączone dla pocisków i eksplozji."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Pokaż wtórne obrażenia gracza"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Pokazuje eksplozje i podobne wtórne obrażenia gracza. Wyłącz, jeśli ogień, trucizna lub DoT są zbyt hałaśliwe."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Minimalne obrażenia do pokazania"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Końcowe obrażenia poniżej tej wartości nie będą pokazane."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Pokaż dziesiętne"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Pokazuje jedno miejsce dziesiętne dla obrażeń niecałkowitych. Liczby całkowite jak 5.0 nadal są pokazane jako 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Czas życia"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Jak długo każda liczba obrażeń pozostaje widoczna, w sekundach."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Prędkość w świecie"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Prędkość unoszenia liczb w przestrzeni świata."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Skala w świecie"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Skala liczb TextMeshPro w przestrzeni świata."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Losowe przesunięcie"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Losowe poziome przesunięcie liczb. Przydatne dla śrutu w trybie PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Rozmiar czcionki w świecie"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Rozmiar czcionki TextMeshPro dla renderera WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Rozmiar czcionki na ekranie"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Rozmiar czcionki dla liczb ekranowych."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Prędkość na ekranie"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Prędkość unoszenia liczb ekranowych w pikselach na sekundę."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Przesunięcie ekranu"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Losowe przesunięcie ekranu w pikselach. Przydatne dla śrutu w trybie PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Rozproszenie ekranu PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Dodatkowe deterministyczne rozproszenie ekranowe dla wielu liczb PerHit na tym samym celu w tej samej klatce."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Rozproszenie świata PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Dodatkowe rozproszenie w świecie dla wielu liczb PerHit na tym samym celu w tej samej klatce."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Maks. aktywnych liczb"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Maksymalna liczba aktywnych liczb ekranowych. Po przekroczeniu limitu najstarsze są usuwane."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Log debug"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Zapisuje zaakceptowane i odrzucone zdarzenia obrażeń do LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Test F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Naciśnij F8 w grze, aby utworzyć testową liczbę na środku ekranu."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Suma na cel"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Na trafienie"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Przestrzeń ekranu"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Oba"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Najwyższy mnożnik"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Średnia ważona obrażeniami"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Ostatnie trafienie"
+    }
+  ]
+}

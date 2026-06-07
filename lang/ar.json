@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "أرقام ضرر SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "يعرض أرقام ضرر عائمة فوق الأعداء عندما يسبب اللاعب ضررًا."
+    },
+    {
+      "key": "section.General",
+      "value": "عام"
+    },
+    {
+      "key": "section.Visual",
+      "value": "المظهر"
+    },
+    {
+      "key": "section.Filter",
+      "value": "التصفية"
+    },
+    {
+      "key": "section.Performance",
+      "value": "الأداء"
+    },
+    {
+      "key": "section.Debug",
+      "value": "التصحيح"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "مفعّل"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "يفعّل عرض أرقام الضرر."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "وضع عرض الضرر"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal يدمج ضرر نفس الإطار على نفس الهدف. PerHit يعرض كل حدث ضرر حقيقي بشكل منفصل."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "المصيّر"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "يُنصح باستخدام ScreenSpace. يستخدم WorldTextMeshPro نصًا ثلاثي الأبعاد. Both يفعّل الاثنين للتصحيح."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "استخدام ألوان نقاط الضعف"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "يلوّن الأرقام حسب مضاعف الإصابة. نقاط الضعف صفراء/برتقالية/حمراء؛ وعند عدم وجود مضاعف يكون الضرر أبيض."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "اعتبار 1.0x عاديًا"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "يعرض مضاعف 1.0 باللون الأبيض بدل البرتقالي. فعّله إذا كانت ضربات الجسم العادية تُسجّل 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "لون الضرر المدمج"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "قاعدة اللون عند دمج عدة إصابات في رقم واحد بواسطة PerTargetTotal."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "اشتراط هدف NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "يعرض الأرقام على أهداف NPC فقط. أبقه مفعّلًا لتجنب الأجسام مثل البراميل."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "اشتراط أن يكون المصدر اللاعب"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "يتطلب وجود sourceData.sourceUnit وأن يكون اللاعب. معطّل افتراضيًا للمقذوفات والانفجارات."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "إظهار الضرر الثانوي للّاعب"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "يعرض الانفجارات والضرر الثانوي المملوك للّاعب. عطّله إذا أصبح الحريق أو السم أو DoT مزعجًا."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "أقل ضرر للعرض"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "لن يظهر الضرر النهائي الأقل من هذه القيمة."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "إظهار الكسور"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "يعرض منزلة عشرية للضرر غير الصحيح. القيم الصحيحة مثل 5.0 تظهر كـ 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "مدة الظهور"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "مدة بقاء كل رقم ضرر ظاهرًا بالثواني."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "سرعة الصعود في العالم"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "سرعة صعود أرقام الضرر في فضاء العالم."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "مقياس العالم"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "مقياس أرقام TextMeshPro في فضاء العالم."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "إزاحة عشوائية"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "إزاحة أفقية عشوائية للأرقام. مفيد لحبيبات الشوزن في PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "حجم خط العالم"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "حجم خط TextMeshPro لمصيّر WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "حجم خط الشاشة"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "حجم الخط لأرقام الشاشة."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "سرعة الصعود على الشاشة"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "سرعة صعود أرقام الشاشة بالبكسل في الثانية."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "إزاحة الشاشة"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "إزاحة عشوائية على الشاشة بالبكسل. مفيد لحبيبات الشوزن في PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "انتشار PerHit على الشاشة"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "انتشار شاشة إضافي محدد لعدة أرقام PerHit على نفس الهدف في نفس الإطار."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "انتشار PerHit في العالم"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "انتشار عالم إضافي لعدة أرقام PerHit على نفس الهدف في نفس الإطار."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "أقصى عدد نشط"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "أقصى عدد من أرقام الضرر النشطة على الشاشة. عند تجاوزه تُحذف الأقدم أولًا."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "سجل التصحيح"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "يطبع أحداث الضرر المقبولة والمرفوضة في LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "رقم اختبار F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "اضغط F8 داخل اللعبة لإنشاء رقم اختبار في وسط الشاشة."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "المجموع لكل هدف"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "لكل إصابة"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "فضاء الشاشة"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "كلاهما"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "أعلى مضاعف"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "متوسط موزون بالضرر"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "آخر إصابة"
+    }
+  ]
+}

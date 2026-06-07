@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR 데미지 숫자"
+    },
+    {
+      "key": "plugin.description",
+      "value": "플레이어가 피해를 줄 때 적 위에 떠오르는 데미지 숫자를 표시합니다."
+    },
+    {
+      "key": "section.General",
+      "value": "일반"
+    },
+    {
+      "key": "section.Visual",
+      "value": "표시"
+    },
+    {
+      "key": "section.Filter",
+      "value": "필터"
+    },
+    {
+      "key": "section.Performance",
+      "value": "성능"
+    },
+    {
+      "key": "section.Debug",
+      "value": "디버그"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "활성화"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "데미지 숫자 표시를 활성화합니다."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "데미지 표시 모드"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal은 같은 프레임의 같은 대상 피해를 합산합니다. PerHit은 실제 피해 이벤트를 각각 표시합니다."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "렌더러"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace를 권장합니다. WorldTextMeshPro는 3D 텍스트를 사용합니다. Both는 디버그용으로 둘 다 표시합니다."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "약점 색상 사용"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "명중 배율에 따라 숫자 색을 바꿉니다. 약점 명중은 노랑/주황/빨강이며, 배율이 없으면 흰색입니다."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "1.0x를 일반으로 처리"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "1.0 배율을 주황색 대신 흰색으로 표시합니다. 일반 몸통 명중이 1.0x로 보고될 때 사용하세요."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "합산 데미지 색상"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "PerTargetTotal이 여러 명중을 하나의 숫자로 합칠 때 사용하는 색상 규칙입니다."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "NPC 대상 필요"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "NPC 대상에만 숫자를 표시합니다. 통 같은 오브젝트를 피하려면 켜두세요."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "플레이어 출처 필요"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "sourceData.sourceUnit이 존재하고 플레이어인지 요구합니다. 투사체와 폭발 호환을 위해 기본값은 꺼짐입니다."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "플레이어 소유 보조 피해 표시"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "플레이어 소유 폭발 등 보조 피해를 표시합니다. 화염, 독, DoT가 너무 많으면 끄세요."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "표시할 최소 피해"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "최종 피해가 이 값보다 낮으면 표시하지 않습니다."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "소수 표시"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "정수가 아닌 피해는 소수 한 자리로 표시합니다. 5.0 같은 정수는 5로 표시합니다."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "지속 시간"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "각 데미지 숫자가 보이는 시간(초)입니다."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "월드 상승 속도"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "월드 공간 숫자가 위로 움직이는 속도입니다."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "월드 크기"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "월드 공간 TextMeshPro 숫자의 크기입니다."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "무작위 흔들림"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "숫자의 무작위 가로 오프셋입니다. PerHit 산탄에 유용합니다."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "월드 글꼴 크기"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "WorldTextMeshPro 렌더러용 TextMeshPro 글꼴 크기입니다."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "화면 글꼴 크기"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "화면 공간 숫자의 글꼴 크기입니다."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "화면 상승 속도"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "화면 공간 숫자의 상승 속도입니다. 단위는 픽셀/초입니다."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "화면 흔들림"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "화면 공간 무작위 오프셋입니다. 단위는 픽셀입니다. PerHit 산탄에 유용합니다."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit 화면 분산"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 추가 확산을 적용합니다."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit 월드 분산"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 월드 공간 확산을 적용합니다."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "최대 활성 숫자"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "화면 공간 데미지 숫자의 최대 활성 수입니다. 한도를 넘으면 오래된 숫자부터 제거됩니다."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "디버그 로그"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "허용/거부된 피해 이벤트를 LogOutput.log에 출력합니다."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 테스트 숫자"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "게임 내에서 F8을 누르면 화면 중앙에 테스트 숫자를 생성합니다."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "대상별 합계"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "명중마다"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "화면 공간"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "월드 TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "둘 다"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "최고 배율"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "피해 가중 평균"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "마지막 명중"
+    }
+  ]
+}

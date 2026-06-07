@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR 伤害数字"
+    },
+    {
+      "key": "plugin.description",
+      "value": "玩家造成伤害时，在敌人上方显示飘动伤害数字。"
+    },
+    {
+      "key": "section.General",
+      "value": "常规"
+    },
+    {
+      "key": "section.Visual",
+      "value": "显示"
+    },
+    {
+      "key": "section.Filter",
+      "value": "过滤"
+    },
+    {
+      "key": "section.Performance",
+      "value": "性能"
+    },
+    {
+      "key": "section.Debug",
+      "value": "调试"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "启用"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "启用伤害数字显示。"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "伤害显示模式"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal 会合并同一帧、同一目标上的伤害。PerHit 会把每次真实伤害事件分别显示。"
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "渲染方式"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "推荐使用 ScreenSpace。WorldTextMeshPro 使用 3D 文字。Both 会同时启用两种渲染，主要用于调试。"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "使用弱点颜色"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "根据命中倍率改变伤害颜色。弱点命中为黄/橙/红；没有倍率时显示白色。"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "将 1.0x 视为普通伤害"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "将 1.0 倍率显示为白色而不是橙色。如果普通身体命中也被游戏报告为 1.0x，可以启用。"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "合并伤害颜色"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "PerTargetTotal 合并多个命中为一个数字时使用的颜色规则。"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "要求目标为 NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "只在 NPC 目标上显示伤害数字。建议保持开启，避免木桶等物体也显示。"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "要求来源单位为玩家"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "要求 sourceData.sourceUnit 存在且为玩家。默认关闭，以兼容投射物和爆炸。"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "显示玩家二段伤害"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "显示玩家拥有的爆炸等二段伤害。如果火焰、毒或持续伤害太吵，可以关闭。"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "最小显示伤害"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "最终伤害低于该值时不显示。"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "显示小数"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "非整数伤害显示一位小数。5.0 这类整数仍显示为 5。"
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "持续时间"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "每个伤害数字可见的时间，单位为秒。"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "世界空间上浮速度"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "世界空间伤害数字的上浮速度。"
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "世界空间缩放"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "世界空间 TextMeshPro 伤害数字的缩放。"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "随机偏移"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "伤害数字的随机水平偏移。对 PerHit 霰弹弹丸很有用。"
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "世界空间字体大小"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "WorldTextMeshPro 渲染器使用的 TextMeshPro 字体大小。"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "屏幕字体大小"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "屏幕空间伤害数字的字体大小。"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "屏幕上浮速度"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "屏幕空间伤害数字的上浮速度，单位为像素/秒。"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "屏幕随机偏移"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "屏幕空间随机偏移，单位为像素。对 PerHit 霰弹弹丸很有用。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit 屏幕扩散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "同一帧同一目标产生多个 PerHit 数字时，额外加入确定性屏幕扩散。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit 世界扩散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "同一帧同一目标产生多个 PerHit 数字时，额外加入确定性世界空间扩散。"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "最大活动数字数量"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "屏幕空间伤害数字的最大活动数量。超过上限时会先丢弃最旧的数字。"
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "调试日志"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "将接受和拒绝的伤害事件输出到 LogOutput.log。"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 测试数字"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "游戏内按 F8 在屏幕中央生成一个测试数字。"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "按目标合计"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "每次命中"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "屏幕空间"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "世界 TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "两者同时"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "最高倍率"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "按伤害加权平均"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "最后命中"
+    }
+  ]
+}

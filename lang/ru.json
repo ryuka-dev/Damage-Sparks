@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Числа урона SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Показывает всплывающие числа урона над врагами, когда игрок наносит урон."
+    },
+    {
+      "key": "section.General",
+      "value": "Общие"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Вид"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Фильтр"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Производительность"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Отладка"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Включено"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Включает отображение чисел урона."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Режим отображения урона"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal объединяет урон в одном кадре по одной цели. PerHit показывает каждое реальное событие урона отдельно."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Рендерер"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "Рекомендуется ScreenSpace. WorldTextMeshPro использует 3D-текст. Both включает оба рендера для отладки."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Использовать цвета слабых мест"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Окрашивает числа по множителю попадания. Слабые места — жёлтый/оранжевый/красный; без множителя урон белый."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Считать 1.0x обычным"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Показывает множитель 1.0 белым вместо оранжевого. Включите, если обычные попадания по телу считаются 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Цвет объединённого урона"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Правило цвета, когда PerTargetTotal объединяет несколько попаданий в одно число."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Требовать цель NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Показывает числа только на целях NPC. Оставьте включённым, чтобы избежать объектов вроде бочек."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Требовать игрока как источник"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Требует, чтобы sourceData.sourceUnit существовал и был игроком. По умолчанию выключено для снарядов и взрывов."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Показывать вторичный урон игрока"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Показывает взрывы и похожий вторичный урон игрока. Выключите, если огонь, яд или DoT создают слишком много чисел."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Минимальный урон для показа"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Итоговый урон ниже этого значения не отображается."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Показывать десятичные"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Показывает один знак после запятой для нецелого урона. Целые значения вроде 5.0 всё равно показываются как 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Время жизни"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Сколько секунд каждое число урона остаётся видимым."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Скорость подъёма в мире"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Скорость подъёма чисел в мировом пространстве."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Масштаб в мире"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Масштаб чисел TextMeshPro в мировом пространстве."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Случайный сдвиг"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Случайный горизонтальный сдвиг чисел. Полезно для дроби в PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Размер шрифта в мире"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Размер шрифта TextMeshPro для WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Размер шрифта на экране"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Размер шрифта для экранных чисел."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Скорость подъёма на экране"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Скорость подъёма экранных чисел, в пикселях в секунду."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Сдвиг на экране"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Случайный экранный сдвиг в пикселях. Полезно для дроби в PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Разброс PerHit на экране"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Дополнительный детерминированный экранный разброс для нескольких чисел PerHit по одной цели в одном кадре."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Разброс PerHit в мире"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Дополнительный мировой разброс для нескольких чисел PerHit по одной цели в одном кадре."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Макс. активных чисел"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Максимум активных экранных чисел урона. При превышении лимита сначала удаляются старые."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Журнал отладки"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Записывает принятые и отклонённые события урона в LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Тестовое число F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Нажмите F8 в игре, чтобы создать тестовое число в центре экрана."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Итого по цели"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "За попадание"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Экранное пространство"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Оба"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Наибольший множитель"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Среднее с весом по урону"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Последнее попадание"
+    }
+  ]
+}

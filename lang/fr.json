@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Nombres de dégâts SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Affiche des nombres de dégâts flottants au-dessus des ennemis lorsque le joueur inflige des dégâts."
+    },
+    {
+      "key": "section.General",
+      "value": "Général"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Affichage"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtre"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Performance"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Débogage"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Activé"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Active l’affichage des nombres de dégâts."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Mode d’affichage des dégâts"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal fusionne les dégâts du même frame sur la même cible. PerHit affiche chaque événement réel de dégâts séparément."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Moteur de rendu"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace est recommandé. WorldTextMeshPro utilise du texte 3D. Both active les deux moteurs pour le débogage."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Utiliser les couleurs de point faible"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Colore les nombres selon le multiplicateur de toucher. Les points faibles sont jaune/orange/rouge ; sans multiplicateur, le dégât est blanc."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Traiter 1.0x comme normal"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Affiche le multiplicateur 1.0 en blanc au lieu d’orange. Activez ceci si les coups normaux au corps sont signalés comme 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Couleur des dégâts fusionnés"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Règle de couleur utilisée quand PerTargetTotal fusionne plusieurs touches en un seul nombre."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Cible PNJ requise"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Affiche les nombres uniquement sur les PNJ. À garder activé pour éviter les objets comme les barils."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Source joueur requise"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Exige que sourceData.sourceUnit existe et soit le joueur. Désactivé par défaut pour les projectiles et explosions."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Afficher les dégâts secondaires du joueur"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Affiche les explosions et dégâts secondaires appartenant au joueur. Désactivez si feu, poison ou DoT deviennent trop bruyants."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Dégâts minimum à afficher"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Les dégâts finaux inférieurs à cette valeur ne sont pas affichés."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Afficher les décimales"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Affiche une décimale pour les dégâts non entiers. Les valeurs entières comme 5.0 restent affichées comme 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Durée de vie"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Durée pendant laquelle chaque nombre de dégâts reste visible, en secondes."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Vitesse de montée monde"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Vitesse de montée des nombres en espace monde."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Échelle monde"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Échelle des nombres TextMeshPro en espace monde."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Décalage aléatoire"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Décalage horizontal aléatoire. Utile pour les plombs de fusil en PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Taille de police monde"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Taille de police TextMeshPro pour WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Taille de police écran"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Taille de police pour les nombres en écran."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Vitesse de montée écran"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Vitesse de montée des nombres en écran, en pixels par seconde."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Décalage écran"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Décalage aléatoire en écran, en pixels. Utile pour les plombs de fusil en PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Dispersion écran PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Dispersion déterministe supplémentaire pour plusieurs nombres PerHit sur la même cible dans le même frame."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Dispersion monde PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Dispersion monde déterministe supplémentaire pour plusieurs nombres PerHit sur la même cible dans le même frame."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Nombre actif maximal"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Nombre maximal de nombres de dégâts écran actifs. Les plus anciens sont supprimés en premier si la limite est dépassée."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Journal de débogage"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Écrit les événements de dégâts acceptés et rejetés dans LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Nombre de test F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Appuyez sur F8 en jeu pour afficher un nombre de test au centre de l’écran."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Total par cible"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Par touche"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Espace écran"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Les deux"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Multiplicateur le plus élevé"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Moyenne pondérée par dégâts"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Dernière touche"
+    }
+  ]
+}

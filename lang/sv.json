@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR skadesiffror"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Visar flytande skadesiffror ovanför fiender när spelaren orsakar skada."
+    },
+    {
+      "key": "section.General",
+      "value": "Allmänt"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Visuellt"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filter"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Prestanda"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Debug"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Aktiverad"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Aktiverar visning av skadesiffror."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Skadevisningsläge"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal slår ihop skada i samma bildruta på samma mål. PerHit visar varje verklig skadehändelse separat."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Rendererare"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace rekommenderas. WorldTextMeshPro använder 3D-text. Both aktiverar båda för debug."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Använd svagpunktsfärger"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Färgar siffrorna efter träffmultiplikator. Svagpunkter är gula/orange/röda; utan multiplikator är skadan vit."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Behandla 1.0x som normalt"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Visar multiplikator 1.0 som vit i stället för orange. Aktivera om vanliga kroppsträffar rapporteras som 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Färg för sammanslagen skada"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Färgregel när PerTargetTotal slår ihop flera träffar till en siffra."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Kräv NPC-mål"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Visar bara siffror på NPC-mål. Behåll aktiverat för att undvika objekt som tunnor."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Kräv spelare som källa"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Kräver att sourceData.sourceUnit finns och är spelaren. Av som standard för projektiler och explosioner."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Visa sekundär skada från spelaren"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Visar explosioner och liknande sekundär skada som ägs av spelaren. Stäng av om eld, gift eller DoT blir för mycket."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Minsta skada att visa"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Slutlig skada under detta värde visas inte."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Visa decimaler"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Visar en decimal för icke-heltal. Heltal som 5.0 visas fortfarande som 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Livstid"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Hur länge varje skadesiffra visas, i sekunder."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Världslyfthastighet"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Uppåthastighet för skadesiffror i världsrummet."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Världsskala"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Skala för TextMeshPro-skadesiffror i världsrummet."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Slumpmässig spridning"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Slumpmässig horisontell förskjutning. Användbart för PerHit-hagelkulor."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Världstypsnitt"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "TextMeshPro-typsnittsstorlek för WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Skärmtypsnitt"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Typsnittsstorlek för skärmsiffror."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Skärmlyfthastighet"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Uppåthastighet för skärmsiffror i pixlar per sekund."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Skärmspridning"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Slumpmässig skärmförskjutning i pixlar. Användbart för PerHit-hagelkulor."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit-skärmspridning"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Extra deterministisk skärmspridning för flera PerHit-siffror på samma mål i samma bildruta."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit-världsspridning"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Extra världsspridning för flera PerHit-siffror på samma mål i samma bildruta."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Max aktiva siffror"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Maximalt antal aktiva skärmsiffror. När gränsen överskrids tas de äldsta bort först."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Debuglogg"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Skriver accepterade och avvisade skadehändelser till LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8-testsiffra"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Tryck F8 i spelet för att skapa en testsiffra i mitten av skärmen."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Totalt per mål"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Per träff"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Skärmutrymme"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Båda"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Högsta multiplikator"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Skadeviktat medel"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Senaste träff"
+    }
+  ]
+}

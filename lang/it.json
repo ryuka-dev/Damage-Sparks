@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Numeri danno SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Mostra numeri di danno fluttuanti sopra i nemici quando il giocatore infligge danno."
+    },
+    {
+      "key": "section.General",
+      "value": "Generale"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Aspetto"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtro"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Prestazioni"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Debug"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Abilitato"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Abilita la visualizzazione dei numeri di danno."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Modalità numeri danno"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal unisce il danno nello stesso frame sullo stesso bersaglio. PerHit mostra ogni evento reale di danno separatamente."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderer"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace è consigliato. WorldTextMeshPro usa testo 3D. Both abilita entrambi i renderer per debug."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Usa colori punto debole"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Colora i numeri in base al moltiplicatore del colpo. I punti deboli sono giallo/arancione/rosso; senza moltiplicatore il danno è bianco."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Tratta 1.0x come normale"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Mostra il moltiplicatore 1.0 in bianco invece che arancione. Attivalo se i normali colpi al corpo sono segnalati come 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Colore danno unito"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Regola colore usata quando PerTargetTotal unisce più colpi in un solo numero."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Richiedi bersaglio NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Mostra i numeri solo sui bersagli NPC. Tienilo attivo per evitare oggetti come barili."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Richiedi origine giocatore"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Richiede che sourceData.sourceUnit esista e sia il giocatore. Disattivato di default per proiettili ed esplosioni."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Mostra danno secondario del giocatore"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Mostra esplosioni e danni secondari del giocatore. Disattiva se fuoco, veleno o DoT diventano troppo rumorosi."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Danno minimo da mostrare"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Il danno finale sotto questo valore non viene mostrato."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Mostra decimali"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Mostra una cifra decimale per danni non interi. Valori interi come 5.0 vengono ancora mostrati come 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Durata"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Tempo in cui ogni numero di danno resta visibile, in secondi."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Velocità salita mondo"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Velocità verso l’alto per numeri nello spazio mondo."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Scala mondo"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Scala dei numeri TextMeshPro nello spazio mondo."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Spostamento casuale"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Spostamento orizzontale casuale. Utile per pallini di fucile in PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Dimensione font mondo"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Dimensione font TextMeshPro per WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Dimensione font schermo"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Dimensione font per numeri su schermo."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Velocità salita schermo"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Velocità verso l’alto dei numeri su schermo, in pixel al secondo."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Spostamento schermo"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Spostamento casuale su schermo, in pixel. Utile per pallini di fucile in PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Diffusione schermo PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Diffusione deterministica extra per più numeri PerHit sullo stesso bersaglio nello stesso frame."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Diffusione mondo PerHit"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Diffusione mondo extra per più numeri PerHit sullo stesso bersaglio nello stesso frame."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Numeri attivi massimi"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Numero massimo di numeri danno su schermo attivi. Superato il limite, vengono scartati prima i più vecchi."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Log debug"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Scrive eventi danno accettati e rifiutati in LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Numero test F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Premi F8 in gioco per generare un numero di test al centro dello schermo."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Totale per bersaglio"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Per colpo"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Spazio schermo"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Entrambi"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Moltiplicatore più alto"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Media ponderata per danno"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Ultimo colpo"
+    }
+  ]
+}

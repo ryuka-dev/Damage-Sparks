@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR ダメージ数字"
+    },
+    {
+      "key": "plugin.description",
+      "value": "プレイヤーがダメージを与えた時、敵の上に浮かぶダメージ数字を表示します。"
+    },
+    {
+      "key": "section.General",
+      "value": "一般"
+    },
+    {
+      "key": "section.Visual",
+      "value": "表示"
+    },
+    {
+      "key": "section.Filter",
+      "value": "フィルター"
+    },
+    {
+      "key": "section.Performance",
+      "value": "パフォーマンス"
+    },
+    {
+      "key": "section.Debug",
+      "value": "デバッグ"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "有効"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "ダメージ数字の表示を有効にします。"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "ダメージ表示モード"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal は同じフレームで同じ対象へのダメージを合算します。PerHit は実際の各ダメージイベントを個別に表示します。"
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "レンダラー"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace を推奨します。WorldTextMeshPro は 3D テキストを使います。Both はデバッグ用に両方を表示します。"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "弱点カラーを使用"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "命中倍率に応じて色を変えます。弱点命中は黄/橙/赤、倍率が無い通常ダメージは白です。"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "1.0x を通常扱い"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "倍率 1.0 を橙ではなく白で表示します。通常の胴体命中が 1.0x として報告される場合に有効にします。"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "合算ダメージの色"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "PerTargetTotal で複数ヒットを 1 つに合算する時の色ルールです。"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "NPC 対象のみ"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "NPC 対象にのみ表示します。樽などのオブジェクトを避けるため通常は有効のままにします。"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "プレイヤーの発生元を要求"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "sourceData.sourceUnit が存在し、プレイヤーであることを要求します。投射物や爆発に対応するため既定では無効です。"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "プレイヤー所有の二次ダメージを表示"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "プレイヤー由来の爆発などの二次ダメージを表示します。炎、毒、DoT がうるさい場合は無効にします。"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "表示する最小ダメージ"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "この値未満の最終ダメージは表示しません。"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "小数を表示"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "整数でないダメージは小数 1 桁を表示します。5.0 のような整数は 5 と表示します。"
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "表示時間"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "各ダメージ数字が表示される秒数です。"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "ワールド上昇速度"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "ワールド空間の数字が上に移動する速度です。"
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "ワールドスケール"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "ワールド空間 TextMeshPro 数字のスケールです。"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "ランダムずれ"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "数字のランダムな横ずれです。PerHit のショットガン弾に有効です。"
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "ワールドフォントサイズ"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "WorldTextMeshPro レンダラーの TextMeshPro フォントサイズです。"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "画面フォントサイズ"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "画面空間の数字のフォントサイズです。"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "画面上昇速度"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "画面空間の数字が上に移動する速度です。単位はピクセル/秒です。"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "画面ランダムずれ"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "画面空間のランダムずれです。単位はピクセルです。PerHit のショットガン弾に有効です。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit 画面拡散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的な画面拡散を追加します。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit ワールド拡散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的なワールド拡散を追加します。"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "最大表示数"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "画面空間の最大アクティブ数字数です。上限を超えると古い数字から破棄します。"
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "デバッグログ"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "受理/拒否されたダメージイベントを LogOutput.log に出力します。"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 テスト数字"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "ゲーム内で F8 を押すと画面中央にテスト数字を表示します。"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "対象別合計"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "命中ごと"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "画面空間"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "ワールド TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "両方"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "最高倍率"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "ダメージ加重平均"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "最後の命中"
+    }
+  ]
+}

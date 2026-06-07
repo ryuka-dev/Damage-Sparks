@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR Hasar Sayıları"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Oyuncu hasar verdiğinde düşmanların üzerinde yüzen hasar sayıları gösterir."
+    },
+    {
+      "key": "section.General",
+      "value": "Genel"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Görsel"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtre"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Performans"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Hata Ayıklama"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Etkin"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Hasar sayısı gösterimini etkinleştirir."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Hasar gösterim modu"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal aynı karede aynı hedefe verilen hasarı birleştirir. PerHit her gerçek hasar olayını ayrı gösterir."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Oluşturucu"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace önerilir. WorldTextMeshPro 3D metin kullanır. Both hata ayıklama için ikisini de etkinleştirir."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Zayıf nokta renklerini kullan"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Sayıları vuruş çarpanına göre renklendirir. Zayıf noktalar sarı/turuncu/kırmızı; çarpan yoksa hasar beyazdır."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "1.0x değerini normal say"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "1.0 çarpanını turuncu yerine beyaz gösterir. Normal gövde vuruşları 1.0x olarak raporlanıyorsa açın."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Birleşik hasar rengi"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "PerTargetTotal birkaç vuruşu tek sayıya birleştirirken kullanılan renk kuralı."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "NPC hedef şartı"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Sayıları yalnızca NPC hedeflerde gösterir. Varil gibi nesneleri önlemek için açık tutun."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Kaynak oyuncu şartı"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "sourceData.sourceUnit değerinin var olmasını ve oyuncu olmasını ister. Mermiler ve patlamalar için varsayılan olarak kapalıdır."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Oyuncuya ait ikincil hasarı göster"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Oyuncuya ait patlama ve benzeri ikincil hasarı gösterir. Ateş, zehir veya DoT fazla gürültülü olursa kapatın."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Gösterilecek minimum hasar"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Bu değerin altındaki nihai hasar gösterilmez."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Ondalıkları göster"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Tam sayı olmayan hasar için bir ondalık gösterir. 5.0 gibi tam değerler yine 5 görünür."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Yaşam süresi"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Her hasar sayısının kaç saniye görünür kalacağı."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Dünya yükselme hızı"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Dünya uzayındaki sayıların yukarı hareket hızı."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Dünya ölçeği"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Dünya uzayındaki TextMeshPro hasar sayılarının ölçeği."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Rastgele kayma"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Sayılar için rastgele yatay kayma. PerHit saçma taneleri için yararlı."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Dünya yazı boyutu"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "WorldTextMeshPro için TextMeshPro yazı boyutu."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Ekran yazı boyutu"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Ekran uzayındaki sayıların yazı boyutu."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Ekran yükselme hızı"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Ekran sayılarının yukarı hareket hızı, piksel/saniye."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Ekran kayması"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Ekranda rastgele kayma, piksel cinsinden. PerHit saçma taneleri için yararlı."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit ekran yayılımı"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek belirli ekran yayılımı."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit dünya yayılımı"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek dünya yayılımı."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Maksimum aktif sayı"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Maksimum aktif ekran hasar sayısı. Limit aşılınca en eski sayılar önce atılır."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Hata ayıklama günlüğü"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Kabul edilen ve reddedilen hasar olaylarını LogOutput.log dosyasına yazar."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 test sayısı"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Oyunda F8’e basarak ekranın ortasında test sayısı oluşturur."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Hedef başına toplam"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Vuruş başına"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Ekran uzayı"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "İkisi de"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "En yüksek çarpan"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Hasar ağırlıklı ortalama"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Son vuruş"
+    }
+  ]
+}

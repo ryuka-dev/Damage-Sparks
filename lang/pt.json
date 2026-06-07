@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Números de dano SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Mostra números de dano flutuantes acima dos inimigos quando o jogador causa dano."
+    },
+    {
+      "key": "section.General",
+      "value": "Geral"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Visual"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtro"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Desempenho"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Depuração"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Ativado"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Ativa a exibição de números de dano."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Modo de exibição de dano"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal combina dano do mesmo quadro no mesmo alvo. PerHit mostra cada evento real de dano separadamente."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderizador"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace é recomendado. WorldTextMeshPro usa texto 3D. Both ativa ambos para depuração."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Usar cores de ponto fraco"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Colore os números pelo multiplicador do acerto. Pontos fracos ficam amarelo/laranja/vermelho; sem multiplicador o dano fica branco."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Tratar 1.0x como normal"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Mostra multiplicador 1.0 em branco em vez de laranja. Ative se acertos normais no corpo forem relatados como 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Cor do dano combinado"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Regra de cor usada quando PerTargetTotal combina vários acertos em um número."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Exigir alvo NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Mostra números apenas em alvos NPC. Mantenha ativado para evitar objetos como barris."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Exigir origem do jogador"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Exige que sourceData.sourceUnit exista e seja o jogador. Desativado por padrão para projéteis e explosões."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Mostrar dano secundário do jogador"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Mostra explosões e dano secundário do jogador. Desative se fogo, veneno ou DoT ficarem muito barulhentos."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Dano mínimo para mostrar"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Dano final abaixo deste valor não será mostrado."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Mostrar decimais"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Mostra uma casa decimal para dano não inteiro. Valores inteiros como 5.0 ainda aparecem como 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Duração"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Tempo em que cada número de dano permanece visível, em segundos."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Velocidade no mundo"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Velocidade de subida para números em espaço de mundo."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Escala no mundo"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Escala dos números TextMeshPro em espaço de mundo."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Deslocamento aleatório"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Deslocamento horizontal aleatório. Útil para chumbos de escopeta em PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Tamanho da fonte no mundo"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Tamanho da fonte TextMeshPro para WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Tamanho da fonte na tela"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Tamanho da fonte para números na tela."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Velocidade na tela"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Velocidade de subida dos números na tela, em pixels por segundo."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Deslocamento na tela"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Deslocamento aleatório na tela, em pixels. Útil para chumbos de escopeta em PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Dispersão PerHit na tela"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Dispersão determinística extra para vários números PerHit no mesmo alvo no mesmo quadro."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Dispersão PerHit no mundo"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Dispersão em mundo extra para vários números PerHit no mesmo alvo no mesmo quadro."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Máximo de números ativos"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Máximo de números de dano ativos na tela. Ao exceder o limite, os mais antigos são descartados primeiro."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Log de depuração"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Escreve eventos de dano aceitos e rejeitados em LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Número de teste F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Pressione F8 no jogo para criar um número de teste no centro da tela."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Total por alvo"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Por acerto"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Espaço de tela"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Ambos"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Maior multiplicador"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Média ponderada por dano"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Último acerto"
+    }
+  ]
+}

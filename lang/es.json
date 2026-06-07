@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "Números de daño de SULFUR"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Muestra números de daño flotantes sobre los enemigos cuando el jugador causa daño."
+    },
+    {
+      "key": "section.General",
+      "value": "General"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Visual"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filtro"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Rendimiento"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Depuración"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Activado"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Activa la visualización de números de daño."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Modo de daño"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal combina el daño del mismo fotograma sobre el mismo objetivo. PerHit muestra cada evento real de daño por separado."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderizador"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "Se recomienda ScreenSpace. WorldTextMeshPro usa texto 3D. Both activa ambos renderizadores para depuración."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Usar colores de punto débil"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Colorea los números según el multiplicador del impacto. Los puntos débiles son amarillo/naranja/rojo; sin multiplicador se muestra blanco."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "Tratar 1.0x como normal"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Muestra el multiplicador 1.0 en blanco en vez de naranja. Actívalo si los impactos normales al cuerpo se informan como 1.0x."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Color del daño combinado"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Regla de color usada cuando PerTargetTotal combina varios impactos en un solo número."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "Requerir objetivo NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Solo muestra números en objetivos NPC. Mantener activado para evitar objetos como barriles."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Requerir jugador como origen"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Exige que sourceData.sourceUnit exista y sea el jugador. Desactivado por defecto para proyectiles y explosiones."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Mostrar daño secundario del jugador"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Muestra explosiones y daños secundarios del jugador. Desactívalo si fuego, veneno o DoT generan demasiado ruido."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Daño mínimo a mostrar"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "El daño final por debajo de este valor no se muestra."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Mostrar decimales"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Muestra un decimal para daño no entero. Valores enteros como 5.0 se muestran como 5."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Duración"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Tiempo que permanece visible cada número de daño, en segundos."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Velocidad en mundo"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Velocidad ascendente para números en espacio de mundo."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Escala en mundo"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Escala de los números TextMeshPro en espacio de mundo."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Desplazamiento aleatorio"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Desplazamiento horizontal aleatorio. Útil para perdigones de escopeta en PerHit."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Tamaño de fuente en mundo"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "Tamaño de fuente TextMeshPro para WorldTextMeshPro."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Tamaño de fuente en pantalla"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Tamaño de fuente para números en pantalla."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Velocidad en pantalla"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Velocidad ascendente de números en pantalla, en píxeles por segundo."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Desplazamiento en pantalla"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Desplazamiento aleatorio en pantalla, en píxeles. Útil para perdigones de escopeta en PerHit."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "Dispersión PerHit en pantalla"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Dispersión adicional determinista para múltiples números PerHit del mismo objetivo en el mismo fotograma."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "Dispersión PerHit en mundo"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Dispersión adicional en mundo para múltiples números PerHit del mismo objetivo en el mismo fotograma."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Máximo de números activos"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Máximo de números de daño en pantalla activos. Al superar el límite se descartan primero los más antiguos."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Registro de depuración"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Escribe eventos de daño aceptados y rechazados en LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "Número de prueba F8"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Pulsa F8 en el juego para crear un número de prueba en el centro de la pantalla."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Total por objetivo"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Por impacto"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Espacio de pantalla"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "World TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Ambos"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Multiplicador más alto"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Media ponderada por daño"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Último impacto"
+    }
+  ]
+}

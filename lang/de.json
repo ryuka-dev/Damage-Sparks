@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR Schadenszahlen"
+    },
+    {
+      "key": "plugin.description",
+      "value": "Zeigt schwebende Schadenszahlen über Gegnern, wenn der Spieler Schaden verursacht."
+    },
+    {
+      "key": "section.General",
+      "value": "Allgemein"
+    },
+    {
+      "key": "section.Visual",
+      "value": "Anzeige"
+    },
+    {
+      "key": "section.Filter",
+      "value": "Filter"
+    },
+    {
+      "key": "section.Performance",
+      "value": "Leistung"
+    },
+    {
+      "key": "section.Debug",
+      "value": "Debug"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "Aktiviert"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "Aktiviert die Anzeige von Schadenszahlen."
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "Schadensanzeigemodus"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal fasst Schaden im selben Frame am selben Ziel zusammen. PerHit zeigt jedes echte Schadensereignis einzeln."
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "Renderer"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "ScreenSpace wird empfohlen. WorldTextMeshPro nutzt 3D-Text. Both aktiviert beide Renderer zum Debuggen."
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "Schwachpunktfarben verwenden"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "Färbt Schadenszahlen nach Treffer-Multiplikator. Schwache/empfindliche Treffer sind gelb/orange/rot; ohne Multiplikator ist der Schaden weiß."
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "1.0x als normal behandeln"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "Zeigt Multiplikator 1.0 weiß statt orange. Aktivieren, wenn normale Körpertreffer als 1.0x gemeldet werden."
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "Farbe für zusammengefassten Schaden"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "Farbregel, wenn PerTargetTotal mehrere Treffer zu einer Zahl zusammenfasst."
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "NPC-Ziel erforderlich"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "Zeigt Zahlen nur auf NPC-Zielen. Aktiv lassen, um Objekte wie Fässer zu vermeiden."
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "Spieler als Quelle erforderlich"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "Verlangt, dass sourceData.sourceUnit existiert und der Spieler ist. Standardmäßig aus für Projektile und Explosionen."
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "Sekundärschaden des Spielers anzeigen"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "Zeigt Explosionen und ähnlichen Sekundärschaden des Spielers. Abschalten, wenn Feuer, Gift oder DoT zu viel werden."
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "Mindestschaden zum Anzeigen"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "Endschaden unter diesem Wert wird nicht angezeigt."
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "Dezimalstellen anzeigen"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "Zeigt eine Dezimalstelle für nicht-ganzzahligen Schaden. Ganze Werte wie 5.0 werden weiterhin als 5 angezeigt."
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "Lebensdauer"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "Wie lange jede Schadenszahl sichtbar bleibt, in Sekunden."
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "Welt-Aufstiegsgeschwindigkeit"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "Aufstiegsgeschwindigkeit für Zahlen im Weltraum."
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "Welt-Skalierung"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "Skalierung der TextMeshPro-Schadenszahlen im Weltraum."
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "Zufällige Streuung"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "Zufälliger horizontaler Versatz. Nützlich für PerHit-Schrotkugeln."
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "Welt-Schriftgröße"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "TextMeshPro-Schriftgröße für den WorldTextMeshPro-Renderer."
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "Bildschirm-Schriftgröße"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "Schriftgröße für Bildschirm-Schadenszahlen."
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "Bildschirm-Aufstiegsgeschwindigkeit"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "Aufstiegsgeschwindigkeit für Bildschirmzahlen in Pixeln pro Sekunde."
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "Bildschirm-Streuung"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "Zufälliger Bildschirmversatz in Pixeln. Nützlich für PerHit-Schrotkugeln."
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit-Bildschirmverteilung"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "Zusätzliche deterministische Bildschirmverteilung für mehrere PerHit-Zahlen am selben Ziel im selben Frame."
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit-Weltverteilung"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "Zusätzliche deterministische Weltverteilung für mehrere PerHit-Zahlen am selben Ziel im selben Frame."
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "Max. aktive Zahlen"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "Maximale aktive Bildschirm-Schadenszahlen. Bei Überschreitung werden die ältesten entfernt."
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "Debug-Log"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "Schreibt akzeptierte und abgelehnte Schadensereignisse in LogOutput.log."
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8-Testzahl"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "Drücke F8 im Spiel, um eine Testzahl in der Bildschirmmitte zu erzeugen."
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "Ziel-Gesamtschaden"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "Pro Treffer"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "Bildschirmraum"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "Welt TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "Beide"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "Höchster Multiplikator"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "Schadensgewichteter Durchschnitt"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "Letzter Treffer"
+    }
+  ]
+}
