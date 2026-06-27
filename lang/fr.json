@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Nombre maximal de nombres de dégâts écran actifs. Les plus anciens sont supprimés en premier si la limite est dépassée."
+      "value": "Nombre maximal de nombres de dégâts actifs par moteur de rendu activé. Limité à 1-256 ; le plus ancien nombre actif est réutilisé une fois plein."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Nombres max. par image"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Nombre maximal de nouveaux nombres de dégâts générés en une seule image. Limité à 1-256. Les événements en trop sont ignorés pour éviter la surcharge de coups."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Protection anti-encombrement"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Ignore un nouveau nombre lorsque trop de nombres actifs occupent déjà la même petite zone de l'écran. Simple limiteur visuel ; ne fusionne pas les dégâts et ne change pas l'agrégation."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Rayon d'encombrement"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Rayon à l'écran en pixels utilisé par la protection anti-encombrement. Limité à 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Nombres proches max."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Combien de nombres peuvent se trouver dans le rayon d'encombrement avant qu'un nouveau nombre masqué soit ignoré. Limité à 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

@@ -1,0 +1,9 @@
+{
+  "name": "DamageSparks",
+  "version_number": "1.0.12",
+  "website_url": "https://github.com/ryuka-dev/Damage-Sparks",
+  "description": "Floating damage numbers with weakpoint colors for SULFUR.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2305"
+  ]
+}

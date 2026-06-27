@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maksymalna liczba aktywnych liczb ekranowych. Po przekroczeniu limitu najstarsze są usuwane."
+      "value": "Maksymalna liczba aktywnych liczb obrażeń w każdym włączonym rendererze. Ograniczone do 1-256; po zapełnieniu najstarsza aktywna liczba jest używana ponownie."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Maks. liczb na klatkę"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Maksymalna liczba nowych liczb obrażeń tworzonych w jednej klatce. Ograniczone do 1-256. Nadmiarowe zdarzenia są odrzucane, aby zapobiec zalewowi trafień."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Ochrona przed natłokiem"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Pomija nową liczbę, gdy zbyt wiele aktywnych liczb zajmuje już ten sam mały obszar ekranu. To tylko ogranicznik wizualny; nie łączy obrażeń ani nie zmienia agregacji."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Promień natłoku"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Promień ekranowy w pikselach używany przez ochronę przed natłokiem. Ograniczone do 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Maks. pobliskich liczb"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Ile liczb może znajdować się w promieniu natłoku, zanim nowa zasłonięta liczba zostanie pominięta. Ograniczone do 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

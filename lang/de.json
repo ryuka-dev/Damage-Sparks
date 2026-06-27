@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximale aktive Bildschirm-Schadenszahlen. Bei Überschreitung werden die ältesten entfernt."
+      "value": "Maximale aktive Schadenszahlen pro aktiviertem Renderer. Auf 1-256 begrenzt; bei vollem Pool wird die älteste aktive Zahl wiederverwendet."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Max. Zahlen pro Frame"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Maximale Anzahl neuer Schadenszahlen, die in einem Frame erzeugt werden. Auf 1-256 begrenzt. Überzählige Ereignisse werden verworfen, um Treffer-Spam zu vermeiden."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Überfüllungsschutz"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Überspringt eine neue Zahl, wenn bereits zu viele aktive Zahlen denselben kleinen Bildschirmbereich belegen. Nur ein visuelles Limit; Schaden wird weder zusammengeführt noch die Aggregation geändert."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Überfüllungsradius"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Bildschirmradius in Pixeln für den Überfüllungsschutz. Auf 8-120 begrenzt."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Max. nahe Zahlen"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Wie viele Zahlen innerhalb des Überfüllungsradius liegen dürfen, bevor eine neue verdeckte Zahl übersprungen wird. Auf 1-32 begrenzt."
     },
     {
       "key": "entry.Debug.DebugLog.name",

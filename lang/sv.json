@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximalt antal aktiva skärmsiffror. När gränsen överskrids tas de äldsta bort först."
+      "value": "Maximalt antal aktiva skadesiffror i varje aktiverad renderare. Begränsat till 1-256; när det är fullt återanvänds den äldsta aktiva siffran."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Max siffror per bildruta"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Maximalt antal nya skadesiffror som skapas under en enda bildruta. Begränsat till 1-256. Överskjutande händelser kasseras för att förhindra träff-spam."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Trängselskydd"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Hoppar över en ny siffra när för många aktiva siffror redan upptar samma lilla skärmyta. Endast en visuell begränsning; den slår inte ihop skada eller ändrar sammanräkningen."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Trängselradie"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Skärmradie i pixlar som används av trängselskyddet. Begränsat till 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Max närliggande siffror"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Hur många siffror som får finnas inom trängselradien innan en ny övertäckt siffra hoppas över. Begränsat till 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

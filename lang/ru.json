@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Максимум активных экранных чисел урона. При превышении лимита сначала удаляются старые."
+      "value": "Максимум активных чисел урона в каждом включённом рендерере. Ограничено 1-256; при заполнении повторно используется самое старое активное число."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Макс. чисел за кадр"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Максимум новых чисел урона, создаваемых за один кадр. Ограничено 1-256. Лишние события отбрасываются, чтобы избежать переполнения от попаданий."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Защита от скученности"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Пропускает новое число, когда слишком много активных чисел уже занимают тот же небольшой участок экрана. Только визуальное ограничение; не объединяет урон и не меняет агрегацию."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Радиус скученности"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Экранный радиус в пикселях, используемый защитой от скученности. Ограничено 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Макс. соседних чисел"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Сколько чисел может находиться в радиусе скученности, прежде чем новое перекрытое число будет пропущено. Ограничено 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

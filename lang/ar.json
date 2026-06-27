@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "أقصى عدد من أرقام الضرر النشطة على الشاشة. عند تجاوزه تُحذف الأقدم أولًا."
+      "value": "أقصى عدد من أرقام الضرر النشطة في كل مُصيّر مُفعّل. محدود بين 1 و256؛ وعند الامتلاء يُعاد استخدام أقدم رقم نشط."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "أقصى أرقام لكل إطار"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "أقصى عدد من أرقام الضرر الجديدة التي تُنشأ في إطار واحد. محدود بين 1 و256. تُهمل الأحداث الزائدة لمنع تكدّس الإصابات."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "الحماية من الازدحام"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "يتخطّى رقمًا جديدًا عندما يشغل عدد كبير من الأرقام النشطة المنطقة الصغيرة نفسها من الشاشة. هو حدّ بصري فقط؛ لا يدمج الضرر ولا يغيّر التجميع."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "نصف قطر الازدحام"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "نصف قطر الشاشة بالبكسل الذي تستخدمه الحماية من الازدحام. محدود بين 8 و120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "أقصى أرقام قريبة"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "عدد الأرقام المسموح بوجودها داخل نصف قطر الازدحام قبل تخطّي رقم جديد محجوب. محدود بين 1 و32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

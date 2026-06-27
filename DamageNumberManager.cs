@@ -1,22 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using PerfectRandom.Sulfur.Core.Units;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SulfurDamageNumbersMod
 {
     internal sealed class DamageNumberManager : MonoBehaviour
     {
+        private const int HardMaxActiveNumbers = 256;
+        private const int HardMaxNumbersPerFrame = 256;
+
         private static DamageNumberManager _instance;
+
         private readonly Dictionary<AggregateKey, AggregateEntry> _aggregates = new Dictionary<AggregateKey, AggregateEntry>();
         private readonly List<AggregateKey> _flushBuffer = new List<AggregateKey>();
-        private readonly List<ScreenEntry> _screenEntries = new List<ScreenEntry>();
         private readonly Dictionary<PerHitSpreadKey, int> _perHitSpreadCounters = new Dictionary<PerHitSpreadKey, int>();
+        private readonly List<ScreenDamageNumberView> _screenPool = new List<ScreenDamageNumberView>();
+        private readonly List<DamageNumberView> _worldPool = new List<DamageNumberView>();
+        private readonly List<Vector2> _crowdingPositions = new List<Vector2>(HardMaxActiveNumbers);
+
         private int _perHitSpreadFrame = -1;
-        private GUIStyle _screenStyle;
-        private GUIStyle _outlineStyle;
+        private int _crowdingFrame = -1;
+        private int _spawnBudgetFrame = -1;
+        private int _spawnedThisFrame;
+        private int _droppedThisFrame;
+        private int _crowdingSkippedThisFrame;
+        private float _lastBudgetLogTime = -999f;
+        private bool _inputErrorLogged;
+        private Camera _cachedCamera;
+        private float _nextCameraLookupTime;
+        private Material _screenSharedMaterial;
+        private Material _worldSharedMaterial;
+        private RenderMode _lastAppliedRenderMode;
+        private bool _hasAppliedRenderMode;
+
+        private RectTransform _screenRoot;
+        private Transform _worldRoot;
 
         public static void EnsureExists()
         {
@@ -27,36 +49,67 @@ namespace SulfurDamageNumbersMod
             _instance = go.AddComponent<DamageNumberManager>();
         }
 
+        public static void Shutdown()
+        {
+            if (_instance == null) return;
+
+            DamageNumberManager instance = _instance;
+            _instance = null;
+            Destroy(instance.gameObject);
+        }
+
         public static void RegisterDamage(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier)
         {
+            if (target == null) return;
+
             EnsureExists();
-            _instance.RegisterDamageInternal(target, sourceData, amount, hitMultiplier);
+            if (_instance != null)
+                _instance.RegisterDamageInternal(target, sourceData, amount, hitMultiplier);
         }
 
         public static void SpawnScreenTestNumber()
         {
             EnsureExists();
-            _instance.SpawnScreenFixed("999", new Vector2(Screen.width * 0.5f, Screen.height * 0.45f), DamageNumberColor.ForMultiplier(0f));
+            if (_instance != null)
+            {
+                _instance.SpawnScreenFixed(
+                    "999",
+                    new Vector2(Screen.width * 0.5f, Screen.height * 0.45f),
+                    DamageNumberColor.ForMultiplier(0f));
+            }
         }
 
         private void Update()
         {
-            if (Plugin.DebugSpawnTestOnF8.Value && InputCompat.GetKeyDown(KeyCode.F8))
+            if (!Plugin.DebugSpawnTestOnF8.Value) return;
+
+            try
             {
-                SpawnScreenTestNumber();
-                if (Plugin.DebugLog.Value)
-                    Plugin.Log.LogInfo("[DamageNumbers] F8 test number spawned.");
+                if (Input.GetKeyDown(KeyCode.F8))
+                {
+                    SpawnScreenTestNumber();
+                    if (Plugin.DebugLog.Value)
+                        Plugin.Log.LogInfo("[DamageNumbers] F8 test number spawned.");
+                }
+            }
+            catch (Exception e)
+            {
+                if (!_inputErrorLogged)
+                {
+                    _inputErrorLogged = true;
+                    Plugin.Log.LogWarning("[DamageNumbers] F8 debug input is unavailable: " + e.Message);
+                }
             }
         }
 
         private void RegisterDamageInternal(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier)
         {
-            Vector3 pos = GetDamagePosition(target);
+            Vector3 position = GetDamagePosition(target);
 
             if (Plugin.Mode.Value == DisplayMode.PerHit)
             {
                 PerHitSpreadOffset spread = GetNextPerHitSpread(target, sourceData);
-                SpawnNumber(pos, amount, hitMultiplier, true, spread.WorldOffset, spread.ScreenOffset);
+                SpawnNumber(position, amount, hitMultiplier, true, spread.WorldOffset, spread.ScreenOffset, true);
                 return;
             }
 
@@ -67,7 +120,7 @@ namespace SulfurDamageNumbersMod
                 entry = new AggregateEntry
                 {
                     Amount = 0f,
-                    Position = pos,
+                    Position = position,
                     Frame = Time.frameCount,
                     HighestMultiplier = 0f,
                     LastMultiplier = 0f,
@@ -76,27 +129,54 @@ namespace SulfurDamageNumbersMod
             }
 
             entry.Amount += amount;
-            entry.Position = pos;
+            entry.Position = position;
             entry.Frame = Time.frameCount;
             entry.LastMultiplier = hitMultiplier;
             entry.WeightedMultiplierSum += Mathf.Max(0f, hitMultiplier) * Mathf.Max(0f, amount);
             if (hitMultiplier > entry.HighestMultiplier)
-            {
                 entry.HighestMultiplier = hitMultiplier;
-            }
 
             _aggregates[key] = entry;
         }
 
         private void LateUpdate()
         {
+            FlushAggregates();
+            ApplyRendererSelectionIfChanged();
+
+            int maxActive = GetMaxActiveNumbers();
+            EnforcePoolLimit(_screenPool, maxActive);
+            EnforcePoolLimit(_worldPool, maxActive);
+
+            Camera camera = GetMainCamera();
+            float now = Time.time;
+
+            for (int i = 0; i < _screenPool.Count; i++)
+            {
+                ScreenDamageNumberView view = _screenPool[i];
+                if (view.IsActive)
+                    view.Tick(camera, now, Plugin.ScreenFloatSpeed.Value);
+            }
+
+            for (int i = 0; i < _worldPool.Count; i++)
+            {
+                DamageNumberView view = _worldPool[i];
+                if (view.IsActive)
+                    view.Tick(camera, now);
+            }
+
+            MaybeLogDroppedBudget();
+        }
+
+        private void FlushAggregates()
+        {
             if (_aggregates.Count == 0) return;
 
             _flushBuffer.Clear();
-            foreach (KeyValuePair<AggregateKey, AggregateEntry> kv in _aggregates)
+            foreach (KeyValuePair<AggregateKey, AggregateEntry> pair in _aggregates)
             {
-                if (kv.Value.Frame <= Time.frameCount)
-                    _flushBuffer.Add(kv.Key);
+                if (pair.Value.Frame <= Time.frameCount)
+                    _flushBuffer.Add(pair.Key);
             }
 
             for (int i = 0; i < _flushBuffer.Count; i++)
@@ -105,81 +185,424 @@ namespace SulfurDamageNumbersMod
                 AggregateEntry entry;
                 if (!_aggregates.TryGetValue(key, out entry)) continue;
 
-                SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), false, Vector3.zero, Vector2.zero);
+                // Aggregation has already happened. Crowding is only a visual post-filter;
+                // it does not change the PerTargetTotal grouping rule.
+                SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), false, Vector3.zero, Vector2.zero, true);
                 _aggregates.Remove(key);
             }
         }
 
-        private void OnGUI()
+        private void SpawnNumber(Vector3 position, float amount, float hitMultiplier, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, bool applyCrowding)
         {
-            if (_screenEntries.Count == 0) return;
-            EnsureGuiStyles();
+            EnsureFrameCounters();
 
-            Camera cam = Camera.main;
-            float now = Time.time;
-
-            for (int i = _screenEntries.Count - 1; i >= 0; i--)
+            Vector3 worldJitter = extraWorldJitter;
+            Vector2 screenJitter = extraScreenJitter;
+            if (useJitter)
             {
-                ScreenEntry entry = _screenEntries[i];
-                float age = now - entry.StartTime;
-                if (age >= entry.Lifetime)
+                if (Plugin.RandomJitter.Value > 0f)
                 {
-                    _screenEntries.RemoveAt(i);
+                    Vector2 randomWorld = UnityEngine.Random.insideUnitCircle * Plugin.RandomJitter.Value;
+                    worldJitter += new Vector3(randomWorld.x, 0f, randomWorld.y);
+                }
+
+                if (Plugin.ScreenJitter.Value > 0f)
+                    screenJitter += UnityEngine.Random.insideUnitCircle * Plugin.ScreenJitter.Value;
+            }
+
+            Vector2 crowdingScreenPosition;
+            bool hasCrowdingPosition = false;
+            if (applyCrowding && Plugin.EnableCrowdingProtection.Value)
+            {
+                hasCrowdingPosition = TryGetCrowdingScreenPosition(position, screenJitter, out crowdingScreenPosition);
+                if (hasCrowdingPosition && IsAreaCrowded(crowdingScreenPosition))
+                {
+                    _crowdingSkippedThisFrame++;
+                    return;
+                }
+            }
+            else
+            {
+                crowdingScreenPosition = Vector2.zero;
+            }
+
+            if (!TryConsumeSpawnBudget()) return;
+
+            string text = FormatDamage(amount);
+            Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
+
+            RenderMode renderMode = Plugin.Renderer.Value;
+            if (renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both)
+                SpawnScreenWorld(text, position, screenJitter, color);
+
+            if (renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both)
+                SpawnWorld(text, position, worldJitter, color);
+
+            // Include accepted same-frame numbers immediately. Existing active positions are
+            // rebuilt only once per frame, keeping this protection cheap under hit spam.
+            if (hasCrowdingPosition)
+                _crowdingPositions.Add(crowdingScreenPosition);
+        }
+
+        private void SpawnScreenWorld(string text, Vector3 worldPosition, Vector2 jitter, Color color)
+        {
+            ScreenDamageNumberView view = AcquireScreenView();
+            if (view == null) return;
+
+            view.PlayWorld(
+                text,
+                worldPosition,
+                jitter,
+                Mathf.Max(0.05f, Plugin.Lifetime.Value),
+                Mathf.Max(8, Plugin.ScreenFontSize.Value),
+                color);
+        }
+
+        private void SpawnScreenFixed(string text, Vector2 screenPosition, Color color)
+        {
+            ScreenDamageNumberView view = AcquireScreenView();
+            if (view == null) return;
+
+            view.PlayFixed(
+                text,
+                screenPosition,
+                Mathf.Max(0.05f, Plugin.Lifetime.Value),
+                Mathf.Max(8, Plugin.ScreenFontSize.Value),
+                color);
+        }
+
+        private void SpawnWorld(string text, Vector3 worldPosition, Vector3 jitter, Color color)
+        {
+            DamageNumberView view = AcquireWorldView();
+            if (view == null) return;
+
+            view.Play(
+                text,
+                worldPosition,
+                jitter,
+                Mathf.Max(0.05f, Plugin.Lifetime.Value),
+                Plugin.FloatSpeed.Value,
+                Plugin.WorldScale.Value,
+                Plugin.FontSize.Value,
+                color);
+        }
+
+        private ScreenDamageNumberView AcquireScreenView()
+        {
+            EnsureScreenRoot();
+            int maxActive = GetMaxActiveNumbers();
+
+            ScreenDamageNumberView inactive = null;
+            ScreenDamageNumberView oldest = null;
+            int activeCount = 0;
+
+            for (int i = 0; i < _screenPool.Count; i++)
+            {
+                ScreenDamageNumberView view = _screenPool[i];
+                if (!view.IsActive)
+                {
+                    if (inactive == null) inactive = view;
                     continue;
                 }
 
-                Vector2 screenPos;
-                if (entry.FixedScreen)
+                activeCount++;
+                if (oldest == null || view.StartTime < oldest.StartTime)
+                    oldest = view;
+            }
+
+            if (activeCount < maxActive)
+            {
+                if (inactive != null) return inactive;
+
+                ScreenDamageNumberView created = new ScreenDamageNumberView(_screenRoot, _screenSharedMaterial);
+                if (_screenSharedMaterial == null)
                 {
-                    screenPos = entry.ScreenPosition;
+                    // Cache the game's default TMP material for batching. The visible
+                    // border is produced by Unity UI Outline, not a cloned font material.
+                    _screenSharedMaterial = created.FontSharedMaterial;
+                    created.SetSharedMaterial(_screenSharedMaterial);
                 }
-                else
+                _screenPool.Add(created);
+                return created;
+            }
+
+            if (oldest != null)
+            {
+                oldest.Stop();
+                return oldest;
+            }
+
+            return inactive;
+        }
+
+        private DamageNumberView AcquireWorldView()
+        {
+            EnsureWorldRoot();
+            int maxActive = GetMaxActiveNumbers();
+
+            DamageNumberView inactive = null;
+            DamageNumberView oldest = null;
+            int activeCount = 0;
+
+            for (int i = 0; i < _worldPool.Count; i++)
+            {
+                DamageNumberView view = _worldPool[i];
+                if (!view.IsActive)
                 {
-                    if (cam == null) continue;
-                    Vector3 world = entry.WorldPosition + Vector3.up * (age * 0.25f);
-                    Vector3 sp = cam.WorldToScreenPoint(world);
-                    if (sp.z <= 0f) continue;
-                    screenPos = new Vector2(sp.x, Screen.height - sp.y);
+                    if (inactive == null) inactive = view;
+                    continue;
                 }
 
-                screenPos += entry.ScreenJitter;
-                screenPos.y -= age * Plugin.ScreenFloatSpeed.Value;
+                activeCount++;
+                if (oldest == null || view.StartTime < oldest.StartTime)
+                    oldest = view;
+            }
 
-                float alpha = Mathf.Clamp01(1f - age / entry.Lifetime);
-                Color textColor = entry.Color;
-                textColor.a = alpha;
-                Color outlineColor = new Color(0f, 0f, 0f, alpha);
+            if (activeCount < maxActive)
+            {
+                if (inactive != null) return inactive;
 
-                Rect r = new Rect(screenPos.x - 100f, screenPos.y - 32f, 200f, 64f);
-                _outlineStyle.normal.textColor = outlineColor;
-                _screenStyle.normal.textColor = textColor;
+                DamageNumberView created = new DamageNumberView(_worldRoot, _worldSharedMaterial);
+                if (_worldSharedMaterial == null)
+                {
+                    // Both the black backing text and the colored face share the
+                    // game's original font material. No per-number material instances.
+                    _worldSharedMaterial = created.FontSharedMaterial;
+                    created.SetSharedMaterial(_worldSharedMaterial);
+                }
+                _worldPool.Add(created);
+                return created;
+            }
 
-                DrawOutlinedLabel(r, entry.Text);
+            if (oldest != null)
+            {
+                oldest.Stop();
+                return oldest;
+            }
+
+            return inactive;
+        }
+
+        private Camera GetMainCamera()
+        {
+            if (_cachedCamera != null && _cachedCamera.isActiveAndEnabled)
+                return _cachedCamera;
+
+            float now = Time.unscaledTime;
+            if (now < _nextCameraLookupTime)
+                return null;
+
+            _nextCameraLookupTime = now + 0.5f;
+            _cachedCamera = Camera.main;
+            return _cachedCamera;
+        }
+
+        private bool TryGetCrowdingScreenPosition(Vector3 worldPosition, Vector2 screenJitter, out Vector2 screenPosition)
+        {
+            Camera camera = GetMainCamera();
+            PrepareCrowdingPositions(camera);
+
+            if (camera == null)
+            {
+                screenPosition = Vector2.zero;
+                return false;
+            }
+
+            Vector3 projected = camera.WorldToScreenPoint(worldPosition);
+            if (projected.z <= 0f)
+            {
+                screenPosition = Vector2.zero;
+                return false;
+            }
+
+            screenPosition = new Vector2(projected.x, projected.y) + screenJitter;
+            return true;
+        }
+
+        private void PrepareCrowdingPositions(Camera camera)
+        {
+            int frame = Time.frameCount;
+            if (_crowdingFrame == frame) return;
+
+            _crowdingFrame = frame;
+            _crowdingPositions.Clear();
+            if (camera == null) return;
+
+            RenderMode renderMode = Plugin.Renderer.Value;
+            bool useScreenViews = renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both;
+
+            if (useScreenViews)
+            {
+                for (int i = 0; i < _screenPool.Count; i++)
+                {
+                    ScreenDamageNumberView view = _screenPool[i];
+                    if (view.IsActive && view.IsVisible)
+                        _crowdingPositions.Add(view.CurrentScreenPosition);
+                }
+                return;
+            }
+
+            for (int i = 0; i < _worldPool.Count; i++)
+            {
+                DamageNumberView view = _worldPool[i];
+                if (!view.IsActive) continue;
+
+                Vector3 projected = camera.WorldToScreenPoint(view.CurrentWorldPosition);
+                if (projected.z > 0f)
+                    _crowdingPositions.Add(new Vector2(projected.x, projected.y));
             }
         }
 
-        private void DrawOutlinedLabel(Rect r, string text)
+        private bool IsAreaCrowded(Vector2 screenPosition)
         {
-            Rect o = r;
-            o.x -= 2f; GUI.Label(o, text, _outlineStyle);
-            o = r; o.x += 2f; GUI.Label(o, text, _outlineStyle);
-            o = r; o.y -= 2f; GUI.Label(o, text, _outlineStyle);
-            o = r; o.y += 2f; GUI.Label(o, text, _outlineStyle);
-            GUI.Label(r, text, _screenStyle);
+            float radius = Mathf.Clamp(Plugin.CrowdingRadius.Value, 8f, 120f);
+            float radiusSquared = radius * radius;
+            int maxNearby = Mathf.Clamp(Plugin.MaxNearbyNumbers.Value, 1, 32);
+            int nearby = 0;
+
+            for (int i = 0; i < _crowdingPositions.Count; i++)
+            {
+                Vector2 delta = _crowdingPositions[i] - screenPosition;
+                if (delta.sqrMagnitude > radiusSquared) continue;
+
+                nearby++;
+                if (nearby >= maxNearby)
+                    return true;
+            }
+
+            return false;
         }
 
-        private void EnsureGuiStyles()
+        private void EnsureScreenRoot()
         {
-            int size = Mathf.Max(8, Plugin.ScreenFontSize.Value);
-            if (_screenStyle != null && _screenStyle.fontSize == size) return;
+            if (_screenRoot != null) return;
 
-            _screenStyle = new GUIStyle(GUI.skin.label);
-            _screenStyle.alignment = TextAnchor.MiddleCenter;
-            _screenStyle.fontStyle = FontStyle.Bold;
-            _screenStyle.fontSize = size;
-            _screenStyle.clipping = TextClipping.Overflow;
+            GameObject canvasObject = new GameObject(
+                "SULFUR Damage Numbers Canvas",
+                typeof(RectTransform),
+                typeof(Canvas),
+                typeof(CanvasScaler));
+            canvasObject.transform.SetParent(transform, false);
 
-            _outlineStyle = new GUIStyle(_screenStyle);
+            Canvas canvas = canvasObject.GetComponent<Canvas>();
+            canvas.renderMode = UnityEngine.RenderMode.ScreenSpaceOverlay;
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 32760;
+
+            CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+            scaler.scaleFactor = 1f;
+
+            _screenRoot = canvasObject.GetComponent<RectTransform>();
+        }
+
+        private void EnsureWorldRoot()
+        {
+            if (_worldRoot != null) return;
+
+            GameObject rootObject = new GameObject("SULFUR Damage Numbers World Pool");
+            rootObject.transform.SetParent(transform, false);
+            _worldRoot = rootObject.transform;
+        }
+
+        private void ApplyRendererSelectionIfChanged()
+        {
+            RenderMode renderMode = Plugin.Renderer.Value;
+            if (_hasAppliedRenderMode && renderMode == _lastAppliedRenderMode)
+                return;
+
+            _lastAppliedRenderMode = renderMode;
+            _hasAppliedRenderMode = true;
+
+            bool screenEnabled = renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both;
+            bool worldEnabled = renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both;
+
+            // Only scan and stop a pool when the renderer selection actually changes.
+            // SpawnNumber already respects the current mode, so disabled pools cannot
+            // receive new active views afterward.
+            if (!screenEnabled)
+            {
+                for (int i = 0; i < _screenPool.Count; i++)
+                    _screenPool[i].Stop();
+            }
+
+            if (!worldEnabled)
+            {
+                for (int i = 0; i < _worldPool.Count; i++)
+                    _worldPool[i].Stop();
+            }
+        }
+
+        private static void EnforcePoolLimit<T>(List<T> pool, int maxActive) where T : class, IDamageNumberView
+        {
+            int activeCount = 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                if (pool[i].IsActive)
+                    activeCount++;
+            }
+
+            while (activeCount > maxActive)
+            {
+                T oldest = null;
+                for (int i = 0; i < pool.Count; i++)
+                {
+                    T candidate = pool[i];
+                    if (!candidate.IsActive) continue;
+                    if (oldest == null || candidate.StartTime < oldest.StartTime)
+                        oldest = candidate;
+                }
+
+                if (oldest == null) break;
+                oldest.Stop();
+                activeCount--;
+            }
+        }
+
+        private void EnsureFrameCounters()
+        {
+            int frame = Time.frameCount;
+            if (_spawnBudgetFrame == frame) return;
+
+            _spawnBudgetFrame = frame;
+            _spawnedThisFrame = 0;
+            _droppedThisFrame = 0;
+            _crowdingSkippedThisFrame = 0;
+        }
+
+        private bool TryConsumeSpawnBudget()
+        {
+            EnsureFrameCounters();
+
+            int maxPerFrame = Mathf.Clamp(Plugin.MaxNumbersPerFrame.Value, 1, HardMaxNumbersPerFrame);
+            if (_spawnedThisFrame >= maxPerFrame)
+            {
+                _droppedThisFrame++;
+                return false;
+            }
+
+            _spawnedThisFrame++;
+            return true;
+        }
+
+        private void MaybeLogDroppedBudget()
+        {
+            if (_spawnBudgetFrame != Time.frameCount) return;
+            if (!Plugin.DebugLog.Value || (_droppedThisFrame <= 0 && _crowdingSkippedThisFrame <= 0)) return;
+
+            float now = Time.unscaledTime;
+            if (now - _lastBudgetLogTime < 1f) return;
+
+            _lastBudgetLogTime = now;
+            Plugin.Log.LogWarning(
+                "[DamageNumbers] frame " + _spawnBudgetFrame +
+                ": droppedByFrameBudget=" + _droppedThisFrame +
+                ", skippedByCrowding=" + _crowdingSkippedThisFrame + ".");
+        }
+
+        private static int GetMaxActiveNumbers()
+        {
+            return Mathf.Clamp(Plugin.MaxActiveNumbers.Value, 1, HardMaxActiveNumbers);
         }
 
         private static Vector3 GetDamagePosition(Unit target)
@@ -202,15 +625,11 @@ namespace SulfurDamageNumbersMod
             PerHitSpreadKey key = PerHitSpreadKey.Create(target, sourceData);
             int index;
             if (!_perHitSpreadCounters.TryGetValue(key, out index))
-            {
                 index = 0;
-            }
-            _perHitSpreadCounters[key] = index + 1;
 
+            _perHitSpreadCounters[key] = index + 1;
             if (index <= 0)
-            {
                 return PerHitSpreadOffset.Zero;
-            }
 
             const float goldenAngle = 2.39996323f;
             float angle = index * goldenAngle;
@@ -227,76 +646,6 @@ namespace SulfurDamageNumbersMod
             };
         }
 
-
-        private static void SpawnNumber(Vector3 position, float amount, float hitMultiplier, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter)
-        {
-            string text = FormatDamage(amount);
-            Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
-
-            Vector3 worldJitter = extraWorldJitter;
-            Vector2 screenJitter = extraScreenJitter;
-            if (useJitter)
-            {
-                if (Plugin.RandomJitter.Value > 0f)
-                {
-                    Vector2 r = UnityEngine.Random.insideUnitCircle * Plugin.RandomJitter.Value;
-                    worldJitter += new Vector3(r.x, 0f, r.y);
-                }
-
-                if (Plugin.ScreenJitter.Value > 0f)
-                    screenJitter += UnityEngine.Random.insideUnitCircle * Plugin.ScreenJitter.Value;
-            }
-
-            if (Plugin.Renderer.Value == RenderMode.ScreenSpace || Plugin.Renderer.Value == RenderMode.Both)
-                _instance.SpawnScreenWorld(text, position, screenJitter, color);
-
-            if (Plugin.Renderer.Value == RenderMode.WorldTextMeshPro || Plugin.Renderer.Value == RenderMode.Both)
-            {
-                GameObject go = new GameObject("SULFUR Damage Number");
-                DamageNumberView view = go.AddComponent<DamageNumberView>();
-                view.Init(text, position, worldJitter, Plugin.Lifetime.Value, Plugin.FloatSpeed.Value, Plugin.WorldScale.Value, Plugin.FontSize.Value, color);
-            }
-        }
-
-        private void SpawnScreenWorld(string text, Vector3 worldPosition, Vector2 jitter, Color color)
-        {
-            TrimOldScreenEntriesIfNeeded();
-            _screenEntries.Add(new ScreenEntry
-            {
-                Text = text,
-                WorldPosition = worldPosition,
-                ScreenJitter = jitter,
-                StartTime = Time.time,
-                Lifetime = Mathf.Max(0.05f, Plugin.Lifetime.Value),
-                FixedScreen = false,
-                Color = color
-            });
-        }
-
-        private void SpawnScreenFixed(string text, Vector2 screenPosition, Color color)
-        {
-            TrimOldScreenEntriesIfNeeded();
-            _screenEntries.Add(new ScreenEntry
-            {
-                Text = text,
-                ScreenPosition = screenPosition,
-                ScreenJitter = Vector2.zero,
-                StartTime = Time.time,
-                Lifetime = Mathf.Max(0.05f, Plugin.Lifetime.Value),
-                FixedScreen = true,
-                Color = color
-            });
-        }
-
-        private void TrimOldScreenEntriesIfNeeded()
-        {
-            int max = Mathf.Max(1, Plugin.MaxActiveNumbers.Value);
-            while (_screenEntries.Count >= max)
-            {
-                _screenEntries.RemoveAt(0);
-            }
-        }
-
         private static string FormatDamage(float amount)
         {
             if (Plugin.ShowDecimals.Value)
@@ -305,9 +654,9 @@ namespace SulfurDamageNumbersMod
                 float integer = Mathf.Round(oneDecimal);
                 if (Mathf.Abs(oneDecimal - integer) <= 0.0001f)
                 {
-                    int intValue = Mathf.RoundToInt(integer);
-                    if (intValue <= 0 && amount > 0f) intValue = 1;
-                    return intValue.ToString(CultureInfo.InvariantCulture);
+                    int integerValue = Mathf.RoundToInt(integer);
+                    if (integerValue <= 0 && amount > 0f) integerValue = 1;
+                    return integerValue.ToString(CultureInfo.InvariantCulture);
                 }
 
                 return oneDecimal.ToString("0.0", CultureInfo.InvariantCulture);
@@ -334,6 +683,27 @@ namespace SulfurDamageNumbersMod
             }
         }
 
+        private void OnDestroy()
+        {
+            _aggregates.Clear();
+            _flushBuffer.Clear();
+            _perHitSpreadCounters.Clear();
+            _crowdingPositions.Clear();
+            _screenPool.Clear();
+            _worldPool.Clear();
+            _screenRoot = null;
+            _worldRoot = null;
+            _cachedCamera = null;
+
+            // These references point to the game's default TMP font materials.
+            // They are not owned by this mod and must not be destroyed.
+            _screenSharedMaterial = null;
+            _worldSharedMaterial = null;
+
+            if (_instance == this)
+                _instance = null;
+        }
+
         private struct AggregateEntry
         {
             public float Amount;
@@ -355,17 +725,243 @@ namespace SulfurDamageNumbersMod
             public Vector3 WorldOffset;
             public Vector2 ScreenOffset;
         }
+    }
 
-        private sealed class ScreenEntry
+    internal interface IDamageNumberView
+    {
+        bool IsActive { get; }
+        float StartTime { get; }
+        void Stop();
+    }
+
+    internal sealed class ScreenDamageNumberView : IDamageNumberView
+    {
+        // Four same-size diagonal copies create an even black border without
+        // scaling the glyphs or changing character spacing.
+        private static readonly Vector2[] OutlineOffsets =
         {
-            public string Text;
-            public Vector3 WorldPosition;
-            public Vector2 ScreenPosition;
-            public Vector2 ScreenJitter;
-            public float StartTime;
-            public float Lifetime;
-            public bool FixedScreen;
-            public Color Color;
+            new Vector2(-1.15f, -1.15f),
+            new Vector2(-1.15f,  1.15f),
+            new Vector2( 1.15f, -1.15f),
+            new Vector2( 1.15f,  1.15f)
+        };
+
+        private readonly GameObject _gameObject;
+        private readonly RectTransform _rectTransform;
+        private readonly TextMeshProUGUI[] _outlineTexts;
+        private readonly TextMeshProUGUI _text;
+
+        private Vector3 _worldPosition;
+        private Vector2 _screenPosition;
+        private Vector2 _screenJitter;
+        private float _lifetime;
+        private bool _fixedScreen;
+
+        public bool IsActive { get; private set; }
+        public float StartTime { get; private set; }
+        public bool IsVisible { get; private set; }
+        public Vector2 CurrentScreenPosition { get; private set; }
+        public Material FontSharedMaterial { get { return _text.fontSharedMaterial; } }
+
+        public ScreenDamageNumberView(RectTransform parent, Material sharedMaterial)
+        {
+            _gameObject = new GameObject(
+                "SULFUR Damage Number Screen",
+                typeof(RectTransform));
+            _gameObject.transform.SetParent(parent, false);
+
+            _rectTransform = _gameObject.GetComponent<RectTransform>();
+            _rectTransform.anchorMin = Vector2.zero;
+            _rectTransform.anchorMax = Vector2.zero;
+            _rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            _rectTransform.sizeDelta = new Vector2(240f, 80f);
+
+            // The game's runtime TMP material does not reliably display SDF outlines.
+            // Do not enlarge a black duplicate: that changes glyph size and spacing.
+            // Instead, draw four same-size pooled copies at tiny diagonal offsets,
+            // then draw the colored face once on top.
+            _outlineTexts = new TextMeshProUGUI[OutlineOffsets.Length];
+            for (int i = 0; i < _outlineTexts.Length; i++)
+                _outlineTexts[i] = CreateTextLayer("Outline" + i, OutlineOffsets[i]);
+
+            _text = CreateTextLayer("Face", Vector2.zero);
+
+            if (sharedMaterial != null)
+                SetSharedMaterial(sharedMaterial);
+            else if (_text.fontSharedMaterial != null)
+                SetOutlineSharedMaterial(_text.fontSharedMaterial);
+
+            Stop();
+        }
+
+        private TextMeshProUGUI CreateTextLayer(string name, Vector2 offset)
+        {
+            GameObject layer = new GameObject(
+                name,
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(TextMeshProUGUI));
+            layer.transform.SetParent(_rectTransform, false);
+
+            RectTransform rect = layer.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = offset;
+
+            TextMeshProUGUI text = layer.GetComponent<TextMeshProUGUI>();
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontStyle = FontStyles.Bold;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Overflow;
+            text.raycastTarget = false;
+            return text;
+        }
+
+        public void SetSharedMaterial(Material sharedMaterial)
+        {
+            if (sharedMaterial == null)
+                return;
+
+            _text.fontSharedMaterial = sharedMaterial;
+            SetOutlineSharedMaterial(sharedMaterial);
+        }
+
+        private void SetOutlineSharedMaterial(Material sharedMaterial)
+        {
+            for (int i = 0; i < _outlineTexts.Length; i++)
+                _outlineTexts[i].fontSharedMaterial = sharedMaterial;
+        }
+
+        public void PlayWorld(string value, Vector3 worldPosition, Vector2 jitter, float lifetime, int fontSize, Color color)
+        {
+            _worldPosition = worldPosition;
+            _screenJitter = jitter;
+            _fixedScreen = false;
+            PlayCommon(value, lifetime, fontSize, color);
+        }
+
+        public void PlayFixed(string value, Vector2 screenPosition, float lifetime, int fontSize, Color color)
+        {
+            _screenPosition = screenPosition;
+            _screenJitter = Vector2.zero;
+            _fixedScreen = true;
+            PlayCommon(value, lifetime, fontSize, color);
+        }
+
+        private void PlayCommon(string value, float lifetime, int fontSize, Color color)
+        {
+            StartTime = Time.time;
+            _lifetime = Mathf.Max(0.05f, lifetime);
+
+            color.a = 1f;
+            _text.text = value;
+            _text.fontSize = fontSize;
+            _text.color = color;
+            _text.canvasRenderer.SetAlpha(1f);
+
+            for (int i = 0; i < _outlineTexts.Length; i++)
+            {
+                TextMeshProUGUI outline = _outlineTexts[i];
+                outline.text = value;
+                outline.fontSize = fontSize;
+                outline.color = Color.black;
+                outline.canvasRenderer.SetAlpha(1f);
+                outline.enabled = true;
+            }
+
+            _text.enabled = true;
+            _gameObject.SetActive(true);
+            IsVisible = true;
+            IsActive = true;
+        }
+
+        public void Tick(Camera camera, float now, float floatSpeed)
+        {
+            if (!IsActive) return;
+
+            float age = now - StartTime;
+            if (age >= _lifetime)
+            {
+                Stop();
+                return;
+            }
+
+            Vector2 screenPosition;
+            if (_fixedScreen)
+            {
+                screenPosition = _screenPosition;
+            }
+            else
+            {
+                if (camera == null)
+                {
+                    SetLayersEnabled(false);
+                    IsVisible = false;
+                    return;
+                }
+
+                Vector3 world = _worldPosition + Vector3.up * (age * 0.25f);
+                Vector3 projected = camera.WorldToScreenPoint(world);
+                if (projected.z <= 0f)
+                {
+                    SetLayersEnabled(false);
+                    IsVisible = false;
+                    return;
+                }
+
+                screenPosition = new Vector2(projected.x, projected.y);
+            }
+
+            SetLayersEnabled(true);
+            IsVisible = true;
+            screenPosition += _screenJitter;
+            screenPosition.y += age * floatSpeed;
+            CurrentScreenPosition = screenPosition;
+            _rectTransform.anchoredPosition = screenPosition;
+
+            // CanvasRenderer alpha fades the already-generated meshes without changing
+            // TMP vertex colors every frame.
+            float alpha = Mathf.Clamp01(1f - age / _lifetime);
+            _text.canvasRenderer.SetAlpha(alpha);
+            for (int i = 0; i < _outlineTexts.Length; i++)
+                _outlineTexts[i].canvasRenderer.SetAlpha(alpha);
+        }
+
+        private void SetLayersEnabled(bool enabled)
+        {
+            _text.enabled = enabled;
+            for (int i = 0; i < _outlineTexts.Length; i++)
+                _outlineTexts[i].enabled = enabled;
+        }
+
+        public void Stop()
+        {
+            IsActive = false;
+            IsVisible = false;
+            if (_text != null)
+            {
+                _text.canvasRenderer.SetAlpha(0f);
+                _text.enabled = false;
+            }
+
+            if (_outlineTexts != null)
+            {
+                for (int i = 0; i < _outlineTexts.Length; i++)
+                {
+                    TextMeshProUGUI outline = _outlineTexts[i];
+                    if (outline == null)
+                        continue;
+
+                    outline.canvasRenderer.SetAlpha(0f);
+                    outline.enabled = false;
+                }
+            }
+
+            if (_gameObject != null)
+                _gameObject.SetActive(false);
         }
     }
 
@@ -478,129 +1074,27 @@ namespace SulfurDamageNumbersMod
         private static readonly Color NormalDamageColor = Color.white;
         private static readonly Color OrangeDamageColor = new Color(1f, 0.5f, 0f, 1f);
 
-        private static MethodInfo _getShapeMultiplierMethod;
-        private static Type _cachedHitDataType;
-
-        public static float ResolveHitMultiplier(object hitData)
-        {
-            if (hitData == null)
-            {
-                return 0f;
-            }
-
-            try
-            {
-                Type type = hitData.GetType();
-                MethodInfo method = GetShapeMultiplierMethod(type);
-                if (method == null)
-                {
-                    return 0f;
-                }
-
-                object result = method.Invoke(hitData, null);
-                if (result is float)
-                {
-                    return Mathf.Max(0f, (float)result);
-                }
-
-                if (result is double)
-                {
-                    return Mathf.Max(0f, (float)(double)result);
-                }
-            }
-            catch
-            {
-                return 0f;
-            }
-
-            return 0f;
-        }
-
         public static Color ForMultiplier(float multiplier)
         {
             if (!Plugin.UseWeakspotColors.Value)
-            {
                 return NormalDamageColor;
-            }
 
             if (multiplier <= 0f)
-            {
                 return NormalDamageColor;
-            }
 
             if (Plugin.TreatOneMultiplierAsNormal.Value && Mathf.Abs(multiplier - 1f) <= 0.0001f)
-            {
                 return NormalDamageColor;
-            }
 
             if (multiplier >= 1.5f)
-            {
                 return Color.red;
-            }
 
             if (multiplier >= 1f)
-            {
                 return OrangeDamageColor;
-            }
 
             if (multiplier >= 0.75f)
-            {
                 return Color.yellow;
-            }
 
             return NormalDamageColor;
-        }
-
-        private static MethodInfo GetShapeMultiplierMethod(Type type)
-        {
-            if (type == null)
-            {
-                return null;
-            }
-
-            if (_cachedHitDataType == type)
-            {
-                return _getShapeMultiplierMethod;
-            }
-
-            _cachedHitDataType = type;
-            _getShapeMultiplierMethod = type.GetMethod("GetShapeMultiplier", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
-            return _getShapeMultiplierMethod;
-        }
-    }
-
-    internal static class InputCompat
-    {
-        private static readonly MethodInfo GetKeyDownMethod = FindGetKeyDownMethod();
-
-        public static bool GetKeyDown(KeyCode key)
-        {
-            if (GetKeyDownMethod == null) return false;
-
-            try
-            {
-                object result = GetKeyDownMethod.Invoke(null, new object[] { key });
-                return result is bool && (bool)result;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private static MethodInfo FindGetKeyDownMethod()
-        {
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            for (int i = 0; i < assemblies.Length; i++)
-            {
-                Type inputType = assemblies[i].GetType("UnityEngine.Input", false);
-                if (inputType == null) continue;
-
-                MethodInfo method = inputType.GetMethod("GetKeyDown", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(KeyCode) }, null);
-                if (method != null) return method;
-            }
-
-            return null;
         }
     }
 }

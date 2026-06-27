@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "화면 공간 데미지 숫자의 최대 활성 수입니다. 한도를 넘으면 오래된 숫자부터 제거됩니다."
+      "value": "활성화된 각 렌더러의 데미지 숫자 최대 활성 수입니다. 1~256으로 제한되며, 가득 차면 가장 오래된 숫자를 재사용합니다."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "프레임당 최대 숫자 수"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "한 프레임에 새로 생성되는 데미지 숫자의 최대 수입니다. 1~256으로 제한됩니다. 초과된 이벤트는 폐기되어 히트 도배를 방지합니다."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "밀집 보호"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "좁은 화면 영역에 이미 너무 많은 숫자가 있으면 새 숫자를 건너뜁니다. 시각적 제한일 뿐이며 데미지를 합치거나 집계를 변경하지 않습니다."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "밀집 반경"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "밀집 보호가 사용하는 화면 공간 반경(픽셀)입니다. 8~120으로 제한됩니다."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "최대 인접 숫자 수"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "새로 가려지는 숫자를 건너뛰기 전에 밀집 반경 안에 허용되는 숫자 수입니다. 1~32로 제한됩니다."
     },
     {
       "key": "entry.Debug.DebugLog.name",

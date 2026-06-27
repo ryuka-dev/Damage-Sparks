@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Máximo de números de daño en pantalla activos. Al superar el límite se descartan primero los más antiguos."
+      "value": "Máximo de números de daño activos en cada renderizador habilitado. Limitado a 1-256; al llenarse se reutiliza el número activo más antiguo."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Números máx. por fotograma"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Máximo de números de daño nuevos generados en un solo fotograma. Limitado a 1-256. Los eventos sobrantes se descartan para evitar la saturación de impactos."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Protección de saturación"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Omite un número nuevo cuando ya hay demasiados números activos en la misma zona pequeña de la pantalla. Solo es un limitador visual; no fusiona el daño ni cambia la agregación."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Radio de saturación"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Radio en píxeles de pantalla usado por la protección de saturación. Limitado a 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Máx. números cercanos"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Cuántos números pueden estar dentro del radio de saturación antes de omitir un número nuevo cubierto. Limitado a 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

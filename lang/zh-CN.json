@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "屏幕空间伤害数字的最大活动数量。超过上限时会先丢弃最旧的数字。"
+      "value": "每个启用的渲染器中伤害数字的最大活动数量。硬限制为 1-256；占满时复用最旧的数字。"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "每帧最大数字数"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "单帧内最多新生成的伤害数字数量。硬限制为 1-256。超出的事件会被丢弃，以防止命中刷屏。"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "拥挤保护"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "当同一小块屏幕区域内已有过多活动数字时，跳过新数字。这只是视觉限流，不会合并伤害或改变聚合规则。"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "拥挤半径"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "拥挤保护使用的屏幕空间半径（像素）。硬限制为 8-120。"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "最大邻近数字数"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "在跳过新的被遮挡数字之前，拥挤半径内允许存在的数字数量。硬限制为 1-32。"
     },
     {
       "key": "entry.Debug.DebugLog.name",

@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maksimum aktif ekran hasar sayısı. Limit aşılınca en eski sayılar önce atılır."
+      "value": "Etkin her oluşturucuda en fazla aktif hasar sayısı. 1-256 ile sınırlıdır; dolduğunda en eski aktif sayı yeniden kullanılır."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Kare başına maks. sayı"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Tek bir karede oluşturulan en fazla yeni hasar sayısı. 1-256 ile sınırlıdır. Fazla olaylar, vuruş yığılmasını önlemek için atılır."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Kalabalık koruması"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Aynı küçük ekran alanında zaten çok fazla aktif sayı varsa yeni bir sayıyı atlar. Yalnızca görsel bir sınırlayıcıdır; hasarı birleştirmez veya toplamayı değiştirmez."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Kalabalık yarıçapı"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Kalabalık korumasının kullandığı piksel cinsinden ekran yarıçapı. 8-120 ile sınırlıdır."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Maks. yakın sayı"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Yeni bir örtülen sayı atlanmadan önce kalabalık yarıçapı içinde bulunmasına izin verilen sayı adedi. 1-32 ile sınırlıdır."
     },
     {
       "key": "entry.Debug.DebugLog.name",

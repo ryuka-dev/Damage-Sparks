@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximum active screen-space damage numbers. Oldest numbers are discarded first when the limit is exceeded."
+      "value": "Maximum active damage numbers in each enabled renderer. Clamped to 1-256; the oldest active number is reused when full."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Max Numbers Per Frame"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Maximum new damage numbers spawned in a single frame. Clamped to 1-256. Extra events are dropped to protect against hit spam."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Crowding Protection"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Skip a new number when too many active numbers already occupy the same small screen area. A visual limiter only; it does not merge damage or change aggregation."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Crowding Radius"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Screen-space radius in pixels used by crowding protection. Clamped to 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Max Nearby Numbers"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "How many numbers may sit inside the crowding radius before a new covered number is skipped. Clamped to 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

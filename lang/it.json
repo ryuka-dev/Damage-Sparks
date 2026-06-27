@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Numero massimo di numeri danno su schermo attivi. Superato il limite, vengono scartati prima i più vecchi."
+      "value": "Numero massimo di numeri danno attivi per ogni renderer abilitato. Limitato a 1-256; quando è pieno viene riutilizzato il numero attivo più vecchio."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Numeri max per frame"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Numero massimo di nuovi numeri danno generati in un singolo frame. Limitato a 1-256. Gli eventi in eccesso vengono scartati per evitare il sovraffollamento dei colpi."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Protezione affollamento"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Salta un nuovo numero quando troppi numeri attivi occupano già la stessa piccola area dello schermo. È solo un limitatore visivo; non unisce il danno né cambia l'aggregazione."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Raggio di affollamento"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Raggio sullo schermo in pixel usato dalla protezione affollamento. Limitato a 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Max numeri vicini"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Quanti numeri possono stare nel raggio di affollamento prima di saltare un nuovo numero coperto. Limitato a 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",

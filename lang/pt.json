@@ -202,7 +202,39 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Máximo de números de dano ativos na tela. Ao exceder o limite, os mais antigos são descartados primeiro."
+      "value": "Máximo de números de dano ativos em cada renderizador ativado. Limitado a 1-256; quando cheio, o número ativo mais antigo é reutilizado."
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "Números máx. por quadro"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "Máximo de novos números de dano gerados em um único quadro. Limitado a 1-256. Eventos excedentes são descartados para evitar excesso de acertos."
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "Proteção de aglomeração"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "Ignora um novo número quando já há números ativos demais na mesma pequena área da tela. Apenas um limitador visual; não funde o dano nem altera a agregação."
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "Raio de aglomeração"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "Raio na tela em pixels usado pela proteção de aglomeração. Limitado a 8-120."
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "Máx. números próximos"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "Quantos números podem ficar dentro do raio de aglomeração antes de ignorar um novo número coberto. Limitado a 1-32."
     },
     {
       "key": "entry.Debug.DebugLog.name",
