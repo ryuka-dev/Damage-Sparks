@@ -205,6 +205,8 @@ Added a vanilla renderer. `Renderer = Vanilla` draws damage numbers with SULFUR'
 
 Also fixed damage over time from status effects the player applied, such as burning, poison and electrocution, which was never shown before. Those are the colored numbers the target dummies display. This adds numbers in every renderer, so set `ShowStatusEffectDamage = false` under `[Filter]` if you prefer the old behavior.
 
+Fixed weakpoint coloring for damage that has no hitbox, such as status damage over time and explosions. It used the head shot color before and is now white. Weapon hits are unchanged.
+
 ## v1.0.12
 
 Reworked the damage number rendering system to improve performance and stability. Damage numbers now use pooled TextMeshPro objects instead of `OnGUI`, excessive overlapping numbers are automatically suppressed, renderer updates have been optimized, and the text outline and default font size have been improved. These changes significantly reduce frame-rate drops during high-damage or rapid-fire situations and may also address the reported GC stack overflow crashes.

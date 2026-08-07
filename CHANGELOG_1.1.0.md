@@ -13,4 +13,9 @@
 - **Intentional behavior change.** With the default configuration you will now see extra numbers for burning, poison and electrocution ticks in every renderer, not only in `Vanilla`. Set `ShowStatusEffectDamage = false` under `[Filter]` to restore the previous behavior.
 - The new check uses `sourceData.sourceUnit`, which the game sets to the unit that applied the status. It does not match on source names.
 
+## Weakpoint colors
+
+- Fixed: damage that carries no hitbox information was colored as a weakpoint hit. `Hitmesh.Data.GetShapeMultiplier` returns 1.0 for `Parts.None`, which is the same value a real head shot produces, so status damage over time and explosion damage - both of which pass `Hitmesh.Data.Default` - were shown in the head shot color. They are now treated as "no multiplier available" and shown in white.
+- Weapon hits are unaffected. The game always resolves a real body part for them.
+
 - Verified against SULFUR 0.18.5.

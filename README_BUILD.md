@@ -61,6 +61,20 @@ Note that when `PeriodicModifier` is created with `EntityAttributes.None`, `sour
 *taking* the damage rather than the applier; that case still resolves to a non-player unit for NPC
 targets and is rejected as before.
 
+## v1.1.0 weakpoint color for damage without a hitbox
+
+`Hitmesh.Data.GetShapeMultiplier()` maps parts as `Eye 1.5`, `Head 1.0`, `Thorax 0.75`,
+`Body 0.5`, `Groin 0.5`, `Arm 0.25`, `Leg 0.25`, `Block 0`, `Custom 1.0` - and `None 1.0`.
+
+`Parts.None` means the damage carried no hitbox information; melee, explosions and status damage
+over time all pass `Hitmesh.Data.Default`. Because it returns the same 1.0 as a head shot, those
+events were shown in the head shot color. The postfix now reports `Parts.None` as `0`, which the
+existing "no multiplier available" branch renders white.
+
+Measured on 0.18.5 over 455 accepted weapon hits: `Head 54.9%`, `Thorax 14.1%`, `Arm 12.3%`,
+`Eye 8.1%`, `Body 7.9%`, `Leg 2.6%`, and `None` never occurred. The game always resolves a real
+body part for weapon hits, so this change only affects damage that has no hitbox to begin with.
+
 ## v1.0.8 - 1.0.12 performance and stability notes
 
 These releases rebuild the renderer from the old `OnGUI` / per-hit `GameObject`

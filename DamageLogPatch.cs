@@ -84,10 +84,17 @@ namespace SulfurDamageNumbersMod
                     return;
                 }
 
-                float hitMultiplier = Mathf.Max(0f, __3.GetShapeMultiplier());
+                // GetShapeMultiplier returns 1.0 for Parts.None, the same value a real head shot
+                // produces. Parts.None means the damage carried no hitbox information at all -
+                // status damage over time and explosion damage both pass Hitmesh.Data.Default -
+                // so coloring it as a weakpoint hit would be wrong. Report it as "no multiplier
+                // available" instead, which the color table already renders white.
+                float hitMultiplier = __3.shapeId.part == HitboxColliders.Parts.None
+                    ? 0f
+                    : Mathf.Max(0f, __3.GetShapeMultiplier());
 
                 if (Plugin.DebugLog.Value)
-                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " damageType=" + __4.damageType + " critical=" + __4.isCritical + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
+                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " part=" + __3.shapeId.part + " damageType=" + __4.damageType + " critical=" + __4.isCritical + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
 
                 DamageNumberManager.RegisterDamage(__instance, __4, finalDamage, hitMultiplier);
             }
