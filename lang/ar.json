@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "يُنصح باستخدام ScreenSpace. يستخدم WorldTextMeshPro نصًا ثلاثي الأبعاد. Both يفعّل الاثنين للتصحيح."
+      "value": "يُنصح باستخدام ScreenSpace. يستخدم WorldTextMeshPro نصًا ثلاثي الأبعاد. يُفعّل Both كلا المحركين لأغراض التصحيح. يستخدم Vanilla نص الضرر الخاص باللعبة نفسها، وهو النص الذي يظهر على دُمى التدريب."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "ألوان أنواع الضرر الأصلية"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "لمحرك Vanilla فقط. عند التفعيل تُستخدم ألوان أنواع الضرر الخاصة باللعبة كما في دُمى التدريب. عند الإيقاف تُستخدم ألوان نقاط الضعف الخاصة بهذا التعديل مع حركة اللعبة الأصلية."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "حجم نص Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "لمحرك Vanilla فقط. حجم نص الضرر الخاص باللعبة. القيمة 1.0 هي الحجم المستخدم في دُمى التدريب."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "يعرض الانفجارات والضرر الثانوي المملوك للّاعب. عطّله إذا أصبح الحريق أو السم أو DoT مزعجًا."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "إظهار ضرر تأثيرات الحالة"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "يظهر الضرر المستمر الناتج عن تأثيرات الحالة التي يطبقها اللاعب، مثل الحرق والسم والصعق الكهربائي. وهي الأرقام الملونة التي تظهر على دُمى التدريب."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "كلاهما"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "الأصلي"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

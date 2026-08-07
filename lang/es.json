@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "Se recomienda ScreenSpace. WorldTextMeshPro usa texto 3D. Both activa ambos renderizadores para depuración."
+      "value": "Se recomienda ScreenSpace. WorldTextMeshPro usa texto 3D. Both activa ambos renderizadores para depuración. Vanilla usa el texto de daño del propio juego, el que usan los muñecos de prueba."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Colores de tipo de daño de Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Solo para el renderizador Vanilla. Activado usa los colores de tipo de daño del juego, como los muñecos de prueba. Desactivado mantiene los colores de punto débil de este mod sobre la animación de Vanilla."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Escala del texto Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Solo para el renderizador Vanilla. Tamaño del texto de daño del juego. 1.0 es el tamaño que usan los muñecos de prueba."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Muestra explosiones y daños secundarios del jugador. Desactívalo si fuego, veneno o DoT generan demasiado ruido."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Mostrar daño de efectos de estado"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Muestra el daño con el tiempo de los efectos de estado aplicados por el jugador, como quemadura, veneno y electrocución. Son los números de colores que muestran los muñecos de prueba."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Ambos"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

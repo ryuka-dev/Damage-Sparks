@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace é recomendado. WorldTextMeshPro usa texto 3D. Both ativa ambos para depuração."
+      "value": "ScreenSpace é recomendado. WorldTextMeshPro usa texto 3D. Both ativa os dois renderizadores para depuração. Vanilla usa o texto de dano do próprio jogo, o mesmo dos bonecos de treino."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Cores de tipo de dano do jogo"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Apenas para o renderizador Vanilla. Ligado usa as cores de tipo de dano do jogo, como nos bonecos de treino. Desligado mantém as cores de ponto fraco deste mod na animação original."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Escala do texto Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Apenas para o renderizador Vanilla. Tamanho do texto de dano do jogo. 1.0 é o tamanho usado pelos bonecos de treino."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Mostra explosões e dano secundário do jogador. Desative se fogo, veneno ou DoT ficarem muito barulhentos."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Mostrar dano de efeitos de estado"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Mostra o dano ao longo do tempo de efeitos de estado aplicados pelo jogador, como queimadura, veneno e eletrocussão. São os números coloridos que os bonecos de treino mostram."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Ambos"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

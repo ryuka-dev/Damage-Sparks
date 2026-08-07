@@ -1,3 +1,4 @@
+using System;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -10,17 +11,20 @@ namespace SulfurDamageNumbersMod
     {
         public const string PluginGuid = "ryuka.sulfur.damagenumbers";
         public const string PluginName = "SULFUR Damage Numbers";
-        public const string PluginVersion = "1.0.12";
+        public const string PluginVersion = "1.1.0";
 
         internal static ConfigEntry<bool> Enabled;
         internal static ConfigEntry<DisplayMode> Mode;
         internal static ConfigEntry<RenderMode> Renderer;
         internal static ConfigEntry<MergedColorMode> AggregateColorMode;
+        internal static ConfigEntry<bool> VanillaUseDamageTypeColors;
+        internal static ConfigEntry<float> VanillaScale;
         internal static ConfigEntry<bool> UseWeakspotColors;
         internal static ConfigEntry<bool> TreatOneMultiplierAsNormal;
         internal static ConfigEntry<bool> RequireNpcTarget;
         internal static ConfigEntry<bool> RequireSourceUnitPlayer;
         internal static ConfigEntry<bool> ShowPlayerOwnedSecondaryEffects;
+        internal static ConfigEntry<bool> ShowStatusEffectDamage;
         internal static ConfigEntry<float> MinDamageToShow;
         internal static ConfigEntry<bool> ShowDecimals;
         internal static ConfigEntry<float> Lifetime;
@@ -53,7 +57,11 @@ namespace SulfurDamageNumbersMod
             Mode = Config.Bind("General", "DamageDisplayMode", DisplayMode.PerTargetTotal,
                 "PerTargetTotal = same frame, same player attack source, same target damage is merged. PerHit = each real damage log is shown separately. Crowding and frame-budget settings are independent visual performance limits applied after either mode.");
             Renderer = Config.Bind("Visual", "Renderer", RenderMode.ScreenSpace,
-                "ScreenSpace uses pooled TextMeshProUGUI objects. WorldTextMeshPro uses pooled 3D TextMeshPro objects. Both renders both at the same time.");
+                "ScreenSpace uses pooled TextMeshProUGUI objects. WorldTextMeshPro uses pooled 3D TextMeshPro objects. Both renders both at the same time. Vanilla reuses the game's own damage text prefab, the one the target dummies use, with its original animation, font and damage-type colors; it shows whole numbers only and falls back to ScreenSpace if the game does not provide that prefab.");
+            VanillaUseDamageTypeColors = Config.Bind("Visual", "VanillaUseDamageTypeColors", true,
+                "Renderer=Vanilla only. True uses the game's damage-type colors exactly like the target dummies. False keeps this mod's weakspot multiplier colors on the vanilla animation.");
+            VanillaScale = Config.Bind("Visual", "VanillaScale", 1.0f,
+                "Renderer=Vanilla only. Scale applied to the game's damage text. 1.0 is the size the target dummies use.");
             UseWeakspotColors = Config.Bind("Visual", "UseWeakspotColors", true,
                 "Use weakspot/body-part multiplier colors. Red >= 1.5, orange >= 1.0, yellow >= 0.75, white when no multiplier is available.");
             TreatOneMultiplierAsNormal = Config.Bind("Visual", "TreatOneMultiplierAsNormal", false,
@@ -66,6 +74,8 @@ namespace SulfurDamageNumbersMod
                 "If true, sourceData.sourceUnit must exist and be the player. Default false because some projectiles/explosions keep only the game's isPlayer flag.");
             ShowPlayerOwnedSecondaryEffects = Config.Bind("Filter", "ShowPlayerOwnedSecondaryEffects", true,
                 "Show player-owned secondary damage such as projectile explosions if the game reports them as created by the player.");
+            ShowStatusEffectDamage = Config.Bind("Filter", "ShowStatusEffectDamage", true,
+                "Show damage over time from status effects the player applied, such as burning, poison and electrocution. The game builds this damage without its player flag and only records the unit that applied the status, so it was silently dropped before 1.1.0. These are the colored numbers the target dummies show.");
             MinDamageToShow = Config.Bind("Filter", "MinDamageToShow", 0.01f,
                 "Final damage below this value will not be shown.");
             ShowDecimals = Config.Bind("Visual", "ShowDecimals", false,
@@ -123,6 +133,15 @@ namespace SulfurDamageNumbersMod
 
             DamageLogPatch.Reset();
             DamageNumberManager.Shutdown();
+
+            try
+            {
+                VanillaDamageText.Shutdown();
+            }
+            catch (Exception e)
+            {
+                Logger.LogWarning("Releasing the game's damage text assets failed: " + e.Message);
+            }
         }
     }
 
@@ -136,7 +155,8 @@ namespace SulfurDamageNumbersMod
     {
         ScreenSpace = 1,
         WorldTextMeshPro = 2,
-        Both = 3
+        Both = 3,
+        Vanilla = 4
     }
 
     public enum MergedColorMode

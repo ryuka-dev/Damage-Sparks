@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace è consigliato. WorldTextMeshPro usa testo 3D. Both abilita entrambi i renderer per debug."
+      "value": "ScreenSpace è consigliato. WorldTextMeshPro usa testo 3D. Both abilita entrambi i renderer per debug. Vanilla usa il testo dei danni del gioco, quello dei manichini da tiro."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Colori tipo di danno Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Solo per il renderer Vanilla. Attivo: i colori per tipo di danno del gioco, come sui manichini. Disattivo: i colori dei punti deboli di questa mod sull'animazione Vanilla."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Scala del testo Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Solo per il renderer Vanilla. Dimensione del testo dei danni del gioco. 1.0 è la dimensione usata dai manichini."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Mostra esplosioni e danni secondari del giocatore. Disattiva se fuoco, veleno o DoT diventano troppo rumorosi."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Mostra danni da effetti di stato"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Mostra i danni nel tempo degli effetti di stato applicati dal giocatore, come ustione, veleno ed elettrocuzione. Sono i numeri colorati che mostrano i manichini da tiro."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Entrambi"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

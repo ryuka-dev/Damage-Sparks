@@ -40,6 +40,15 @@
     <Reference Include="PerfectRandom.Sulfur.Core">
       <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Core.dll</HintPath>
     </Reference>
+    <Reference Include="PerfectRandom.Sulfur.Gameplay">
+      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Gameplay.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.ResourceManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -80,6 +89,8 @@
     <Compile Include="DamageNumberView.cs" />
     <Compile Include="DamageReceivePatch.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="VanillaDamageNumberView.cs" />
+    <Compile Include="VanillaDamageText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

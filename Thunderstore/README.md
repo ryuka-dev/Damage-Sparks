@@ -13,9 +13,11 @@ This mod does not change damage, weapon balance, enemy stats, loot, or progressi
 - Floating damage numbers for player-caused damage
 - Supports guns, shotguns, melee weapons, thrown weapons, and player-owned attack effects
 - Uses the game's calculated damage log value
+- Damage over time from player-applied burning, poison and electrocution
 - Weakpoint color feedback
 - Normal damage is white
 - Two damage display modes
+- Optional vanilla renderer that uses SULFUR's own target-dummy damage text
 - Configurable number spread
 - SULFUR Config support with localized settings
 - Does not modify actual damage calculation
@@ -59,6 +61,40 @@ If one shotgun blast has 15 pellets that actually hit enemies, the mod shows 15 
 
 This mode gives more detailed feedback, but it can be visually busy with shotguns or high pellet-count weapons. Per Hit mode has extra number spread so shotgun pellet numbers do not overlap too tightly.
 
+## Renderers
+
+`Renderer` decides how a damage number is drawn. The display mode, the filters and the performance
+limits work the same way in every renderer.
+
+```ini
+Renderer = ScreenSpace
+```
+
+* `ScreenSpace` - the default look of this mod: pooled screen-space text with a black outline.
+* `WorldTextMeshPro` - the same numbers as 3D world-space text.
+* `Both` - both of the above at once, mainly for testing.
+* `Vanilla` - SULFUR's own damage text, the one the target dummies use.
+
+### Vanilla renderer
+
+`Renderer = Vanilla` does not imitate the game's damage text. It uses the game's actual damage text
+prefab, so the animation, font, fly-out direction and the critical-hit variant are exactly what you
+see when you shoot a target dummy.
+
+```ini
+Renderer = Vanilla
+VanillaUseDamageTypeColors = true
+VanillaScale = 1.0
+```
+
+* `VanillaUseDamageTypeColors = true` uses the game's damage-type colors, like the target dummies.
+* `VanillaUseDamageTypeColors = false` keeps this mod's weakpoint colors on the vanilla animation.
+* `VanillaScale` resizes the text. `1.0` is the size the target dummies use.
+
+The game's damage text shows whole numbers only, so `ShowDecimals` has no effect in this renderer.
+If the game does not provide the prefab, this renderer falls back to `ScreenSpace` and writes a
+warning to the log.
+
 ## Weakpoint Colors
 
 Damage number color is based on the game's weakpoint multiplier.
@@ -86,6 +122,15 @@ Renderer = ScreenSpace
 ScreenJitter = 26
 PerHitStackScreenSpread = 12.8
 MaxActiveNumbers = 160
+```
+
+Available renderers:
+
+```ini
+Renderer = ScreenSpace
+Renderer = WorldTextMeshPro
+Renderer = Both
+Renderer = Vanilla
 ```
 
 Available display modes:
@@ -153,6 +198,12 @@ GitHub repository:
 Thunderstore does not provide a convenient feedback channel.
 
 For bug reports or suggestions, please use NexusMods or GitHub.
+
+## v1.1.0
+
+Added a vanilla renderer. `Renderer = Vanilla` draws damage numbers with SULFUR's own damage text, the same one the target dummies use, including its animation, font and damage-type colors. It reuses the game's prefab rather than imitating it, so nothing new is shipped with the mod. The renderer default is unchanged and still uses the previous look.
+
+Also fixed damage over time from status effects the player applied, such as burning, poison and electrocution, which was never shown before. Those are the colored numbers the target dummies display. This adds numbers in every renderer, so set `ShowStatusEffectDamage = false` under `[Filter]` if you prefer the old behavior.
 
 ## v1.0.12
 

@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace を推奨します。WorldTextMeshPro は 3D テキストを使います。Both はデバッグ用に両方を表示します。"
+      "value": "ScreenSpace を推奨します。WorldTextMeshPro は 3D テキストを使います。Both はデバッグ用に両方を有効にします。Vanilla はゲーム本体のダメージ表示（訓練用ダミーと同じもの）を使います。"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "バニラのダメージ属性色"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Vanilla レンダラー専用。オンにするとゲーム本体のダメージ属性色（訓練用ダミーと同じ）を使います。オフにするとバニラの演出のままこの MOD の弱点色を使います。"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "バニラ文字サイズ"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Vanilla レンダラー専用。ゲーム本体のダメージ表示の大きさ。1.0 は訓練用ダミーと同じ大きさです。"
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "プレイヤー由来の爆発などの二次ダメージを表示します。炎、毒、DoT がうるさい場合は無効にします。"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "状態異常ダメージを表示"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "プレイヤーが付与した燃焼・毒・感電などの継続ダメージを表示します。訓練用ダミーで見える色付きの数値はこれです。"
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "両方"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "バニラ"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

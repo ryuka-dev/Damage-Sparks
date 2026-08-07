@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace önerilir. WorldTextMeshPro 3D metin kullanır. Both hata ayıklama için ikisini de etkinleştirir."
+      "value": "ScreenSpace önerilir. WorldTextMeshPro 3D metin kullanır. Both hata ayıklama için her iki işleyiciyi de açar. Vanilla, oyunun kendi hasar yazısını kullanır; hedef mankenlerdekiyle aynı."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Oyunun hasar türü renkleri"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Yalnızca Vanilla işleyicisi için. Açıkken hedef mankenlerdeki gibi oyunun hasar türü renklerini kullanır. Kapalıyken bu modun zayıf nokta renklerini oyunun animasyonu üzerinde kullanır."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Vanilla yazı boyutu"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Yalnızca Vanilla işleyicisi için. Oyunun hasar yazısının boyutu. 1.0, hedef mankenlerin kullandığı boyuttur."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Oyuncuya ait patlama ve benzeri ikincil hasarı gösterir. Ateş, zehir veya DoT fazla gürültülü olursa kapatın."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Durum etkisi hasarını göster"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Oyuncunun uyguladığı yanma, zehir ve elektrik çarpması gibi durum etkilerinin zamana yayılan hasarını gösterir. Hedef mankenlerde görünen renkli sayılar bunlardır."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "İkisi de"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

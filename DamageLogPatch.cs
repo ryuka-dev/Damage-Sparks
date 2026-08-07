@@ -87,7 +87,7 @@ namespace SulfurDamageNumbersMod
                 float hitMultiplier = Mathf.Max(0f, __3.GetShapeMultiplier());
 
                 if (Plugin.DebugLog.Value)
-                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
+                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " damageType=" + __4.damageType + " critical=" + __4.isCritical + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
 
                 DamageNumberManager.RegisterDamage(__instance, __4, finalDamage, hitMultiplier);
             }
@@ -121,25 +121,32 @@ namespace SulfurDamageNumbersMod
 
         private static bool IsPlayerExecutedAttack(DamageSourceData sourceData, out string reason)
         {
-            if (!sourceData.isPlayer)
+            bool sourceUnitIsPlayer = sourceData.sourceUnit != null && sourceData.sourceUnit.isPlayer;
+
+            // Status damage over time is built by PeriodicModifier.CreateDamageSourceData, which
+            // records only the unit that applied the status. It carries no weapon, no melee flag
+            // and no isPlayer flag, so sourceUnit is the only player marker it has.
+            bool statusOverTime = !sourceData.isPlayer &&
+                                  sourceUnitIsPlayer &&
+                                  sourceData.sourceWeapon == null &&
+                                  !sourceData.melee;
+
+            if (!sourceData.isPlayer && !sourceUnitIsPlayer)
             {
-                reason = "sourceData.isPlayer is false";
+                reason = "sourceData.isPlayer is false and sourceUnit is not the player";
                 return false;
             }
 
-            if (Plugin.RequireSourceUnitPlayer.Value)
+            if (statusOverTime && !Plugin.ShowStatusEffectDamage.Value)
             {
-                if (sourceData.sourceUnit == null)
-                {
-                    reason = "sourceUnit is null";
-                    return false;
-                }
+                reason = "player-applied status damage is disabled";
+                return false;
+            }
 
-                if (!sourceData.sourceUnit.isPlayer)
-                {
-                    reason = "sourceUnit is not player";
-                    return false;
-                }
+            if (Plugin.RequireSourceUnitPlayer.Value && !sourceUnitIsPlayer)
+            {
+                reason = sourceData.sourceUnit == null ? "sourceUnit is null" : "sourceUnit is not player";
+                return false;
             }
 
             if (sourceData.sourceWeapon != null)
@@ -149,6 +156,12 @@ namespace SulfurDamageNumbersMod
             }
 
             if (sourceData.melee)
+            {
+                reason = null;
+                return true;
+            }
+
+            if (statusOverTime)
             {
                 reason = null;
                 return true;

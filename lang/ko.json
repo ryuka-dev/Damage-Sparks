@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace를 권장합니다. WorldTextMeshPro는 3D 텍스트를 사용합니다. Both는 디버그용으로 둘 다 표시합니다."
+      "value": "ScreenSpace를 권장합니다. WorldTextMeshPro는 3D 텍스트를 사용합니다. Both는 디버깅용으로 두 렌더러를 모두 켭니다. Vanilla는 게임 자체의 피해 표시(훈련용 더미와 동일)를 사용합니다."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "바닐라 피해 속성 색상"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Vanilla 렌더러 전용. 켜면 훈련용 더미와 같은 게임 자체의 피해 속성 색상을 사용합니다. 끄면 바닐라 연출에 이 모드의 약점 색상을 사용합니다."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "바닐라 텍스트 크기"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Vanilla 렌더러 전용. 게임 자체 피해 표시의 크기입니다. 1.0은 훈련용 더미와 같은 크기입니다."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "플레이어 소유 폭발 등 보조 피해를 표시합니다. 화염, 독, DoT가 너무 많으면 끄세요."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "상태 효과 피해 표시"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "플레이어가 적용한 화상, 독, 감전 등 상태 효과의 지속 피해를 표시합니다. 훈련용 더미에서 보이는 색상 있는 숫자가 바로 이것입니다."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "둘 다"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "바닐라"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

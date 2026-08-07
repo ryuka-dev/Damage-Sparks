@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "推荐使用 ScreenSpace。WorldTextMeshPro 使用 3D 文字。Both 会同时启用两种渲染，主要用于调试。"
+      "value": "推荐使用 ScreenSpace。WorldTextMeshPro 使用 3D 文字。Both 会同时启用两种渲染，主要用于调试。Vanilla 使用游戏自带的伤害文字，也就是打训练假人时看到的那种。"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "原版伤害类型颜色"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "仅对 Vanilla 渲染方式生效。开启时使用游戏自带的伤害类型颜色，与训练假人一致。关闭时在原版动画上沿用本模组的弱点颜色。"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "原版文字缩放"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "仅对 Vanilla 渲染方式生效。游戏自带伤害文字的大小。1.0 与训练假人显示的大小相同。"
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "显示玩家拥有的爆炸等二段伤害。如果火焰、毒或持续伤害太吵，可以关闭。"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "显示状态效果伤害"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "显示由玩家施加的状态效果造成的持续伤害，例如燃烧、中毒和触电。这就是打训练假人时看到的那些带颜色的数字。"
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "两者同时"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "原版"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

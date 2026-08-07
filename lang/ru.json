@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "Рекомендуется ScreenSpace. WorldTextMeshPro использует 3D-текст. Both включает оба рендера для отладки."
+      "value": "Рекомендуется ScreenSpace. WorldTextMeshPro использует 3D-текст. Both включает оба рендера для отладки. Vanilla использует собственный текст урона игры — тот же, что и у тренировочных манекенов."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Цвета типов урона из игры"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Только для рендера Vanilla. Включено: цвета типов урона из игры, как у манекенов. Выключено: цвета уязвимых мест этого мода поверх оригинальной анимации."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Масштаб текста Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Только для рендера Vanilla. Размер игрового текста урона. 1.0 — размер, который используют тренировочные манекены."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Показывает взрывы и похожий вторичный урон игрока. Выключите, если огонь, яд или DoT создают слишком много чисел."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Показывать урон от эффектов состояния"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Показывает периодический урон от эффектов, наложенных игроком: горение, яд, электрошок. Это те самые цветные числа, что показывают тренировочные манекены."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Оба"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Как в игре"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

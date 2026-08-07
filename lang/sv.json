@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace rekommenderas. WorldTextMeshPro använder 3D-text. Both aktiverar båda för debug."
+      "value": "ScreenSpace rekommenderas. WorldTextMeshPro använder 3D-text. Both aktiverar båda renderarna för felsökning. Vanilla använder spelets egen skadetext, samma som träningsdockorna."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Spelets skadetypsfärger"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Endast för Vanilla-renderaren. På: spelets skadetypsfärger, som på träningsdockorna. Av: den här moddens svagpunktsfärger på spelets animation."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Vanilla-textstorlek"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Endast för Vanilla-renderaren. Storlek på spelets skadetext. 1.0 är storleken som träningsdockorna använder."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Visar explosioner och liknande sekundär skada som ägs av spelaren. Stäng av om eld, gift eller DoT blir för mycket."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Visa skada från statuseffekter"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Visar skada över tid från statuseffekter som spelaren orsakat, till exempel brand, gift och elchock. Det är de färgade siffrorna som träningsdockorna visar."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Båda"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

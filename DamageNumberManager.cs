@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using PerfectRandom.Sulfur.Core.Stats;
 using PerfectRandom.Sulfur.Core.Units;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,10 @@ namespace SulfurDamageNumbersMod
         private const int HardMaxActiveNumbers = 256;
         private const int HardMaxNumbersPerFrame = 256;
 
+        // Each vanilla number is a clone of the game's prefab and carries its own Animator and
+        // 3D TextMeshPro, so this renderer is capped lower than the plain text renderers.
+        private const int HardMaxActiveVanillaNumbers = 64;
+
         private static DamageNumberManager _instance;
 
         private readonly Dictionary<AggregateKey, AggregateEntry> _aggregates = new Dictionary<AggregateKey, AggregateEntry>();
@@ -20,7 +25,12 @@ namespace SulfurDamageNumbersMod
         private readonly Dictionary<PerHitSpreadKey, int> _perHitSpreadCounters = new Dictionary<PerHitSpreadKey, int>();
         private readonly List<ScreenDamageNumberView> _screenPool = new List<ScreenDamageNumberView>();
         private readonly List<DamageNumberView> _worldPool = new List<DamageNumberView>();
+        private readonly List<VanillaDamageNumberView> _vanillaPool = new List<VanillaDamageNumberView>();
         private readonly List<Vector2> _crowdingPositions = new List<Vector2>(HardMaxActiveNumbers);
+
+        private bool _vanillaReady;
+        private bool _vanillaBoundaryBroken;
+        private int _vanillaFlyIndex;
 
         private int _perHitSpreadFrame = -1;
         private int _crowdingFrame = -1;
@@ -39,6 +49,7 @@ namespace SulfurDamageNumbersMod
 
         private RectTransform _screenRoot;
         private Transform _worldRoot;
+        private Transform _vanillaRoot;
 
         public static void EnsureExists()
         {
@@ -109,7 +120,8 @@ namespace SulfurDamageNumbersMod
             if (Plugin.Mode.Value == DisplayMode.PerHit)
             {
                 PerHitSpreadOffset spread = GetNextPerHitSpread(target, sourceData);
-                SpawnNumber(position, amount, hitMultiplier, true, spread.WorldOffset, spread.ScreenOffset, true);
+                SpawnNumber(position, amount, hitMultiplier, sourceData.damageType, sourceData.isCritical,
+                    true, spread.WorldOffset, spread.ScreenOffset, true);
                 return;
             }
 
@@ -124,7 +136,11 @@ namespace SulfurDamageNumbersMod
                     Frame = Time.frameCount,
                     HighestMultiplier = 0f,
                     LastMultiplier = 0f,
-                    WeightedMultiplierSum = 0f
+                    WeightedMultiplierSum = 0f,
+                    // AggregateKey already separates damage types, so every hit merged into one
+                    // entry shares this value.
+                    DamageType = sourceData.damageType,
+                    AnyCritical = false
                 };
             }
 
@@ -132,6 +148,7 @@ namespace SulfurDamageNumbersMod
             entry.Position = position;
             entry.Frame = Time.frameCount;
             entry.LastMultiplier = hitMultiplier;
+            entry.AnyCritical = entry.AnyCritical || sourceData.isCritical;
             entry.WeightedMultiplierSum += Mathf.Max(0f, hitMultiplier) * Mathf.Max(0f, amount);
             if (hitMultiplier > entry.HighestMultiplier)
                 entry.HighestMultiplier = hitMultiplier;
@@ -141,12 +158,14 @@ namespace SulfurDamageNumbersMod
 
         private void LateUpdate()
         {
+            UpdateVanillaAvailability();
             FlushAggregates();
             ApplyRendererSelectionIfChanged();
 
             int maxActive = GetMaxActiveNumbers();
             EnforcePoolLimit(_screenPool, maxActive);
             EnforcePoolLimit(_worldPool, maxActive);
+            EnforcePoolLimit(_vanillaPool, GetMaxActiveVanillaNumbers());
 
             Camera camera = GetMainCamera();
             float now = Time.time;
@@ -165,7 +184,70 @@ namespace SulfurDamageNumbersMod
                     view.Tick(camera, now);
             }
 
+            TickVanillaPool(camera, now);
+
             MaybeLogDroppedBudget();
+        }
+
+        /// <summary>
+        /// Keeps the game's damage text lookup running while the vanilla renderer is selected and
+        /// records whether it can be used this frame. Failures inside the vanilla integration
+        /// boundary disable only that renderer; the other renderers keep working.
+        /// </summary>
+        private void UpdateVanillaAvailability()
+        {
+            if (_vanillaBoundaryBroken || Plugin.Renderer.Value != RenderMode.Vanilla)
+            {
+                _vanillaReady = false;
+                return;
+            }
+
+            try
+            {
+                VanillaDamageText.Poll();
+                _vanillaReady = VanillaDamageText.IsReady;
+            }
+            catch (Exception e)
+            {
+                BreakVanillaBoundary(e);
+            }
+        }
+
+        private void TickVanillaPool(Camera camera, float now)
+        {
+            if (_vanillaPool.Count == 0) return;
+
+            try
+            {
+                for (int i = 0; i < _vanillaPool.Count; i++)
+                {
+                    VanillaDamageNumberView view = _vanillaPool[i];
+                    if (view.IsActive)
+                        view.Tick(camera, now);
+                }
+            }
+            catch (Exception e)
+            {
+                BreakVanillaBoundary(e);
+            }
+        }
+
+        private void BreakVanillaBoundary(Exception e)
+        {
+            _vanillaReady = false;
+            if (_vanillaBoundaryBroken) return;
+
+            _vanillaBoundaryBroken = true;
+            _vanillaPool.Clear();
+            if (_vanillaRoot != null)
+            {
+                Destroy(_vanillaRoot.gameObject);
+                _vanillaRoot = null;
+            }
+
+            Plugin.Log.LogWarning(
+                "[DamageNumbers] The game's damage text renderer failed and was disabled; " +
+                "Renderer=Vanilla falls back to ScreenSpace. " + e);
         }
 
         private void FlushAggregates()
@@ -187,12 +269,13 @@ namespace SulfurDamageNumbersMod
 
                 // Aggregation has already happened. Crowding is only a visual post-filter;
                 // it does not change the PerTargetTotal grouping rule.
-                SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), false, Vector3.zero, Vector2.zero, true);
+                SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), entry.DamageType, entry.AnyCritical,
+                    false, Vector3.zero, Vector2.zero, true);
                 _aggregates.Remove(key);
             }
         }
 
-        private void SpawnNumber(Vector3 position, float amount, float hitMultiplier, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, bool applyCrowding)
+        private void SpawnNumber(Vector3 position, float amount, float hitMultiplier, DamageTypes damageType, bool critical, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, bool applyCrowding)
         {
             EnsureFrameCounters();
 
@@ -228,15 +311,23 @@ namespace SulfurDamageNumbersMod
 
             if (!TryConsumeSpawnBudget()) return;
 
-            string text = FormatDamage(amount);
-            Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
+            RenderMode renderMode = ResolveActiveRenderMode();
 
-            RenderMode renderMode = Plugin.Renderer.Value;
-            if (renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both)
-                SpawnScreenWorld(text, position, screenJitter, color);
+            if (renderMode == RenderMode.Vanilla)
+            {
+                SpawnVanilla(amount, hitMultiplier, damageType, critical, position + worldJitter);
+            }
+            else
+            {
+                string text = FormatDamage(amount);
+                Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
 
-            if (renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both)
-                SpawnWorld(text, position, worldJitter, color);
+                if (renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both)
+                    SpawnScreenWorld(text, position, screenJitter, color);
+
+                if (renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both)
+                    SpawnWorld(text, position, worldJitter, color);
+            }
 
             // Include accepted same-frame numbers immediately. Existing active positions are
             // rebuilt only once per frame, keeping this protection cheap under hit spam.
@@ -285,6 +376,93 @@ namespace SulfurDamageNumbersMod
                 Plugin.WorldScale.Value,
                 Plugin.FontSize.Value,
                 color);
+        }
+
+        private void SpawnVanilla(float amount, float hitMultiplier, DamageTypes damageType, bool critical, Vector3 worldPosition)
+        {
+            try
+            {
+                VanillaDamageNumberView view = AcquireVanillaView();
+                if (view == null) return;
+
+                Color color = Plugin.VanillaUseDamageTypeColors.Value
+                    ? VanillaDamageText.GetDamageTypeColor(damageType)
+                    : DamageNumberColor.ForMultiplier(hitMultiplier);
+
+                // The game's damage text prefab renders whole numbers only, so ShowDecimals
+                // has no effect in this renderer.
+                int rounded = Mathf.Max(1, Mathf.RoundToInt(amount));
+
+                // Matches the game's alternating fly-out direction.
+                _vanillaFlyIndex++;
+                bool flyRight = (_vanillaFlyIndex % 2) == 0;
+
+                view.Play(rounded, color, worldPosition, Plugin.VanillaScale.Value, flyRight, critical);
+            }
+            catch (Exception e)
+            {
+                BreakVanillaBoundary(e);
+            }
+        }
+
+        /// <summary>
+        /// The vanilla renderer needs the game's damage text prefab. While it is still loading, or
+        /// if this build does not provide it, damage numbers keep working through ScreenSpace
+        /// instead of disappearing.
+        /// </summary>
+        private RenderMode ResolveActiveRenderMode()
+        {
+            RenderMode configured = Plugin.Renderer.Value;
+            if (configured != RenderMode.Vanilla)
+                return configured;
+
+            return _vanillaReady ? RenderMode.Vanilla : RenderMode.ScreenSpace;
+        }
+
+        private VanillaDamageNumberView AcquireVanillaView()
+        {
+            GameObject textPrefab = VanillaDamageText.TextPrefab;
+            if (textPrefab == null) return null;
+
+            EnsureVanillaRoot();
+            int maxActive = GetMaxActiveVanillaNumbers();
+
+            VanillaDamageNumberView inactive = null;
+            VanillaDamageNumberView oldest = null;
+            int activeCount = 0;
+
+            for (int i = 0; i < _vanillaPool.Count; i++)
+            {
+                VanillaDamageNumberView view = _vanillaPool[i];
+                if (!view.IsActive)
+                {
+                    if (inactive == null) inactive = view;
+                    continue;
+                }
+
+                activeCount++;
+                if (oldest == null || view.StartTime < oldest.StartTime)
+                    oldest = view;
+            }
+
+            if (activeCount < maxActive)
+            {
+                if (inactive != null) return inactive;
+
+                VanillaDamageNumberView created = VanillaDamageNumberView.TryCreate(_vanillaRoot, textPrefab);
+                if (created == null) return null;
+
+                _vanillaPool.Add(created);
+                return created;
+            }
+
+            if (oldest != null)
+            {
+                oldest.Stop();
+                return oldest;
+            }
+
+            return inactive;
         }
 
         private ScreenDamageNumberView AcquireScreenView()
@@ -428,7 +606,29 @@ namespace SulfurDamageNumbersMod
             _crowdingPositions.Clear();
             if (camera == null) return;
 
-            RenderMode renderMode = Plugin.Renderer.Value;
+            RenderMode renderMode = ResolveActiveRenderMode();
+
+            if (renderMode == RenderMode.Vanilla)
+            {
+                try
+                {
+                    for (int i = 0; i < _vanillaPool.Count; i++)
+                    {
+                        VanillaDamageNumberView view = _vanillaPool[i];
+                        if (!view.IsActive) continue;
+
+                        Vector3 vanillaProjected = camera.WorldToScreenPoint(view.CurrentWorldPosition);
+                        if (vanillaProjected.z > 0f)
+                            _crowdingPositions.Add(new Vector2(vanillaProjected.x, vanillaProjected.y));
+                    }
+                }
+                catch (Exception e)
+                {
+                    BreakVanillaBoundary(e);
+                }
+                return;
+            }
+
             bool useScreenViews = renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both;
 
             if (useScreenViews)
@@ -505,9 +705,18 @@ namespace SulfurDamageNumbersMod
             _worldRoot = rootObject.transform;
         }
 
+        private void EnsureVanillaRoot()
+        {
+            if (_vanillaRoot != null) return;
+
+            GameObject rootObject = new GameObject("SULFUR Damage Numbers Vanilla Pool");
+            rootObject.transform.SetParent(transform, false);
+            _vanillaRoot = rootObject.transform;
+        }
+
         private void ApplyRendererSelectionIfChanged()
         {
-            RenderMode renderMode = Plugin.Renderer.Value;
+            RenderMode renderMode = ResolveActiveRenderMode();
             if (_hasAppliedRenderMode && renderMode == _lastAppliedRenderMode)
                 return;
 
@@ -516,6 +725,7 @@ namespace SulfurDamageNumbersMod
 
             bool screenEnabled = renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both;
             bool worldEnabled = renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both;
+            bool vanillaEnabled = renderMode == RenderMode.Vanilla;
 
             // Only scan and stop a pool when the renderer selection actually changes.
             // SpawnNumber already respects the current mode, so disabled pools cannot
@@ -530,6 +740,19 @@ namespace SulfurDamageNumbersMod
             {
                 for (int i = 0; i < _worldPool.Count; i++)
                     _worldPool[i].Stop();
+            }
+
+            if (!vanillaEnabled && _vanillaPool.Count > 0)
+            {
+                try
+                {
+                    for (int i = 0; i < _vanillaPool.Count; i++)
+                        _vanillaPool[i].Stop();
+                }
+                catch (Exception e)
+                {
+                    BreakVanillaBoundary(e);
+                }
             }
         }
 
@@ -603,6 +826,11 @@ namespace SulfurDamageNumbersMod
         private static int GetMaxActiveNumbers()
         {
             return Mathf.Clamp(Plugin.MaxActiveNumbers.Value, 1, HardMaxActiveNumbers);
+        }
+
+        private static int GetMaxActiveVanillaNumbers()
+        {
+            return Mathf.Clamp(Plugin.MaxActiveNumbers.Value, 1, HardMaxActiveVanillaNumbers);
         }
 
         private static Vector3 GetDamagePosition(Unit target)
@@ -691,8 +919,10 @@ namespace SulfurDamageNumbersMod
             _crowdingPositions.Clear();
             _screenPool.Clear();
             _worldPool.Clear();
+            _vanillaPool.Clear();
             _screenRoot = null;
             _worldRoot = null;
+            _vanillaRoot = null;
             _cachedCamera = null;
 
             // These references point to the game's default TMP font materials.
@@ -712,6 +942,8 @@ namespace SulfurDamageNumbersMod
             public float HighestMultiplier;
             public float LastMultiplier;
             public float WeightedMultiplierSum;
+            public DamageTypes DamageType;
+            public bool AnyCritical;
         }
 
         private struct PerHitSpreadOffset

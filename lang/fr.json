@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace est recommandé. WorldTextMeshPro utilise du texte 3D. Both active les deux moteurs pour le débogage."
+      "value": "ScreenSpace est recommandé. WorldTextMeshPro utilise du texte 3D. Both active les deux moteurs pour le débogage. Vanilla utilise le texte de dégâts du jeu, celui des mannequins d'entraînement."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Couleurs de type de dégâts Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Uniquement pour le moteur Vanilla. Activé : les couleurs de type de dégâts du jeu, comme sur les mannequins. Désactivé : les couleurs de point faible de ce mod sur l'animation Vanilla."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Échelle du texte Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Uniquement pour le moteur Vanilla. Taille du texte de dégâts du jeu. 1.0 correspond à la taille des mannequins."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Affiche les explosions et dégâts secondaires appartenant au joueur. Désactivez si feu, poison ou DoT deviennent trop bruyants."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Afficher les dégâts d'altération d'état"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Affiche les dégâts sur la durée des altérations infligées par le joueur, comme le feu, le poison et l'électrocution. Ce sont les nombres colorés qu'affichent les mannequins d'entraînement."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Les deux"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

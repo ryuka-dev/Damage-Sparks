@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "ScreenSpace is recommended. WorldTextMeshPro uses 3D text. Both enables both renderers for debugging."
+      "value": "ScreenSpace is recommended. WorldTextMeshPro uses 3D text. Both enables both renderers for debugging. Vanilla uses the game's own damage text, the one the target dummies use."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Vanilla Damage Type Colors"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Vanilla renderer only. On uses the game's damage type colors like the target dummies. Off keeps this mod's weakpoint colors on the vanilla animation."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Vanilla Text Scale"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Vanilla renderer only. Size of the game's damage text. 1.0 is the size used by the target dummies."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Show player-owned explosions and similar secondary damage. Disable if fire, poison, or other DoT effects become too noisy."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Show Status Effect Damage"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Show damage over time from status effects the player applied, such as burning, poison and electrocution. These are the colored numbers the target dummies show."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Both"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",

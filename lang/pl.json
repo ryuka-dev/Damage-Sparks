@@ -50,7 +50,23 @@
     },
     {
       "key": "entry.Visual.Renderer.description",
-      "value": "Zalecany jest ScreenSpace. WorldTextMeshPro używa tekstu 3D. Both włącza oba renderery do debugowania."
+      "value": "Zalecany jest ScreenSpace. WorldTextMeshPro używa tekstu 3D. Both włącza oba renderery do debugowania. Vanilla używa oryginalnego tekstu obrażeń z gry, tego samego co manekiny treningowe."
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "Kolory typów obrażeń z gry"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "Tylko dla renderera Vanilla. Włączone: kolory typów obrażeń z gry, jak na manekinach. Wyłączone: kolory czułych punktów z tego moda na oryginalnej animacji."
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "Skala tekstu Vanilla"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "Tylko dla renderera Vanilla. Rozmiar oryginalnego tekstu obrażeń. 1.0 to rozmiar używany przez manekiny treningowe."
     },
     {
       "key": "entry.Visual.UseWeakspotColors.name",
@@ -99,6 +115,14 @@
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
       "value": "Pokazuje eksplozje i podobne wtórne obrażenia gracza. Wyłącz, jeśli ogień, trucizna lub DoT są zbyt hałaśliwe."
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "Pokaż obrażenia od efektów statusu"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "Pokazuje obrażenia w czasie od efektów statusu nałożonych przez gracza, takich jak podpalenie, trucizna i porażenie prądem. To te kolorowe liczby, które pokazują manekiny treningowe."
     },
     {
       "key": "entry.Filter.MinDamageToShow.name",
@@ -271,6 +295,10 @@
     {
       "key": "value.Visual.Renderer.Both",
       "value": "Oba"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "Vanilla"
     },
     {
       "key": "value.Visual.AggregateColorMode.HighestMultiplier",
