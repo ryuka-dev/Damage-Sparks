@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# SULFUR Thunderstore packaging: build output and archives are never committed.
+# Third-party DLLs that ship with the package must be un-ignored explicitly.
+*.dll
+*.zip
+*.psd

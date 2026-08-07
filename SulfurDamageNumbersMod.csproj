@@ -32,22 +32,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\AppData\Roaming\com.kesomannen.gale\sulfur\profiles\Default\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>$(SulfurBepInExCoreDir)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\AppData\Roaming\com.kesomannen.gale\sulfur\profiles\Default\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(SulfurBepInExCoreDir)\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="PerfectRandom.Sulfur.Core">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Core.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\PerfectRandom.Sulfur.Core.dll</HintPath>
     </Reference>
     <Reference Include="PerfectRandom.Sulfur.Gameplay">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Gameplay.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\PerfectRandom.Sulfur.Gameplay.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Addressables">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.Addressables.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\Unity.Addressables.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ResourceManager">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.ResourceManager.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\Unity.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,29 +58,29 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +94,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lang\*.json">
+    <Content Include="$(ThunderstoreDir)\lang\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="DeployToGaleProfile" AfterTargets="Build" Condition="'$(DeployToSulfurProfile)' == 'true'">
+    <ItemGroup>
+      <LangFiles Include="$(ThunderstoreDir)\lang\*.json" />
+    </ItemGroup>
+    <MakeDir Directories="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)\$(ThunderstorePluginName).dll" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(ThunderstoreDir)\$(ThunderstorePluginName).dll" />
+    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)\lang" Condition="'@(LangFiles)' != ''" />
+  </Target>
+
 </Project>
