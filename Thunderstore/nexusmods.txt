@@ -1,0 +1,231 @@
+[font=Arial Black][color=DarkOrange][size=5][b]Damage Sparks[/b][/size][/color][/font]
+
+Floating damage numbers for SULFUR.
+
+Damage Sparks shows damage numbers when the player damages enemies with guns, shotguns, thrown weapons, melee weapons, or other player-driven attacks.
+
+Weakpoint hits use colors based on the game's weakpoint multiplier. Normal damage is shown in white.
+
+This mod does not change damage, weapon balance, enemy stats, loot, or progression. It only adds visual combat feedback.
+
+[color=RoyalBlue][b]Features[/b][/color]
+
+[list]
+[*]Floating damage numbers for player-caused damage[/*]
+[*]Supports guns, shotguns, melee weapons, thrown weapons, and player-owned attack effects[/*]
+[*]Uses the game's calculated damage log value[/*]
+[*]Damage over time from player-applied burning, poison and electrocution[/*]
+[*]Weakpoint color feedback[/*]
+[*]Normal damage is white[/*]
+[*]Two damage display modes[/*]
+[*]Optional vanilla renderer that uses SULFUR's own target-dummy damage text[/*]
+[*]Configurable number spread[/*]
+[*]SULFUR Config support with localized settings[/*]
+[*]Does not modify actual damage calculation[/*]
+[/list]
+[color=RoyalBlue][b]Damage Display Modes[/b][/color]
+
+Damage Sparks has two display modes.
+
+You can change the mode in:
+
+[code]BepInEx/config/ryuka.sulfur.damagenumbers.cfg[/code]
+or through SULFUR Config if installed.
+
+[color=DodgerBlue][b]Per Target Total[/b][/color]
+
+This mode combines damage dealt to the same enemy within the same attack frame.
+
+Shotgun example:
+
+If one shotgun blast fires multiple pellets and 10 pellets hit the same enemy, the mod shows one damage number with the total damage dealt to that enemy.
+
+If the same shotgun blast hits two enemies, the mod shows two damage numbers:
+
+[list]
+[*]one total number above the first enemy[/*]
+[*]one total number above the second enemy[/*]
+[/list]
+This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
+
+It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
+
+[color=DodgerBlue][b]Per Hit[/b][/color]
+
+This mode shows one number for each actual damage hit.
+
+Shotgun example:
+
+If one shotgun blast has 15 pellets that actually hit enemies, the mod shows 15 damage numbers.
+
+This mode gives more detailed feedback, but it can be visually busy with shotguns or high pellet-count weapons. Per Hit mode has extra number spread so shotgun pellet numbers do not overlap too tightly.
+
+[color=RoyalBlue][b]Renderers[/b][/color]
+
+[color=#ffff00]Renderer[/color] decides how a damage number is drawn. The display mode, the filters and the performance
+limits work the same way in every renderer.
+
+[code]Renderer = ScreenSpace[/code]
+[list]
+[*][color=#ffff00]ScreenSpace[/color] - the default look of this mod: pooled screen-space text with a black outline.[/*]
+[*][color=#ffff00]WorldTextMeshPro[/color] - the same numbers as 3D world-space text.[/*]
+[*][color=#ffff00]Both[/color] - both of the above at once, mainly for testing.[/*]
+[*][color=#ffff00]Vanilla[/color] - SULFUR's own damage text, the one the target dummies use.[/*]
+[/list]
+[color=DodgerBlue][b]Vanilla renderer[/b][/color]
+
+[color=#ffff00]Renderer = Vanilla[/color] does not imitate the game's damage text. It uses the game's actual damage text
+prefab, so the animation, font, fly-out direction and the critical-hit variant are exactly what you
+see when you shoot a target dummy.
+
+[code]Renderer = Vanilla
+VanillaUseDamageTypeColors = true
+VanillaScale = 1.0[/code]
+[list]
+[*][color=#ffff00]VanillaUseDamageTypeColors = true[/color] uses the game's damage-type colors, like the target dummies.[/*]
+[*][color=#ffff00]VanillaUseDamageTypeColors = false[/color] keeps this mod's weakpoint colors on the vanilla animation.[/*]
+[*][color=#ffff00]VanillaScale[/color] resizes the text. [color=#ffff00]1.0[/color] is the size the target dummies use.[/*]
+[/list]
+The game's damage text shows whole numbers only, so [color=#ffff00]ShowDecimals[/color] has no effect in this renderer.
+If the game does not provide the prefab, this renderer falls back to [color=#ffff00]ScreenSpace[/color] and writes a
+warning to the log.
+
+[color=RoyalBlue][b]Weakpoint Colors[/b][/color]
+
+Damage number color is based on the game's weakpoint multiplier.
+
+[list]
+[*]Normal damage: white[/*]
+[*]Weakpoint / higher multiplier damage: colored[/*]
+[*]If the multiplier cannot be detected, the number falls back to white[/*]
+[/list]
+In Per Target Total mode, combined damage uses the highest multiplier color by default.
+This makes it easier to notice when a shotgun blast includes a weakpoint hit.
+
+[color=RoyalBlue][b]Configuration[/b][/color]
+
+Config file:
+
+[code]BepInEx/config/ryuka.sulfur.damagenumbers.cfg[/code]
+Important options:
+
+[code]DamageDisplayMode = PerTargetTotal
+Renderer = ScreenSpace
+ScreenJitter = 26
+PerHitStackScreenSpread = 12.8
+MaxActiveNumbers = 160[/code]
+Available renderers:
+
+[code]Renderer = ScreenSpace
+Renderer = WorldTextMeshPro
+Renderer = Both
+Renderer = Vanilla[/code]
+Available display modes:
+
+[code]DamageDisplayMode = PerTargetTotal
+DamageDisplayMode = PerHit[/code]
+Recommended setting for normal gameplay:
+
+[code]DamageDisplayMode = PerTargetTotal
+Renderer = ScreenSpace[/code]
+Recommended setting for detailed hit testing:
+
+[code]DamageDisplayMode = PerHit
+PerHitStackScreenSpread = 12.8[/code]
+[color=RoyalBlue][b]Installation[/b][/color]
+
+Install with a mod manager, or manually place the DLL here:
+
+[code]SULFUR/BepInEx/plugins/DamageSparks/[/code]
+Start the game once to generate the config file.
+
+[color=RoyalBlue][b]Requirements[/b][/color]
+
+[list]
+[*]BepInEx 5.4.2305 or compatible BepInEx 5 version[/*]
+[*]SULFUR[/*]
+[/list]
+[color=RoyalBlue][b]Compatibility[/b][/color]
+
+Damage Sparks reads SULFUR's final damage log value and displays it as a number.
+
+It does not modify the game's damage calculation.
+
+The mod should be compatible with most gameplay mods unless another mod heavily changes enemy damage logging.
+
+If a future SULFUR update changes the internal damage log method, this mod may need an update.
+
+[color=RoyalBlue][b]Source Code[/b][/color]
+
+The source code for this mod is available in my GitHub repository.
+
+It is shared for learning, reference, and transparency.
+
+The repository only contains my original mod source code and packaging text. It does not include SULFUR game files, Unity assemblies, BepInEx binaries, paid assets, or decompiled game source.
+
+If you are another modder, feel free to study how the mod works or use it as a reference for your own implementation.
+
+GitHub repository:
+
+[url=https://github.com/ryuka-dev/Damage-Sparks]https://github.com/ryuka-dev/Damage-Sparks[/url]
+
+[color=RoyalBlue][b]Feedback[/b][/color]
+
+Thunderstore does not provide a convenient feedback channel.
+
+For bug reports or suggestions, please use NexusMods or GitHub.
+
+[color=RoyalBlue][b]v1.1.0[/b][/color]
+
+Added a vanilla renderer. [color=#ffff00]Renderer = Vanilla[/color] draws damage numbers with SULFUR's own damage text, the same one the target dummies use, including its animation, font and damage-type colors. It reuses the game's prefab rather than imitating it, so nothing new is shipped with the mod. The renderer default is unchanged and still uses the previous look.
+
+Also fixed damage over time from status effects the player applied, such as burning, poison and electrocution, which was never shown before. Those are the colored numbers the target dummies display. This adds numbers in every renderer, so set [color=#ffff00]ShowStatusEffectDamage = false[/color] under [color=#ffff00][Filter][/color] if you prefer the old behavior.
+
+Fixed weakpoint coloring for damage that has no hitbox, such as status damage over time and explosions. It used the head shot color before and is now white. Weapon hits are unchanged.
+
+[color=RoyalBlue][b]v1.0.12[/b][/color]
+
+Reworked the damage number rendering system to improve performance and stability. Damage numbers now use pooled TextMeshPro objects instead of [color=#ffff00]OnGUI[/color], excessive overlapping numbers are automatically suppressed, renderer updates have been optimized, and the text outline and default font size have been improved. These changes significantly reduce frame-rate drops during high-damage or rapid-fire situations and may also address the reported GC stack overflow crashes.
+
+[font=Arial Black][color=DarkOrange][size=5][b]Changelog[/b][/size][/color][/font]
+
+[color=RoyalBlue][b]1.1.0[/b][/color]
+
+[b]Vanilla renderer[/b]
+
+[list]
+[*]Added [color=#ffff00]Renderer = Vanilla[/color], which draws damage numbers with SULFUR's own damage text, the one the target dummies use, including its original animation, font, fly-out direction and critical-hit variant.[/*]
+[*]The vanilla renderer reuses the game's prefab instead of imitating it, so nothing extra ships with this mod.[/*]
+[*]Added [color=#ffff00]VanillaUseDamageTypeColors[/color] (default [color=#ffff00]true[/color]). [color=#ffff00]true[/color] uses the game's damage-type colors exactly like the target dummies; [color=#ffff00]false[/color] keeps this mod's weakpoint colors on the vanilla animation.[/*]
+[*]Added [color=#ffff00]VanillaScale[/color] (default [color=#ffff00]1.0[/color]) to resize the vanilla damage text.[/*]
+[*]The vanilla renderer keeps every existing filter, display mode, per-frame spawn budget and crowding limit. It shows whole numbers only, because the game's damage text does, so [color=#ffff00]ShowDecimals[/color] has no effect there.[/*]
+[*]If the game's damage text cannot be loaded, [color=#ffff00]Renderer = Vanilla[/color] falls back to [color=#ffff00]ScreenSpace[/color] and writes a warning to the log instead of showing nothing.[/*]
+[*]The renderer default is unchanged. [color=#ffff00]Renderer = ScreenSpace[/color] still produces the previous look.[/*]
+[/list]
+[b]Status effect damage[/b]
+
+[list]
+[*]Fixed damage over time from status effects the player applied, such as burning, poison and electrocution, never being shown. These are exactly the colored numbers the target dummies display.[/*]
+[*]This is an intentional behavior change. With the default configuration you will now see extra numbers for burning, poison and electrocution ticks in every renderer, not only in [color=#ffff00]Vanilla[/color]. Set [color=#ffff00]ShowStatusEffectDamage = false[/color] under [color=#ffff00][Filter][/color] to restore the previous behavior.[/*]
+[/list]
+[b]Weakpoint colors[/b]
+
+[list]
+[*]Fixed damage that carries no hitbox information being colored as a weakpoint hit. Status damage over time and explosion damage used the head shot color and are now white.[/*]
+[*]Weapon hits are unaffected. The game always resolves a real body part for them.[/*]
+[/list]
+[b]Compatibility[/b]
+
+[list]
+[*]Verified against SULFUR 0.18.5.[/*]
+[/list]
+[color=RoyalBlue][b]1.0.12[/b][/color]
+
+[list]
+[*]Corrected the fallback TextMeshPro outline introduced in 1.0.11.[/*]
+[*]Removed the enlarged black backing glyph, which changed glyph size and character spacing instead of creating a real border.[/*]
+[*]Screen-space numbers now use four same-size black copies with small diagonal pixel offsets behind one colored face.[/*]
+[*]World-space numbers use the same same-size offset approach in local billboard space.[/*]
+[*]All outline copies remain pooled and reuse the renderer's shared font material.[/*]
+[*]Keeps the renderer-change optimization and all 1.0.9 performance limits.[/*]
+[/list]
