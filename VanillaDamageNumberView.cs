@@ -1,4 +1,5 @@
 using PerfectRandom.Sulfur.Gameplay;
+using TMPro;
 using UnityEngine;
 
 namespace SulfurDamageNumbersMod
@@ -21,6 +22,11 @@ namespace SulfurDamageNumbersMod
         private readonly Transform _rootTransform;
         private readonly DamageTextInstance _instance;
 
+        // World height of one text line at root scale 1, read from the fresh clone before its
+        // Animator has moved or scaled anything. 0 when it could not be read; stacked numbers then
+        // stay on the base position and only the alternating fly direction separates them.
+        private readonly float _lineHeightAtUnitScale;
+
         public bool IsActive { get; private set; }
         public float StartTime { get; private set; }
 
@@ -29,11 +35,12 @@ namespace SulfurDamageNumbersMod
             get { return _rootTransform.position; }
         }
 
-        private VanillaDamageNumberView(GameObject root, DamageTextInstance instance)
+        private VanillaDamageNumberView(GameObject root, DamageTextInstance instance, float lineHeightAtUnitScale)
         {
             _root = root;
             _rootTransform = root.transform;
             _instance = instance;
+            _lineHeightAtUnitScale = lineHeightAtUnitScale;
         }
 
         public static VanillaDamageNumberView TryCreate(Transform parent, GameObject textPrefab)
@@ -58,14 +65,30 @@ namespace SulfurDamageNumbersMod
             // and scale are left alone, exactly as the game's DamageTracker instantiates them.
             clone.transform.localPosition = Vector3.zero;
 
+            float lineHeight = MeasureLineHeight(clone);
+
             root.SetActive(false);
-            return new VanillaDamageNumberView(root, instance);
+            return new VanillaDamageNumberView(root, instance, lineHeight);
         }
 
-        public void Play(int amount, Color color, Vector3 worldPosition, float scale, bool flyRight, bool critical)
+        private static float MeasureLineHeight(GameObject clone)
         {
+            TextMeshPro text = clone.GetComponentInChildren<TextMeshPro>(true);
+            if (text == null)
+                return 0f;
+
+            float height = text.GetPreferredValues("0").y * Mathf.Abs(text.transform.lossyScale.y);
+            return float.IsNaN(height) || float.IsInfinity(height) || height < 0f ? 0f : height;
+        }
+
+        public void Play(int amount, Color color, Vector3 worldPosition, int stackRow, float scale, bool flyRight, bool critical)
+        {
+            float clampedScale = Mathf.Max(0.01f, scale);
+            if (stackRow > 0)
+                worldPosition += Vector3.up * (stackRow * _lineHeightAtUnitScale * clampedScale);
+
             _rootTransform.position = worldPosition;
-            _rootTransform.localScale = Vector3.one * Mathf.Max(0.01f, scale);
+            _rootTransform.localScale = Vector3.one * clampedScale;
 
             // The Animator must be active before a trigger is set, otherwise the trigger is lost.
             _root.SetActive(true);

@@ -23,6 +23,12 @@ namespace SulfurDamageNumbersMod
         private readonly Dictionary<AggregateKey, AggregateEntry> _aggregates = new Dictionary<AggregateKey, AggregateEntry>();
         private readonly List<AggregateKey> _flushBuffer = new List<AggregateKey>();
         private readonly Dictionary<PerHitSpreadKey, int> _perHitSpreadCounters = new Dictionary<PerHitSpreadKey, int>();
+
+        // PerTargetTotal keeps different damage types on the same target apart (an enchantment
+        // such as Crusader adds a Holy hit in the same frame as the weapon hit). All of them start
+        // at the target's overhead point, so each entry gets a row in the order it was created,
+        // per target, and every row after the first is drawn one text line higher.
+        private readonly Dictionary<int, int> _aggregateRowsPerTarget = new Dictionary<int, int>();
         private readonly List<ScreenDamageNumberView> _screenPool = new List<ScreenDamageNumberView>();
         private readonly List<DamageNumberView> _worldPool = new List<DamageNumberView>();
         private readonly List<VanillaDamageNumberView> _vanillaPool = new List<VanillaDamageNumberView>();
@@ -121,7 +127,7 @@ namespace SulfurDamageNumbersMod
             {
                 PerHitSpreadOffset spread = GetNextPerHitSpread(target, sourceData);
                 SpawnNumber(position, amount, hitMultiplier, sourceData.damageType, sourceData.isCritical,
-                    true, spread.WorldOffset, spread.ScreenOffset, true);
+                    true, spread.WorldOffset, spread.ScreenOffset, 0, true);
                 return;
             }
 
@@ -129,6 +135,11 @@ namespace SulfurDamageNumbersMod
             AggregateEntry entry;
             if (!_aggregates.TryGetValue(key, out entry))
             {
+                int targetId = target.GetInstanceID();
+                int row;
+                _aggregateRowsPerTarget.TryGetValue(targetId, out row);
+                _aggregateRowsPerTarget[targetId] = row + 1;
+
                 entry = new AggregateEntry
                 {
                     Amount = 0f,
@@ -140,7 +151,8 @@ namespace SulfurDamageNumbersMod
                     // AggregateKey already separates damage types, so every hit merged into one
                     // entry shares this value.
                     DamageType = sourceData.damageType,
-                    AnyCritical = false
+                    AnyCritical = false,
+                    Row = row
                 };
             }
 
@@ -270,12 +282,20 @@ namespace SulfurDamageNumbersMod
                 // Aggregation has already happened. Crowding is only a visual post-filter;
                 // it does not change the PerTargetTotal grouping rule.
                 SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), entry.DamageType, entry.AnyCritical,
-                    false, Vector3.zero, Vector2.zero, true);
+                    false, Vector3.zero, Vector2.zero, entry.Row, true);
                 _aggregates.Remove(key);
             }
+
+            // Every entry is flushed in the frame it was created in, so the next frame starts
+            // its rows from zero again.
+            _aggregateRowsPerTarget.Clear();
         }
 
-        private void SpawnNumber(Vector3 position, float amount, float hitMultiplier, DamageTypes damageType, bool critical, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, bool applyCrowding)
+        /// <param name="stackRow">
+        /// 0 for the normal position. A higher row is drawn that many text lines above it; each
+        /// renderer measures its own line height.
+        /// </param>
+        private void SpawnNumber(Vector3 position, float amount, float hitMultiplier, DamageTypes damageType, bool critical, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, int stackRow, bool applyCrowding)
         {
             EnsureFrameCounters();
 
@@ -315,7 +335,7 @@ namespace SulfurDamageNumbersMod
 
             if (renderMode == RenderMode.Vanilla)
             {
-                SpawnVanilla(amount, hitMultiplier, damageType, critical, position + worldJitter);
+                SpawnVanilla(amount, hitMultiplier, damageType, critical, position + worldJitter, stackRow);
             }
             else
             {
@@ -323,10 +343,10 @@ namespace SulfurDamageNumbersMod
                 Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
 
                 if (renderMode == RenderMode.ScreenSpace || renderMode == RenderMode.Both)
-                    SpawnScreenWorld(text, position, screenJitter, color);
+                    SpawnScreenWorld(text, position, screenJitter, stackRow, color);
 
                 if (renderMode == RenderMode.WorldTextMeshPro || renderMode == RenderMode.Both)
-                    SpawnWorld(text, position, worldJitter, color);
+                    SpawnWorld(text, position, worldJitter, stackRow, color);
             }
 
             // Include accepted same-frame numbers immediately. Existing active positions are
@@ -335,7 +355,7 @@ namespace SulfurDamageNumbersMod
                 _crowdingPositions.Add(crowdingScreenPosition);
         }
 
-        private void SpawnScreenWorld(string text, Vector3 worldPosition, Vector2 jitter, Color color)
+        private void SpawnScreenWorld(string text, Vector3 worldPosition, Vector2 jitter, int stackRow, Color color)
         {
             ScreenDamageNumberView view = AcquireScreenView();
             if (view == null) return;
@@ -344,6 +364,7 @@ namespace SulfurDamageNumbersMod
                 text,
                 worldPosition,
                 jitter,
+                stackRow,
                 Mathf.Max(0.05f, Plugin.Lifetime.Value),
                 Mathf.Max(8, Plugin.ScreenFontSize.Value),
                 color);
@@ -362,7 +383,7 @@ namespace SulfurDamageNumbersMod
                 color);
         }
 
-        private void SpawnWorld(string text, Vector3 worldPosition, Vector3 jitter, Color color)
+        private void SpawnWorld(string text, Vector3 worldPosition, Vector3 jitter, int stackRow, Color color)
         {
             DamageNumberView view = AcquireWorldView();
             if (view == null) return;
@@ -371,6 +392,7 @@ namespace SulfurDamageNumbersMod
                 text,
                 worldPosition,
                 jitter,
+                stackRow,
                 Mathf.Max(0.05f, Plugin.Lifetime.Value),
                 Plugin.FloatSpeed.Value,
                 Plugin.WorldScale.Value,
@@ -378,7 +400,7 @@ namespace SulfurDamageNumbersMod
                 color);
         }
 
-        private void SpawnVanilla(float amount, float hitMultiplier, DamageTypes damageType, bool critical, Vector3 worldPosition)
+        private void SpawnVanilla(float amount, float hitMultiplier, DamageTypes damageType, bool critical, Vector3 worldPosition, int stackRow)
         {
             try
             {
@@ -397,7 +419,7 @@ namespace SulfurDamageNumbersMod
                 _vanillaFlyIndex++;
                 bool flyRight = (_vanillaFlyIndex % 2) == 0;
 
-                view.Play(rounded, color, worldPosition, Plugin.VanillaScale.Value, flyRight, critical);
+                view.Play(rounded, color, worldPosition, stackRow, Plugin.VanillaScale.Value, flyRight, critical);
             }
             catch (Exception e)
             {
@@ -915,6 +937,7 @@ namespace SulfurDamageNumbersMod
         {
             _aggregates.Clear();
             _flushBuffer.Clear();
+            _aggregateRowsPerTarget.Clear();
             _perHitSpreadCounters.Clear();
             _crowdingPositions.Clear();
             _screenPool.Clear();
@@ -944,6 +967,7 @@ namespace SulfurDamageNumbersMod
             public float WeightedMultiplierSum;
             public DamageTypes DamageType;
             public bool AnyCritical;
+            public int Row;
         }
 
         private struct PerHitSpreadOffset
@@ -1067,12 +1091,17 @@ namespace SulfurDamageNumbersMod
                 _outlineTexts[i].fontSharedMaterial = sharedMaterial;
         }
 
-        public void PlayWorld(string value, Vector3 worldPosition, Vector2 jitter, float lifetime, int fontSize, Color color)
+        public void PlayWorld(string value, Vector3 worldPosition, Vector2 jitter, int stackRow, float lifetime, int fontSize, Color color)
         {
             _worldPosition = worldPosition;
             _screenJitter = jitter;
             _fixedScreen = false;
             PlayCommon(value, lifetime, fontSize, color);
+
+            // The text is set and active now, so its preferred height is one line of this font
+            // at this size, in canvas pixels (the canvas uses a constant pixel scale of 1).
+            if (stackRow > 0)
+                _screenJitter.y += stackRow * _text.preferredHeight;
         }
 
         public void PlayFixed(string value, Vector2 screenPosition, float lifetime, int fontSize, Color color)

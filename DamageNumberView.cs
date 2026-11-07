@@ -85,7 +85,7 @@ namespace SulfurDamageNumbersMod
                 _outlineTexts[i].fontSharedMaterial = sharedMaterial;
         }
 
-        public void Play(string value, Vector3 position, Vector3 jitter, float lifetime, float floatSpeed, float worldScale, float fontSize, Color color)
+        public void Play(string value, Vector3 position, Vector3 jitter, int stackRow, float lifetime, float floatSpeed, float worldScale, float fontSize, Color color)
         {
             _basePosition = position;
             _jitter = jitter;
@@ -121,6 +121,14 @@ namespace SulfurDamageNumbersMod
             _text.enabled = true;
             _gameObject.SetActive(true);
             IsActive = true;
+
+            // preferredHeight is one line in the text's local units; the transform scale turns
+            // it into world units.
+            if (stackRow > 0)
+            {
+                _jitter += Vector3.up * (stackRow * _text.preferredHeight * _transform.lossyScale.y);
+                _transform.position = _basePosition + _jitter;
+            }
         }
 
         public void Tick(Camera camera, float now)
