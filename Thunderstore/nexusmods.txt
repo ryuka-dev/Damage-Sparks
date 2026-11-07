@@ -48,6 +48,8 @@ If the same shotgun blast hits two enemies, the mod shows two damage numbers:
 [/list]
 This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
 
+Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit.
+
 It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
 
 [color=DodgerBlue][b]Per Hit[/b][/color]
@@ -175,6 +177,10 @@ Thunderstore does not provide a convenient feedback channel.
 
 For bug reports or suggestions, please use NexusMods or GitHub.
 
+[color=RoyalBlue][b]v1.1.1[/b][/color]
+
+Fixed damage numbers being drawn exactly on top of each other when one hit deals two damage types to the same enemy, for example with Scroll of Crusader. The weapon hit stays where it was and the extra damage type now appears one line above it. Merging, colors and Per Hit mode are unchanged.
+
 [color=RoyalBlue][b]v1.1.0[/b][/color]
 
 Added a vanilla renderer. [color=#ffff00]Renderer = Vanilla[/color] draws damage numbers with SULFUR's own damage text, the same one the target dummies use, including its animation, font and damage-type colors. It reuses the game's prefab rather than imitating it, so nothing new is shipped with the mod. The renderer default is unchanged and still uses the previous look.
@@ -189,6 +195,21 @@ Reworked the damage number rendering system to improve performance and stability
 
 [font=Arial Black][color=DarkOrange][size=5][b]Changelog[/b][/size][/color][/font]
 
+[color=RoyalBlue][b]1.1.1[/b][/color]
+
+[b]Stacked numbers[/b]
+
+[list]
+[*]Fixed numbers drawn exactly on top of each other in [color=#ffff00]PerTargetTotal[/color] mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader is the common case: its Holy damage lands in the same frame as the weapon hit.[/*]
+[*]The weapon hit stays where it was. Each additional damage type on that enemy in the same frame is now drawn one text line higher, in the [color=#ffff00]ScreenSpace[/color], [color=#ffff00]WorldTextMeshPro[/color] and [color=#ffff00]Vanilla[/color] renderers.[/*]
+[*]Merging and colors are unchanged. Shotgun pellets of one damage type still add up to a single number, and each damage type keeps its own number and color.[/*]
+[*][color=#ffff00]PerHit[/color] mode is unchanged.[/*]
+[/list]
+[b]Compatibility[/b]
+
+[list]
+[*]Verified against SULFUR 1.0.5.[/*]
+[/list]
 [color=RoyalBlue][b]1.1.0[/b][/color]
 
 [b]Vanilla renderer[/b]

@@ -49,6 +49,8 @@ If the same shotgun blast hits two enemies, the mod shows two damage numbers:
 
 This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
 
+Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit.
+
 It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
 
 ### Per Hit
@@ -198,6 +200,10 @@ GitHub repository:
 Thunderstore does not provide a convenient feedback channel.
 
 For bug reports or suggestions, please use NexusMods or GitHub.
+
+## v1.1.1
+
+Fixed damage numbers being drawn exactly on top of each other when one hit deals two damage types to the same enemy, for example with Scroll of Crusader. The weapon hit stays where it was and the extra damage type now appears one line above it. Merging, colors and Per Hit mode are unchanged.
 
 ## v1.1.0
 

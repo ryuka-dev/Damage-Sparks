@@ -11,7 +11,7 @@ namespace SulfurDamageNumbersMod
     {
         public const string PluginGuid = "ryuka.sulfur.damagenumbers";
         public const string PluginName = "SULFUR Damage Numbers";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.1.1";
 
         internal static ConfigEntry<bool> Enabled;
         internal static ConfigEntry<DisplayMode> Mode;

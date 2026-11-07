@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1
+
+**Stacked numbers**
+
+- Fixed numbers drawn exactly on top of each other in `PerTargetTotal` mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader is the common case: its Holy damage lands in the same frame as the weapon hit.
+- The weapon hit stays where it was. Each additional damage type on that enemy in the same frame is now drawn one text line higher, in the `ScreenSpace`, `WorldTextMeshPro` and `Vanilla` renderers.
+- Merging and colors are unchanged. Shotgun pellets of one damage type still add up to a single number, and each damage type keeps its own number and color.
+- `PerHit` mode is unchanged.
+
+**Compatibility**
+
+- Verified against SULFUR 1.0.5.
+
 ## 1.1.0
 
 **Vanilla renderer**
