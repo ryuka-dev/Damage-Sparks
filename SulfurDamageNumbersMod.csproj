@@ -66,6 +66,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(SulfurManagedDir)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(SulfurManagedDir)\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(SulfurManagedDir)\UnityEngine.TextRenderingModule.dll</HintPath>
@@ -88,6 +91,7 @@
     <Compile Include="DamageNumberManager.cs" />
     <Compile Include="DamageNumberView.cs" />
     <Compile Include="DamageReceivePatch.cs" />
+    <Compile Include="GameStateProbe.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="VanillaDamageNumberView.cs" />
     <Compile Include="VanillaDamageText.cs" />
@@ -100,13 +104,20 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="DeployToGaleProfile" AfterTargets="Build" Condition="'$(DeployToSulfurProfile)' == 'true'">
+    <PropertyGroup>
+      <GalePluginFolder>$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)</GalePluginFolder>
+      <!-- Gale disables a package by renaming its files to *.old. Writing a fresh DLL next to
+           them would switch the package back on behind the mod manager's back. -->
+      <GalePackageDisabled Condition="Exists('$(GalePluginFolder)\$(ThunderstorePluginName).dll.old')">true</GalePackageDisabled>
+    </PropertyGroup>
     <ItemGroup>
       <LangFiles Include="$(ThunderstoreDir)\lang\*.json" />
     </ItemGroup>
-    <MakeDir Directories="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)\$(ThunderstorePluginName).dll" />
     <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(ThunderstoreDir)\$(ThunderstorePluginName).dll" />
-    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(SulfurBepInExPluginsDir)\$(SulfurPluginFolderName)\lang" Condition="'@(LangFiles)' != ''" />
+    <Message Importance="high" Condition="'$(GalePackageDisabled)' == 'true'" Text="$(SulfurPluginFolderName) is disabled in the mod manager; the build was not copied into $(GalePluginFolder)." />
+    <MakeDir Directories="$(GalePluginFolder)" Condition="'$(GalePackageDisabled)' != 'true'" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(GalePluginFolder)\$(ThunderstorePluginName).dll" Condition="'$(GalePackageDisabled)' != 'true'" />
+    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(GalePluginFolder)\lang" Condition="'@(LangFiles)' != '' And '$(GalePackageDisabled)' != 'true'" />
   </Target>
 
 </Project>

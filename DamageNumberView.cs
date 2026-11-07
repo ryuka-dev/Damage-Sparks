@@ -33,6 +33,13 @@ namespace SulfurDamageNumbersMod
         public Vector3 CurrentWorldPosition { get { return _transform.position; } }
         public Material FontSharedMaterial { get { return _text.fontSharedMaterial; } }
 
+        /// <summary>
+        /// Height of one line of this font in the text's local units per font point; the world
+        /// height is this times the font size times the view's scale. 0 when it could not be
+        /// measured.
+        /// </summary>
+        public float LineHeightPerPoint { get; private set; }
+
         public DamageNumberView(Transform parent, Material sharedMaterial)
         {
             _gameObject = new GameObject("SULFUR Damage Number World");
@@ -52,6 +59,9 @@ namespace SulfurDamageNumbersMod
                 SetSharedMaterial(sharedMaterial);
             else if (_text.fontSharedMaterial != null)
                 SetOutlineSharedMaterial(_text.fontSharedMaterial);
+
+            // Measured while the new layer is still active, with the font its Awake assigned.
+            LineHeightPerPoint = DamageNumberViews.MeasureLineHeightPerPoint(_text);
 
             Stop();
         }
@@ -85,7 +95,7 @@ namespace SulfurDamageNumbersMod
                 _outlineTexts[i].fontSharedMaterial = sharedMaterial;
         }
 
-        public void Play(string value, Vector3 position, Vector3 jitter, int stackRow, float lifetime, float floatSpeed, float worldScale, float fontSize, Color color)
+        public void Play(string value, Vector3 position, Vector3 jitter, float lifetime, float floatSpeed, float worldScale, float fontSize, Color color)
         {
             _basePosition = position;
             _jitter = jitter;
@@ -121,14 +131,6 @@ namespace SulfurDamageNumbersMod
             _text.enabled = true;
             _gameObject.SetActive(true);
             IsActive = true;
-
-            // preferredHeight is one line in the text's local units; the transform scale turns
-            // it into world units.
-            if (stackRow > 0)
-            {
-                _jitter += Vector3.up * (stackRow * _text.preferredHeight * _transform.lossyScale.y);
-                _transform.position = _basePosition + _jitter;
-            }
         }
 
         public void Tick(Camera camera, float now)
@@ -188,6 +190,22 @@ namespace SulfurDamageNumbersMod
 
             if (_gameObject != null)
                 _gameObject.SetActive(false);
+        }
+    }
+
+    internal static class DamageNumberViews
+    {
+        /// <summary>
+        /// One line of a digit in this text's font, per font point, in the text's own units.
+        /// TextMeshPro line height scales linearly with the font size.
+        /// </summary>
+        public static float MeasureLineHeightPerPoint(TMP_Text text)
+        {
+            if (text == null || text.fontSize <= 0f)
+                return 0f;
+
+            float height = text.GetPreferredValues("0").y / text.fontSize;
+            return float.IsNaN(height) || float.IsInfinity(height) || height < 0f ? 0f : height;
         }
     }
 }

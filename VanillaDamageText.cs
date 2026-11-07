@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using PerfectRandom.Sulfur.Core;
@@ -63,6 +64,35 @@ namespace SulfurDamageNumbersMod
         private static Color _colorPunish = Color.white;
         private static Color _colorShadow = Color.white;
         private static Color _colorWater = Color.white;
+
+        // Unit instance id -> the DamageTracker on that unit, or null. Instance ids are unique for
+        // the whole session, so an entry never goes stale; the cap only bounds memory.
+        private const int MaxTrackedUnits = 1024;
+        private static readonly Dictionary<int, DamageTracker> TrackerByUnit = new Dictionary<int, DamageTracker>();
+
+        /// <summary>
+        /// True when the game draws its own damage text for this unit. A DamageTracker (on the
+        /// target dummies) subscribes to the unit's onDamageRecieved in Start and shows every hit,
+        /// so a number from this mod would only duplicate it.
+        /// </summary>
+        public static bool UnitShowsOwnDamageText(Unit unit)
+        {
+            if (unit == null)
+                return false;
+
+            int id = unit.GetInstanceID();
+            DamageTracker tracker;
+            if (!TrackerByUnit.TryGetValue(id, out tracker))
+            {
+                if (TrackerByUnit.Count >= MaxTrackedUnits)
+                    TrackerByUnit.Clear();
+
+                tracker = unit.GetComponentInChildren<DamageTracker>(true);
+                TrackerByUnit[id] = tracker;
+            }
+
+            return tracker != null && tracker.isActiveAndEnabled;
+        }
 
         /// <summary>True once the game's damage text prefab and colors are available.</summary>
         public static bool IsReady
@@ -188,6 +218,13 @@ namespace SulfurDamageNumbersMod
             if (assetLoading == null || assetLoading.unitDatabase == null)
                 return false;
 
+            // UnitSO.FetchAndLoadUnitLoader goes through GameManager.currentLoadedUnits, and there
+            // is no GameManager in the launch scene or the main menu. That is "not yet", not a
+            // failed candidate: counting it as one used up every candidate before the first
+            // level, so Renderer=Vanilla saved in the config never worked after a restart.
+            if (!GameStateProbe.HasGameManager)
+                return false;
+
             UnitSO unitSo = DummyUnitCandidates[_candidateIndex].GetAsset();
             if (unitSo == null)
             {
@@ -294,6 +331,7 @@ namespace SulfurDamageNumbersMod
 
         public static void Shutdown()
         {
+            TrackerByUnit.Clear();
             ResetLookup();
             _candidateIndex = 0;
             _state = LoadState.Idle;

@@ -13,34 +13,44 @@ namespace SulfurDamageNumbersMod
     /// </summary>
     internal sealed class VanillaDamageNumberView : IDamageNumberView
     {
-        // The game's DamageTracker cycles a fixed ring of instances and never stops them; the
-        // Animator hides the text on its own. This mod still needs a reuse point, so a slot is
-        // released once the clip has had more than enough time to finish.
-        private const float RecycleAfterSeconds = 2.5f;
+        // Used when the clone's clips cannot be read. Longer than any clip the prefab has shipped.
+        private const float FallbackClipSeconds = 2.5f;
+
+        // Slack after the longest clip before the slot is released and the clone switched off.
+        private const float ClipEndMarginSeconds = 0.1f;
 
         private readonly GameObject _root;
         private readonly Transform _rootTransform;
         private readonly DamageTextInstance _instance;
-
-        // World height of one text line at root scale 1, read from the fresh clone before its
-        // Animator has moved or scaled anything. 0 when it could not be read; stacked numbers then
-        // stay on the base position and only the alternating fly direction separates them.
-        private readonly float _lineHeightAtUnitScale;
+        private readonly Transform _textTransform;
+        private readonly float _activeSeconds;
 
         public bool IsActive { get; private set; }
         public float StartTime { get; private set; }
 
+        /// <summary>
+        /// Where the text is drawn right now. The Animator moves the text inside the clone, away
+        /// from the point the number was placed at.
+        /// </summary>
         public Vector3 CurrentWorldPosition
         {
-            get { return _rootTransform.position; }
+            get { return _textTransform != null ? _textTransform.position : _rootTransform.position; }
         }
 
-        private VanillaDamageNumberView(GameObject root, DamageTextInstance instance, float lineHeightAtUnitScale)
+        /// <summary>
+        /// World height of one text line at VanillaScale 1, read from the fresh clone before its
+        /// Animator has moved or scaled anything. 0 when it could not be read.
+        /// </summary>
+        public float LineHeightAtUnitScale { get; private set; }
+
+        private VanillaDamageNumberView(GameObject root, DamageTextInstance instance, Transform textTransform, float lineHeightAtUnitScale, float activeSeconds)
         {
             _root = root;
             _rootTransform = root.transform;
             _instance = instance;
-            _lineHeightAtUnitScale = lineHeightAtUnitScale;
+            _textTransform = textTransform;
+            LineHeightAtUnitScale = lineHeightAtUnitScale;
+            _activeSeconds = activeSeconds;
         }
 
         public static VanillaDamageNumberView TryCreate(Transform parent, GameObject textPrefab)
@@ -65,15 +75,16 @@ namespace SulfurDamageNumbersMod
             // and scale are left alone, exactly as the game's DamageTracker instantiates them.
             clone.transform.localPosition = Vector3.zero;
 
-            float lineHeight = MeasureLineHeight(clone);
+            TextMeshPro text = clone.GetComponentInChildren<TextMeshPro>(true);
+            float lineHeight = MeasureLineHeight(text);
+            float activeSeconds = LongestClipSeconds(clone) + ClipEndMarginSeconds;
 
             root.SetActive(false);
-            return new VanillaDamageNumberView(root, instance, lineHeight);
+            return new VanillaDamageNumberView(root, instance, text != null ? text.transform : null, lineHeight, activeSeconds);
         }
 
-        private static float MeasureLineHeight(GameObject clone)
+        private static float MeasureLineHeight(TextMeshPro text)
         {
-            TextMeshPro text = clone.GetComponentInChildren<TextMeshPro>(true);
             if (text == null)
                 return 0f;
 
@@ -81,16 +92,37 @@ namespace SulfurDamageNumbersMod
             return float.IsNaN(height) || float.IsInfinity(height) || height < 0f ? 0f : height;
         }
 
-        public void Play(int amount, Color color, Vector3 worldPosition, int stackRow, float scale, bool flyRight, bool critical)
+        /// <summary>
+        /// The longest clip the prefab's Animator can play. A number is on screen for one clip,
+        /// so its slot is busy for that long and free afterwards.
+        /// </summary>
+        private static float LongestClipSeconds(GameObject clone)
         {
-            float clampedScale = Mathf.Max(0.01f, scale);
-            if (stackRow > 0)
-                worldPosition += Vector3.up * (stackRow * _lineHeightAtUnitScale * clampedScale);
+            Animator animator = clone.GetComponentInChildren<Animator>(true);
+            if (animator == null || animator.runtimeAnimatorController == null)
+                return FallbackClipSeconds;
 
+            AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+            float longest = 0f;
+            if (clips != null)
+            {
+                for (int i = 0; i < clips.Length; i++)
+                {
+                    if (clips[i] != null && clips[i].length > longest)
+                        longest = clips[i].length;
+                }
+            }
+
+            return longest > 0f ? longest : FallbackClipSeconds;
+        }
+
+        public void Play(int amount, Color color, Vector3 worldPosition, float scale, bool flyRight, bool critical)
+        {
             _rootTransform.position = worldPosition;
-            _rootTransform.localScale = Vector3.one * clampedScale;
+            _rootTransform.localScale = Vector3.one * Mathf.Max(0.01f, scale);
 
             // The Animator must be active before a trigger is set, otherwise the trigger is lost.
+            // A clone that was switched off starts again from the controller's default state.
             _root.SetActive(true);
             _instance.Show(amount, color, null, flyRight, critical);
 
@@ -109,11 +141,11 @@ namespace SulfurDamageNumbersMod
                 _rootTransform.LookAt(camera.transform.position);
             }
 
-            if (now - StartTime >= RecycleAfterSeconds)
+            if (now - StartTime >= _activeSeconds)
             {
-                // Only the slot is released. The clone keeps whatever the finished clip left
-                // behind, exactly like the game's own ring buffer.
-                IsActive = false;
+                // The clip has finished. Switch the clone off, as the game's DamageTracker does
+                // with its own instances, so no finished number lingers or keeps animating.
+                Stop();
             }
         }
 
