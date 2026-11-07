@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal fusionne les dégâts du même frame sur la même cible. PerHit affiche chaque événement réel de dégâts séparément."
+      "value": "PerTargetTotal fusionne en un seul nombre les dégâts d'un même type sur la même cible dans le même frame ; un second type de dégâts du même coup s'affiche une ligne plus haut. PerHit affiche chaque événement réel de dégâts séparément."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Colore les nombres selon le multiplicateur de toucher. Les points faibles sont jaune/orange/rouge ; sans multiplicateur, le dégât est blanc."
+      "value": "Colore les nombres de dégâts selon la partie du corps touchée : rouge pour les yeux, orange pour la tête, jaune pour le thorax, blanc pour le corps et les membres. Les dégâts sans partie du corps, comme ceux des altérations d'état et des explosions, sont blancs."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Affiche le multiplicateur 1.0 en blanc au lieu d’orange. Activez ceci si les coups normaux au corps sont signalés comme 1.0x."
+      "value": "Affiche le multiplicateur 1.0 en blanc au lieu d’orange. Les coups à la tête valent 1.0 : cette option les affiche donc en blanc, comme les coups au corps."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Affiche les explosions et dégâts secondaires appartenant au joueur. Désactivez si feu, poison ou DoT deviennent trop bruyants."
+      "value": "Affiche les explosions et dégâts secondaires similaires appartenant au joueur qui ne proviennent ni d'une arme ni d'une attaque au corps à corps. Les dégâts sur la durée des altérations d'état dépendent de l'option « Afficher les dégâts d'altération d'état »."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Affiche une décimale pour les dégâts non entiers. Les valeurs entières comme 5.0 restent affichées comme 5."
+      "value": "Affiche une décimale pour les dégâts non entiers. Les valeurs entières comme 5.0 restent affichées comme 5. Le moteur Vanilla affiche toujours des nombres entiers."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Durée pendant laquelle chaque nombre de dégâts reste visible, en secondes."
+      "value": "Durée pendant laquelle chaque nombre de dégâts reste visible, en secondes. Le moteur Vanilla suit plutôt l'animation du jeu."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Vitesse de montée des nombres en espace monde."
+      "value": "Uniquement pour le moteur WorldTextMeshPro. Vitesse de montée des nombres de dégâts en espace monde."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Échelle des nombres TextMeshPro en espace monde."
+      "value": "Uniquement pour le moteur WorldTextMeshPro. Échelle des nombres de dégâts en 3D."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Décalage horizontal aléatoire. Utile pour les plombs de fusil en PerHit."
+      "value": "Uniquement en mode PerHit. Décalage horizontal aléatoire en espace monde pour chaque nombre, utile pour les plombs de fusil. Non utilisé par le moteur ScreenSpace."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "Taille de police TextMeshPro pour WorldTextMeshPro."
+      "value": "Uniquement pour le moteur WorldTextMeshPro. Taille de police TextMeshPro des nombres de dégâts en 3D."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Taille de police pour les nombres en écran."
+      "value": "Uniquement pour le moteur ScreenSpace. Taille de police des nombres de dégâts à l'écran."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Vitesse de montée des nombres en écran, en pixels par seconde."
+      "value": "Uniquement pour le moteur ScreenSpace. Vitesse de montée supplémentaire, en pixels par seconde. Les nombres montent aussi lentement avec le point situé au-dessus de la cible : à 0, ils ne restent donc pas totalement immobiles."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Décalage aléatoire en écran, en pixels. Utile pour les plombs de fusil en PerHit."
+      "value": "Uniquement en mode PerHit avec le moteur ScreenSpace. Décalage aléatoire à l'écran pour chaque nombre, en pixels, utile pour les plombs de fusil."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Dispersion déterministe supplémentaire pour plusieurs nombres PerHit sur la même cible dans le même frame."
+      "value": "Uniquement pour le moteur ScreenSpace. Dispersion déterministe supplémentaire à l'écran pour plusieurs nombres PerHit sur la même cible dans le même frame. Le décalage est plafonné à 42 pixels."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Dispersion monde déterministe supplémentaire pour plusieurs nombres PerHit sur la même cible dans le même frame."
+      "value": "Dispersion déterministe supplémentaire en espace monde pour plusieurs nombres PerHit sur la même cible dans le même frame. Non utilisée par le moteur ScreenSpace. Le décalage est plafonné à 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Nombre maximal de nombres de dégâts actifs par moteur de rendu activé. Limité à 1-256 ; le plus ancien nombre actif est réutilisé une fois plein."
+      "value": "Nombre maximal de nombres de dégâts actifs par moteur de rendu activé. Limité à 1-256, ou 1-64 pour le moteur Vanilla ; le plus ancien nombre actif est réutilisé une fois plein."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Appuyez sur F8 en jeu pour afficher un nombre de test au centre de l’écran."
+      "value": "Appuyez sur F8 en jeu pour afficher un nombre de test au centre de l’écran. Le nombre de test utilise toujours le style ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

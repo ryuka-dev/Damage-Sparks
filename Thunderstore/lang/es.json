@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal combina el daño del mismo fotograma sobre el mismo objetivo. PerHit muestra cada evento real de daño por separado."
+      "value": "PerTargetTotal combina en un solo número el daño de un mismo tipo sobre el mismo objetivo en el mismo fotograma; un segundo tipo de daño del mismo impacto se muestra una línea más arriba. PerHit muestra cada evento real de daño por separado."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Colorea los números según el multiplicador del impacto. Los puntos débiles son amarillo/naranja/rojo; sin multiplicador se muestra blanco."
+      "value": "Colorea los números de daño según la parte del cuerpo impactada: rojo para los ojos, naranja para la cabeza, amarillo para el tórax y blanco para el cuerpo y las extremidades. El daño sin parte del cuerpo, como el de efectos de estado y explosiones, es blanco."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Muestra el multiplicador 1.0 en blanco en vez de naranja. Actívalo si los impactos normales al cuerpo se informan como 1.0x."
+      "value": "Muestra el multiplicador 1.0 en blanco en vez de naranja. Los impactos en la cabeza son 1.0, así que se verán blancos como los impactos al cuerpo."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Muestra explosiones y daños secundarios del jugador. Desactívalo si fuego, veneno o DoT generan demasiado ruido."
+      "value": "Muestra explosiones del jugador y daños secundarios similares que no provienen de un arma ni de un ataque cuerpo a cuerpo. El daño con el tiempo de los efectos de estado se controla con «Mostrar daño de efectos de estado»."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Muestra un decimal para daño no entero. Valores enteros como 5.0 se muestran como 5."
+      "value": "Muestra un decimal para daño no entero. Valores enteros como 5.0 se muestran como 5. El renderizador Vanilla siempre muestra números enteros."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Tiempo que permanece visible cada número de daño, en segundos."
+      "value": "Tiempo que permanece visible cada número de daño, en segundos. El renderizador Vanilla sigue en su lugar la animación del propio juego."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Velocidad ascendente para números en espacio de mundo."
+      "value": "Solo para el renderizador WorldTextMeshPro. Velocidad ascendente de los números de daño en espacio de mundo."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Escala de los números TextMeshPro en espacio de mundo."
+      "value": "Solo para el renderizador WorldTextMeshPro. Escala de los números de daño 3D."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Desplazamiento horizontal aleatorio. Útil para perdigones de escopeta en PerHit."
+      "value": "Solo en modo PerHit. Desplazamiento horizontal aleatorio en espacio de mundo para cada número; útil para perdigones de escopeta. El renderizador ScreenSpace no lo usa."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "Tamaño de fuente TextMeshPro para WorldTextMeshPro."
+      "value": "Solo para el renderizador WorldTextMeshPro. Tamaño de fuente TextMeshPro de los números de daño 3D."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Tamaño de fuente para números en pantalla."
+      "value": "Solo para el renderizador ScreenSpace. Tamaño de fuente de los números de daño en pantalla."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Velocidad ascendente de números en pantalla, en píxeles por segundo."
+      "value": "Solo para el renderizador ScreenSpace. Velocidad ascendente adicional, en píxeles por segundo. Los números también suben despacio junto con el punto situado sobre el objetivo, así que con 0 no quedan totalmente quietos."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Desplazamiento aleatorio en pantalla, en píxeles. Útil para perdigones de escopeta en PerHit."
+      "value": "Solo en modo PerHit con el renderizador ScreenSpace. Desplazamiento aleatorio en pantalla para cada número, en píxeles; útil para perdigones de escopeta."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Dispersión adicional determinista para múltiples números PerHit del mismo objetivo en el mismo fotograma."
+      "value": "Solo para el renderizador ScreenSpace. Dispersión determinista adicional en pantalla para varios números PerHit del mismo objetivo en el mismo fotograma. El desplazamiento está limitado a 42 píxeles."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Dispersión adicional en mundo para múltiples números PerHit del mismo objetivo en el mismo fotograma."
+      "value": "Dispersión determinista adicional en espacio de mundo para varios números PerHit del mismo objetivo en el mismo fotograma. El renderizador ScreenSpace no la usa. El desplazamiento está limitado a 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Máximo de números de daño activos en cada renderizador habilitado. Limitado a 1-256; al llenarse se reutiliza el número activo más antiguo."
+      "value": "Máximo de números de daño activos en cada renderizador habilitado. Limitado a 1-256, o 1-64 en el renderizador Vanilla; al llenarse se reutiliza el número activo más antiguo."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Pulsa F8 en el juego para crear un número de prueba en el centro de la pantalla."
+      "value": "Pulsa F8 en el juego para crear un número de prueba en el centro de la pantalla. El número de prueba siempre usa el estilo ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

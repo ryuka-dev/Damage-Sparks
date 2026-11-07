@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal объединяет урон в одном кадре по одной цели. PerHit показывает каждое реальное событие урона отдельно."
+      "value": "PerTargetTotal объединяет урон одного типа в одном кадре по одной цели в одно число; второй тип урона от того же попадания показывается строкой выше. PerHit показывает каждое реальное событие урона отдельно."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Окрашивает числа по множителю попадания. Слабые места — жёлтый/оранжевый/красный; без множителя урон белый."
+      "value": "Окрашивает числа урона по части тела, в которую пришлось попадание: красный — глаза, оранжевый — голова, жёлтый — грудь, белый — тело и конечности. Урон без части тела, например от эффектов состояния и взрывов, белый."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Показывает множитель 1.0 белым вместо оранжевого. Включите, если обычные попадания по телу считаются 1.0x."
+      "value": "Показывает множитель 1.0 белым вместо оранжевого. У попаданий в голову множитель 1.0, поэтому они станут белыми, как попадания по телу."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Показывает взрывы и похожий вторичный урон игрока. Выключите, если огонь, яд или DoT создают слишком много чисел."
+      "value": "Показывает взрывы игрока и похожий вторичный урон, источник которого — не оружие и не ближний бой. Периодический урон от эффектов состояния настраивается параметром «Показывать урон от эффектов состояния»."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Показывает один знак после запятой для нецелого урона. Целые значения вроде 5.0 всё равно показываются как 5."
+      "value": "Показывает один знак после запятой для нецелого урона. Целые значения вроде 5.0 всё равно показываются как 5. Рендер Vanilla всегда показывает целые числа."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Сколько секунд каждое число урона остаётся видимым."
+      "value": "Сколько секунд каждое число урона остаётся видимым. Рендер Vanilla вместо этого следует анимации самой игры."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Скорость подъёма чисел в мировом пространстве."
+      "value": "Только для рендера WorldTextMeshPro. Скорость подъёма чисел урона в мировом пространстве."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Масштаб чисел TextMeshPro в мировом пространстве."
+      "value": "Только для рендера WorldTextMeshPro. Масштаб 3D-чисел урона."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Случайный горизонтальный сдвиг чисел. Полезно для дроби в PerHit."
+      "value": "Только в режиме PerHit. Случайный горизонтальный сдвиг каждого числа в мировом пространстве; полезно для дроби. Не используется рендером ScreenSpace."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "Размер шрифта TextMeshPro для WorldTextMeshPro."
+      "value": "Только для рендера WorldTextMeshPro. Размер шрифта TextMeshPro для 3D-чисел урона."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Размер шрифта для экранных чисел."
+      "value": "Только для рендера ScreenSpace. Размер шрифта экранных чисел урона."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Скорость подъёма экранных чисел, в пикселях в секунду."
+      "value": "Только для рендера ScreenSpace. Дополнительная скорость подъёма в пикселях в секунду. Числа и так медленно поднимаются вместе с точкой над целью, поэтому при 0 они не стоят полностью на месте."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Случайный экранный сдвиг в пикселях. Полезно для дроби в PerHit."
+      "value": "Только в режиме PerHit с рендером ScreenSpace. Случайный экранный сдвиг каждого числа в пикселях; полезно для дроби."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Дополнительный детерминированный экранный разброс для нескольких чисел PerHit по одной цели в одном кадре."
+      "value": "Только для рендера ScreenSpace. Дополнительный детерминированный экранный разброс для нескольких чисел PerHit по одной цели в одном кадре. Смещение не превышает 42 пикселей."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Дополнительный мировой разброс для нескольких чисел PerHit по одной цели в одном кадре."
+      "value": "Дополнительный детерминированный разброс в мировом пространстве для нескольких чисел PerHit по одной цели в одном кадре. Не используется рендером ScreenSpace. Смещение не превышает 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Максимум активных чисел урона в каждом включённом рендерере. Ограничено 1-256; при заполнении повторно используется самое старое активное число."
+      "value": "Максимум активных чисел урона в каждом включённом рендере. Ограничено 1-256, для рендера Vanilla — 1-64; при заполнении повторно используется самое старое активное число."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Нажмите F8 в игре, чтобы создать тестовое число в центре экрана."
+      "value": "Нажмите F8 в игре, чтобы создать тестовое число в центре экрана. Тестовое число всегда использует стиль ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

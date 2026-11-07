@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal 会合并同一帧、同一目标上的伤害。PerHit 会把每次真实伤害事件分别显示。"
+      "value": "PerTargetTotal 会把同一帧、同一目标上同一类型的伤害合并为一个数字；同一次命中里的第二种伤害类型显示在上方一行。PerHit 会把每次真实伤害事件分别显示。"
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "根据命中倍率改变伤害颜色。弱点命中为黄/橙/红；没有倍率时显示白色。"
+      "value": "按命中部位为伤害数字着色：眼睛为红色，头部为橙色，胸部为黄色，身体和四肢为白色。没有命中部位的伤害（如状态效果和爆炸）为白色。"
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "将 1.0 倍率显示为白色而不是橙色。如果普通身体命中也被游戏报告为 1.0x，可以启用。"
+      "value": "将 1.0 倍率显示为白色而不是橙色。头部命中的倍率是 1.0，开启后头部命中会和身体命中一样显示为白色。"
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "显示玩家拥有的爆炸等二段伤害。如果火焰、毒或持续伤害太吵，可以关闭。"
+      "value": "显示玩家拥有的、没有武器或近战来源的爆炸等二段伤害。状态效果的持续伤害由“显示状态效果伤害”控制。"
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "非整数伤害显示一位小数。5.0 这类整数仍显示为 5。"
+      "value": "非整数伤害显示一位小数。5.0 这类整数仍显示为 5。Vanilla 渲染方式始终显示整数。"
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "每个伤害数字可见的时间，单位为秒。"
+      "value": "每个伤害数字可见的时间，单位为秒。Vanilla 渲染方式则跟随游戏自带的动画。"
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "世界空间伤害数字的上浮速度。"
+      "value": "仅对 WorldTextMeshPro 渲染方式生效。世界空间伤害数字的上浮速度。"
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "世界空间 TextMeshPro 伤害数字的缩放。"
+      "value": "仅对 WorldTextMeshPro 渲染方式生效。3D 伤害数字的缩放。"
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "伤害数字的随机水平偏移。对 PerHit 霰弹弹丸很有用。"
+      "value": "仅在 PerHit 模式下生效。为每个数字加入世界空间中的随机水平偏移，适合霰弹弹丸。ScreenSpace 渲染方式不使用此项。"
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "WorldTextMeshPro 渲染器使用的 TextMeshPro 字体大小。"
+      "value": "仅对 WorldTextMeshPro 渲染方式生效。3D 伤害数字的 TextMeshPro 字体大小。"
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "屏幕空间伤害数字的字体大小。"
+      "value": "仅对 ScreenSpace 渲染方式生效。屏幕空间伤害数字的字体大小。"
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "屏幕空间伤害数字的上浮速度，单位为像素/秒。"
+      "value": "仅对 ScreenSpace 渲染方式生效。额外的上浮速度，单位为像素/秒。数字还会随目标上方的那个点缓慢上移，所以设为 0 也不会完全静止。"
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "屏幕空间随机偏移，单位为像素。对 PerHit 霰弹弹丸很有用。"
+      "value": "仅在 PerHit 模式且使用 ScreenSpace 渲染方式时生效。为每个数字加入屏幕空间随机偏移，单位为像素，适合霰弹弹丸。"
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "同一帧同一目标产生多个 PerHit 数字时，额外加入确定性屏幕扩散。"
+      "value": "仅对 ScreenSpace 渲染方式生效。同一帧同一目标产生多个 PerHit 数字时，额外加入确定性的屏幕空间扩散。偏移上限为 42 像素。"
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "同一帧同一目标产生多个 PerHit 数字时，额外加入确定性世界空间扩散。"
+      "value": "同一帧同一目标产生多个 PerHit 数字时，额外加入确定性的世界空间扩散。ScreenSpace 渲染方式不使用此项。偏移上限为 0.36。"
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "每个启用的渲染器中伤害数字的最大活动数量。硬限制为 1-256；占满时复用最旧的数字。"
+      "value": "每个启用的渲染器中伤害数字的最大活动数量。硬限制为 1-256，Vanilla 渲染方式为 1-64；占满时复用最旧的数字。"
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "游戏内按 F8 在屏幕中央生成一个测试数字。"
+      "value": "游戏内按 F8 在屏幕中央生成一个测试数字。测试数字始终使用 ScreenSpace 样式。"
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

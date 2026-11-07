@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal unisce il danno nello stesso frame sullo stesso bersaglio. PerHit mostra ogni evento reale di danno separatamente."
+      "value": "PerTargetTotal unisce in un solo numero il danno di uno stesso tipo sullo stesso bersaglio nello stesso frame; un secondo tipo di danno dello stesso colpo appare una riga più in alto. PerHit mostra ogni evento reale di danno separatamente."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Colora i numeri in base al moltiplicatore del colpo. I punti deboli sono giallo/arancione/rosso; senza moltiplicatore il danno è bianco."
+      "value": "Colora i numeri del danno in base alla parte del corpo colpita: rosso per gli occhi, arancione per la testa, giallo per il torace, bianco per il corpo e gli arti. Il danno senza una parte del corpo, come quello di effetti di stato ed esplosioni, è bianco."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Mostra il moltiplicatore 1.0 in bianco invece che arancione. Attivalo se i normali colpi al corpo sono segnalati come 1.0x."
+      "value": "Mostra il moltiplicatore 1.0 in bianco invece che arancione. I colpi alla testa valgono 1.0, quindi diventano bianchi come i colpi al corpo."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Mostra esplosioni e danni secondari del giocatore. Disattiva se fuoco, veleno o DoT diventano troppo rumorosi."
+      "value": "Mostra esplosioni del giocatore e danni secondari simili che non provengono da un'arma o da un attacco corpo a corpo. Il danno nel tempo degli effetti di stato si controlla con «Mostra danni da effetti di stato»."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Mostra una cifra decimale per danni non interi. Valori interi come 5.0 vengono ancora mostrati come 5."
+      "value": "Mostra una cifra decimale per danni non interi. Valori interi come 5.0 vengono ancora mostrati come 5. Il renderer Vanilla mostra sempre numeri interi."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Tempo in cui ogni numero di danno resta visibile, in secondi."
+      "value": "Tempo in cui ogni numero di danno resta visibile, in secondi. Il renderer Vanilla segue invece l'animazione del gioco."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Velocità verso l’alto per numeri nello spazio mondo."
+      "value": "Solo per il renderer WorldTextMeshPro. Velocità verso l’alto dei numeri del danno nello spazio mondo."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Scala dei numeri TextMeshPro nello spazio mondo."
+      "value": "Solo per il renderer WorldTextMeshPro. Scala dei numeri del danno in 3D."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Spostamento orizzontale casuale. Utile per pallini di fucile in PerHit."
+      "value": "Solo in modalità PerHit. Spostamento orizzontale casuale nello spazio mondo per ogni numero, utile per i pallini del fucile. Non usato dal renderer ScreenSpace."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "Dimensione font TextMeshPro per WorldTextMeshPro."
+      "value": "Solo per il renderer WorldTextMeshPro. Dimensione font TextMeshPro dei numeri del danno in 3D."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Dimensione font per numeri su schermo."
+      "value": "Solo per il renderer ScreenSpace. Dimensione font dei numeri del danno su schermo."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Velocità verso l’alto dei numeri su schermo, in pixel al secondo."
+      "value": "Solo per il renderer ScreenSpace. Velocità extra verso l’alto, in pixel al secondo. I numeri salgono anche lentamente insieme al punto sopra il bersaglio, quindi con 0 non restano del tutto fermi."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Spostamento casuale su schermo, in pixel. Utile per pallini di fucile in PerHit."
+      "value": "Solo in modalità PerHit con il renderer ScreenSpace. Spostamento casuale su schermo per ogni numero, in pixel, utile per i pallini del fucile."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Diffusione deterministica extra per più numeri PerHit sullo stesso bersaglio nello stesso frame."
+      "value": "Solo per il renderer ScreenSpace. Diffusione deterministica extra su schermo per più numeri PerHit sullo stesso bersaglio nello stesso frame. Lo spostamento è limitato a 42 pixel."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Diffusione mondo extra per più numeri PerHit sullo stesso bersaglio nello stesso frame."
+      "value": "Diffusione deterministica extra nello spazio mondo per più numeri PerHit sullo stesso bersaglio nello stesso frame. Non usata dal renderer ScreenSpace. Lo spostamento è limitato a 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Numero massimo di numeri danno attivi per ogni renderer abilitato. Limitato a 1-256; quando è pieno viene riutilizzato il numero attivo più vecchio."
+      "value": "Numero massimo di numeri danno attivi per ogni renderer abilitato. Limitato a 1-256, o 1-64 per il renderer Vanilla; quando è pieno viene riutilizzato il numero attivo più vecchio."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Premi F8 in gioco per generare un numero di test al centro dello schermo."
+      "value": "Premi F8 in gioco per generare un numero di test al centro dello schermo. Il numero di test usa sempre lo stile ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

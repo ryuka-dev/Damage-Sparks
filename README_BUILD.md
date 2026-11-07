@@ -2,6 +2,39 @@
 
 BepInEx 5 plugin for SULFUR. Displays damage numbers for player-executed attacks.
 
+## v1.1.1 damage pipeline
+
+- `Unit.ReceiveDamage` calls `CreateDamageLog` before it decides whether the damage is applied:
+  protected NPCs, damage disabled in the settings, healing ally bullets and same-faction hits are
+  logged and then cancelled. `DamageLogPatch` therefore records a hit in the `CreateDamageLog` postfix
+  and shows it only when the enclosing `ReceiveDamage` returns `true`, which it does when it applied
+  the damage (also for `CannotDie` units, whose health is refilled right after, and for a 0-damage
+  death bounce, which `MinDamageToShow` filters).
+- `ReceiveDamage` nests (Crusader deals its Holy damage from `onDamageRecieved`, inside the outer
+  call). Every call has its own slot on a stack, keyed by the prefix's `__state`; the postfix and a
+  finalizer cut the stack back to that slot, so an exception cannot leave a stale slot. Hits are
+  numbered in the order they are logged and shown in that order in `LateUpdate`, so the weapon hit
+  always comes before the Holy hit it caused.
+- Status damage over time is recognised by `DamageSourceData.states.isPeriodicModifier`, the flag
+  `PeriodicModifier.CreateDamageSourceData` sets.
+- In `PerTargetTotal` each number shown on a target in one flush takes the next row; row N is drawn N
+  text lines higher. Rows count only numbers that were shown, and crowding protection tests the
+  position the number will actually occupy. Line heights are measured from the first view of each
+  renderer.
+- The screen canvas is only shown while `GameManager.gameState` is `Running`. The pause menu, the
+  inventory and dialogues use `Paused`, which stops time, so hidden numbers keep their remaining
+  lifetime; cinematics leave time running. World and vanilla numbers are scene objects and are not
+  hidden. While the state is `Loading`, every number is stopped and the queues are emptied on every
+  frame.
+- `VanillaDamageText` waits for a `GameManager` before it loads the dummy unit, because
+  `UnitSO.FetchAndLoadUnitLoader` goes through `GameManager.currentLoadedUnits`. Treating that wait as a
+  failed candidate used to disable the vanilla renderer for the whole session when it was selected at
+  startup.
+- Vanilla clones are switched off once the longest clip of their Animator has played (1.0 s on
+  1.0.5); the text is fully transparent by then. Crowding uses the animated text position.
+- Units that carry the game's own `DamageTracker` (the target dummies) are skipped, because the game
+  already draws every hit on them.
+
 ## v1.1.0 vanilla renderer
 
 `Renderer = Vanilla` renders through SULFUR's own damage text instead of the mod's TextMeshPro
@@ -12,7 +45,7 @@ views. Implementation notes:
   is no code-reachable asset for it.
 - `VanillaDamageText` therefore loads a dummy unit prefab through the game's own
   `UnitSO.FetchAndLoadUnitLoader()`, takes an extra Addressables reference so the asset survives the
-  game's own releases, and reads `damageTextInstancePrefab` plus the ten damage-type colors from the
+  game's own releases, and reads `damageTextInstancePrefab` plus the nine damage-type colors from the
   `DamageTracker` on that prefab. `UnitIds.TargetDummy` is tried first because on 0.18.5 only the
   deployable target dummy (`Unit_Enemy_Target_Dummy`) carries a `DamageTracker`; the shooting-range
   `UnitIds.TestDummy` does not and is kept only as a fallback.
@@ -133,9 +166,11 @@ Hard limits: `MaxActiveNumbers` / `MaxNumbersPerFrame` 1-256, `CrowdingRadius`
 ```ini
 [Visual]
 ScreenJitter = 26
-PerHitStackScreenSpread = 7.5
+PerHitStackScreenSpread = 12.8
 PerHitStackWorldSpread = 0.06
 ```
+
+These are the defaults. The spread is capped at 42 pixels and 0.36 world units per number.
 
 For slightly more separation:
 
@@ -152,9 +187,10 @@ PerHitStackScreenSpread = 4
 ## Build
 
 Open `SulfurDamageNumbersMod.csproj` in Visual Studio and build as a .NET Framework 4.7.2 class library.
+Machine-specific paths live in `Directory.Build.props`; each can be overridden on the command line.
 
-Copy the compiled DLL to:
-
-```text
-BepInEx/plugins/SulfurDamageNumbersMod/SulfurDamageNumbersMod.dll
-```
+Building with `-p:DeployToSulfurProfile=true` copies the DLL, renamed to `DamageSparks.dll`, into
+`Thunderstore/` and into the Gale profile's `plugins/ryuka_labs-DamageSparks/` folder together with
+`lang/`. That is the folder the mod manager already owns, so the profile never holds two copies of the
+same plugin GUID. When the mod manager has disabled that package (its files renamed to `*.old`), the
+profile copy is skipped.

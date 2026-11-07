@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal slår ihop skada i samma bildruta på samma mål. PerHit visar varje verklig skadehändelse separat."
+      "value": "PerTargetTotal slår ihop skada av en typ i samma bildruta på samma mål till en siffra; en andra skadetyp i samma träff visas en rad högre. PerHit visar varje verklig skadehändelse separat."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Färgar siffrorna efter träffmultiplikator. Svagpunkter är gula/orange/röda; utan multiplikator är skadan vit."
+      "value": "Färgar skadesiffrorna efter träffad kroppsdel: rött för ögon, orange för huvuden, gult för mellankroppen, vitt för kropp och lemmar. Skada utan kroppsdel, till exempel från statuseffekter och explosioner, är vit."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Visar multiplikator 1.0 som vit i stället för orange. Aktivera om vanliga kroppsträffar rapporteras som 1.0x."
+      "value": "Visar multiplikator 1.0 som vit i stället för orange. Huvudträffar är 1.0, så de blir vita precis som kroppsträffar."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Visar explosioner och liknande sekundär skada som ägs av spelaren. Stäng av om eld, gift eller DoT blir för mycket."
+      "value": "Visar explosioner och liknande sekundär skada som ägs av spelaren och inte kommer från ett vapen eller närstrid. Skada över tid från statuseffekter styrs av ”Visa skada från statuseffekter”."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Visar en decimal för icke-heltal. Heltal som 5.0 visas fortfarande som 5."
+      "value": "Visar en decimal för icke-heltal. Heltal som 5.0 visas fortfarande som 5. Vanilla-renderaren visar alltid heltal."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Hur länge varje skadesiffra visas, i sekunder."
+      "value": "Hur länge varje skadesiffra visas, i sekunder. Vanilla-renderaren följer i stället spelets egen animation."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Uppåthastighet för skadesiffror i världsrummet."
+      "value": "Endast för WorldTextMeshPro-renderaren. Uppåthastighet för skadesiffror i världsrummet."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Skala för TextMeshPro-skadesiffror i världsrummet."
+      "value": "Endast för WorldTextMeshPro-renderaren. Skala för 3D-skadesiffrorna."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Slumpmässig horisontell förskjutning. Användbart för PerHit-hagelkulor."
+      "value": "Endast i PerHit-läge. Slumpmässig horisontell förskjutning i världsrummet för varje siffra, användbart för hagelkulor. Används inte av ScreenSpace-renderaren."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "TextMeshPro-typsnittsstorlek för WorldTextMeshPro."
+      "value": "Endast för WorldTextMeshPro-renderaren. TextMeshPro-typsnittsstorlek för 3D-skadesiffrorna."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Typsnittsstorlek för skärmsiffror."
+      "value": "Endast för ScreenSpace-renderaren. Typsnittsstorlek för skadesiffror på skärmen."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Uppåthastighet för skärmsiffror i pixlar per sekund."
+      "value": "Endast för ScreenSpace-renderaren. Extra uppåthastighet i pixlar per sekund. Siffrorna stiger också långsamt med punkten ovanför målet, så 0 håller dem inte helt stilla."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Slumpmässig skärmförskjutning i pixlar. Användbart för PerHit-hagelkulor."
+      "value": "Endast i PerHit-läge med ScreenSpace-renderaren. Slumpmässig skärmförskjutning i pixlar för varje siffra, användbart för hagelkulor."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Extra deterministisk skärmspridning för flera PerHit-siffror på samma mål i samma bildruta."
+      "value": "Endast för ScreenSpace-renderaren. Extra deterministisk skärmspridning för flera PerHit-siffror på samma mål i samma bildruta. Förskjutningen är högst 42 pixlar."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Extra världsspridning för flera PerHit-siffror på samma mål i samma bildruta."
+      "value": "Extra deterministisk spridning i världsrummet för flera PerHit-siffror på samma mål i samma bildruta. Används inte av ScreenSpace-renderaren. Förskjutningen är högst 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximalt antal aktiva skadesiffror i varje aktiverad renderare. Begränsat till 1-256; när det är fullt återanvänds den äldsta aktiva siffran."
+      "value": "Maximalt antal aktiva skadesiffror i varje aktiverad renderare. Begränsat till 1-256, eller 1-64 för Vanilla-renderaren; när det är fullt återanvänds den äldsta aktiva siffran."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Tryck F8 i spelet för att skapa en testsiffra i mitten av skärmen."
+      "value": "Tryck F8 i spelet för att skapa en testsiffra i mitten av skärmen. Testsiffran använder alltid ScreenSpace-stilen."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

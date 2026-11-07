@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal fasst Schaden im selben Frame am selben Ziel zusammen. PerHit zeigt jedes echte Schadensereignis einzeln."
+      "value": "PerTargetTotal fasst Schaden einer Schadensart im selben Frame am selben Ziel zu einer Zahl zusammen; eine zweite Schadensart desselben Treffers erscheint eine Zeile höher. PerHit zeigt jedes echte Schadensereignis einzeln."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Färbt Schadenszahlen nach Treffer-Multiplikator. Schwache/empfindliche Treffer sind gelb/orange/rot; ohne Multiplikator ist der Schaden weiß."
+      "value": "Färbt Schadenszahlen nach getroffenem Körperteil: rot für Augen, orange für Köpfe, gelb für den Thorax, weiß für Körper und Gliedmaßen. Schaden ohne Körperteil, etwa durch Statuseffekte und Explosionen, ist weiß."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Zeigt Multiplikator 1.0 weiß statt orange. Aktivieren, wenn normale Körpertreffer als 1.0x gemeldet werden."
+      "value": "Zeigt Multiplikator 1.0 weiß statt orange. Kopftreffer haben 1.0 und werden damit weiß wie Körpertreffer."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Zeigt Explosionen und ähnlichen Sekundärschaden des Spielers. Abschalten, wenn Feuer, Gift oder DoT zu viel werden."
+      "value": "Zeigt Explosionen und ähnlichen Sekundärschaden des Spielers, der nicht von einer Waffe oder einem Nahkampfangriff stammt. Schaden über Zeit durch Statuseffekte wird über „Schaden durch Statuseffekte anzeigen“ gesteuert."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Zeigt eine Dezimalstelle für nicht-ganzzahligen Schaden. Ganze Werte wie 5.0 werden weiterhin als 5 angezeigt."
+      "value": "Zeigt eine Dezimalstelle für nicht-ganzzahligen Schaden. Ganze Werte wie 5.0 werden weiterhin als 5 angezeigt. Der Vanilla-Renderer zeigt immer ganze Zahlen."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Wie lange jede Schadenszahl sichtbar bleibt, in Sekunden."
+      "value": "Wie lange jede Schadenszahl sichtbar bleibt, in Sekunden. Der Vanilla-Renderer folgt stattdessen der Animation des Spiels."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Aufstiegsgeschwindigkeit für Zahlen im Weltraum."
+      "value": "Nur für den WorldTextMeshPro-Renderer. Aufstiegsgeschwindigkeit der Schadenszahlen in der Spielwelt."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Skalierung der TextMeshPro-Schadenszahlen im Weltraum."
+      "value": "Nur für den WorldTextMeshPro-Renderer. Skalierung der 3D-Schadenszahlen."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Zufälliger horizontaler Versatz. Nützlich für PerHit-Schrotkugeln."
+      "value": "Nur im PerHit-Modus. Zufälliger horizontaler Versatz in der Spielwelt für jede Zahl, nützlich für Schrotkugeln. Wird vom ScreenSpace-Renderer nicht verwendet."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "TextMeshPro-Schriftgröße für den WorldTextMeshPro-Renderer."
+      "value": "Nur für den WorldTextMeshPro-Renderer. TextMeshPro-Schriftgröße der 3D-Schadenszahlen."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Schriftgröße für Bildschirm-Schadenszahlen."
+      "value": "Nur für den ScreenSpace-Renderer. Schriftgröße für Schadenszahlen auf dem Bildschirm."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Aufstiegsgeschwindigkeit für Bildschirmzahlen in Pixeln pro Sekunde."
+      "value": "Nur für den ScreenSpace-Renderer. Zusätzliche Aufstiegsgeschwindigkeit in Pixeln pro Sekunde. Die Zahlen steigen außerdem langsam mit dem Punkt über dem Ziel mit, daher stehen sie auch bei 0 nicht ganz still."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Zufälliger Bildschirmversatz in Pixeln. Nützlich für PerHit-Schrotkugeln."
+      "value": "Nur im PerHit-Modus mit dem ScreenSpace-Renderer. Zufälliger Bildschirmversatz in Pixeln für jede Zahl, nützlich für Schrotkugeln."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Zusätzliche deterministische Bildschirmverteilung für mehrere PerHit-Zahlen am selben Ziel im selben Frame."
+      "value": "Nur für den ScreenSpace-Renderer. Zusätzliche deterministische Bildschirmverteilung für mehrere PerHit-Zahlen am selben Ziel im selben Frame. Der Versatz ist auf 42 Pixel begrenzt."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Zusätzliche deterministische Weltverteilung für mehrere PerHit-Zahlen am selben Ziel im selben Frame."
+      "value": "Zusätzliche deterministische Verteilung in der Spielwelt für mehrere PerHit-Zahlen am selben Ziel im selben Frame. Wird vom ScreenSpace-Renderer nicht verwendet. Der Versatz ist auf 0.36 begrenzt."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximale aktive Schadenszahlen pro aktiviertem Renderer. Auf 1-256 begrenzt; bei vollem Pool wird die älteste aktive Zahl wiederverwendet."
+      "value": "Maximale aktive Schadenszahlen pro aktiviertem Renderer. Auf 1-256 begrenzt, beim Vanilla-Renderer auf 1-64; bei vollem Pool wird die älteste aktive Zahl wiederverwendet."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Drücke F8 im Spiel, um eine Testzahl in der Bildschirmmitte zu erzeugen."
+      "value": "Drücke F8 im Spiel, um eine Testzahl in der Bildschirmmitte zu erzeugen. Die Testzahl nutzt immer den ScreenSpace-Stil."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

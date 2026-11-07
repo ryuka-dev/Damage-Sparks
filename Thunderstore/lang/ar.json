@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal يدمج ضرر نفس الإطار على نفس الهدف. PerHit يعرض كل حدث ضرر حقيقي بشكل منفصل."
+      "value": "يدمج PerTargetTotal ضرر النوع الواحد في نفس الإطار على نفس الهدف في رقم واحد؛ ويظهر نوع الضرر الثاني في الإصابة نفسها أعلى بسطر واحد. يعرض PerHit كل حدث ضرر حقيقي بشكل منفصل."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "يلوّن الأرقام حسب مضاعف الإصابة. نقاط الضعف صفراء/برتقالية/حمراء؛ وعند عدم وجود مضاعف يكون الضرر أبيض."
+      "value": "يلوّن أرقام الضرر حسب جزء الجسم المُصاب: الأحمر للعيون، والبرتقالي للرؤوس، والأصفر للصدر، والأبيض للجسم والأطراف. الضرر الذي لا يرتبط بجزء من الجسم، مثل تأثيرات الحالة والانفجارات، يكون أبيض."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "يعرض مضاعف 1.0 باللون الأبيض بدل البرتقالي. فعّله إذا كانت ضربات الجسم العادية تُسجّل 1.0x."
+      "value": "يعرض مضاعف 1.0 باللون الأبيض بدل البرتقالي. مضاعف إصابات الرأس هو 1.0، لذا يجعلها هذا الخيار بيضاء مثل إصابات الجسم."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "يعرض الانفجارات والضرر الثانوي المملوك للّاعب. عطّله إذا أصبح الحريق أو السم أو DoT مزعجًا."
+      "value": "يعرض انفجارات اللاعب والضرر الثانوي المشابه الذي لا يأتي من سلاح أو هجوم قريب. أما الضرر المستمر الناتج عن تأثيرات الحالة فيتحكم فيه خيار «إظهار ضرر تأثيرات الحالة»."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "يعرض منزلة عشرية للضرر غير الصحيح. القيم الصحيحة مثل 5.0 تظهر كـ 5."
+      "value": "يعرض منزلة عشرية للضرر غير الصحيح. القيم الصحيحة مثل 5.0 تظهر كـ 5. يعرض محرك Vanilla أرقامًا صحيحة دائمًا."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "مدة بقاء كل رقم ضرر ظاهرًا بالثواني."
+      "value": "مدة بقاء كل رقم ضرر ظاهرًا بالثواني. أما محرك Vanilla فيتبع حركة اللعبة نفسها."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "سرعة صعود أرقام الضرر في فضاء العالم."
+      "value": "لمحرك WorldTextMeshPro فقط. سرعة صعود أرقام الضرر في فضاء العالم."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "مقياس أرقام TextMeshPro في فضاء العالم."
+      "value": "لمحرك WorldTextMeshPro فقط. مقياس أرقام الضرر ثلاثية الأبعاد."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "إزاحة أفقية عشوائية للأرقام. مفيد لحبيبات الشوزن في PerHit."
+      "value": "لوضع PerHit فقط. إزاحة أفقية عشوائية في فضاء العالم لكل رقم، مفيدة لحبيبات الشوزن. لا يستخدمه محرك ScreenSpace."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "حجم خط TextMeshPro لمصيّر WorldTextMeshPro."
+      "value": "لمحرك WorldTextMeshPro فقط. حجم خط TextMeshPro لأرقام الضرر ثلاثية الأبعاد."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "حجم الخط لأرقام الشاشة."
+      "value": "لمحرك ScreenSpace فقط. حجم الخط لأرقام الضرر على الشاشة."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "سرعة صعود أرقام الشاشة بالبكسل في الثانية."
+      "value": "لمحرك ScreenSpace فقط. سرعة صعود إضافية بالبكسل في الثانية. تصعد الأرقام أيضًا ببطء مع النقطة الموجودة فوق الهدف، لذا لا تجعلها القيمة 0 ثابتة تمامًا."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "إزاحة عشوائية على الشاشة بالبكسل. مفيد لحبيبات الشوزن في PerHit."
+      "value": "لوضع PerHit مع محرك ScreenSpace فقط. إزاحة عشوائية على الشاشة لكل رقم بالبكسل، مفيدة لحبيبات الشوزن."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "انتشار شاشة إضافي محدد لعدة أرقام PerHit على نفس الهدف في نفس الإطار."
+      "value": "لمحرك ScreenSpace فقط. انتشار إضافي ثابت النمط على الشاشة لعدة أرقام PerHit على نفس الهدف في نفس الإطار. الحد الأقصى للإزاحة 42 بكسل."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "انتشار عالم إضافي لعدة أرقام PerHit على نفس الهدف في نفس الإطار."
+      "value": "انتشار إضافي ثابت النمط في فضاء العالم لعدة أرقام PerHit على نفس الهدف في نفس الإطار. لا يستخدمه محرك ScreenSpace. الحد الأقصى للإزاحة 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "أقصى عدد من أرقام الضرر النشطة في كل مُصيّر مُفعّل. محدود بين 1 و256؛ وعند الامتلاء يُعاد استخدام أقدم رقم نشط."
+      "value": "أقصى عدد من أرقام الضرر النشطة في كل محرك مُفعّل. محدود بين 1 و256، أو بين 1 و64 لمحرك Vanilla؛ وعند الامتلاء يُعاد استخدام أقدم رقم نشط."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "اضغط F8 داخل اللعبة لإنشاء رقم اختبار في وسط الشاشة."
+      "value": "اضغط F8 داخل اللعبة لإنشاء رقم اختبار في وسط الشاشة. يستخدم رقم الاختبار دائمًا نمط ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

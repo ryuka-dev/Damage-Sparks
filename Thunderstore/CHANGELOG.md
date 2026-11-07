@@ -5,9 +5,33 @@
 **Stacked numbers**
 
 - Fixed numbers drawn exactly on top of each other in `PerTargetTotal` mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader is the common case: its Holy damage lands in the same frame as the weapon hit.
-- The weapon hit stays where it was. Each additional damage type on that enemy in the same frame is now drawn one text line higher, in the `ScreenSpace`, `WorldTextMeshPro` and `Vanilla` renderers.
+- The weapon hit stays where it was. Each additional number on that enemy in the same frame, such as another damage type or a second weapon, is now drawn one text line higher, in the `ScreenSpace`, `WorldTextMeshPro` and `Vanilla` renderers.
 - Merging and colors are unchanged. Shotgun pellets of one damage type still add up to a single number, and each damage type keeps its own number and color.
 - `PerHit` mode is unchanged.
+
+**Damage that never happened**
+
+- Fixed numbers appearing for damage the game cancels: hits on protected NPCs such as traders, healing ally bullets, same-faction hits and damage turned off in the game settings. A number now appears only when the game actually takes health off the target.
+
+**Pause and level loading**
+
+- Fixed screen-space numbers freezing on top of the pause menu. They now hide while the game is paused or the inventory or a dialogue is open, and finish once play resumes. `WorldTextMeshPro` and `Vanilla` numbers are part of the 3D scene and stay behind the menu, as before.
+- Numbers on screen when a level starts loading are cleared instead of carrying over into the next level.
+
+**Vanilla renderer**
+
+- Fixed `Renderer = Vanilla` never working when it was already selected when the game started. It fell back to `ScreenSpace` for the whole session, so after the first launch it never appeared again.
+- Vanilla numbers are switched off as soon as the game's animation has finished, and crowding protection now follows where the text is actually drawn.
+
+**Target dummies**
+
+- Target dummies already show the game's own damage text. Damage Sparks no longer adds a second set of numbers on them.
+
+**Settings**
+
+- Status damage over time is now recognised by the game's own marker. Other player-owned damage without a weapon, such as reflected thorns damage, now follows `ShowPlayerOwnedSecondaryEffects` instead of `ShowStatusEffectDamage`. With the default settings both are shown, as before.
+- Corrected several setting descriptions: the color rules (head hits are orange, so `TreatOneMultiplierAsNormal` turns head hits white), which settings apply to which renderer and mode, the 64-number limit of the `Vanilla` renderer and the spread limits.
+- Added Traditional Chinese (zh-TW) setting names for SULFUR Config.
 
 **Compatibility**
 

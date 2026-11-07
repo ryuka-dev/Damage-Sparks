@@ -1,0 +1,316 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "SULFUR 傷害數字"
+    },
+    {
+      "key": "plugin.description",
+      "value": "玩家造成傷害時，在敵人上方顯示浮動的傷害數字。"
+    },
+    {
+      "key": "section.General",
+      "value": "一般"
+    },
+    {
+      "key": "section.Visual",
+      "value": "顯示"
+    },
+    {
+      "key": "section.Filter",
+      "value": "篩選"
+    },
+    {
+      "key": "section.Performance",
+      "value": "效能"
+    },
+    {
+      "key": "section.Debug",
+      "value": "除錯"
+    },
+    {
+      "key": "entry.General.Enabled.name",
+      "value": "啟用"
+    },
+    {
+      "key": "entry.General.Enabled.description",
+      "value": "啟用傷害數字顯示。"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.name",
+      "value": "傷害顯示模式"
+    },
+    {
+      "key": "entry.General.DamageDisplayMode.description",
+      "value": "PerTargetTotal 會將同一影格、同一目標上同類型的傷害合併成一個數字；同一次命中中的第二種傷害類型會顯示在上方一行。PerHit 會將每次實際傷害事件分別顯示。"
+    },
+    {
+      "key": "entry.Visual.Renderer.name",
+      "value": "渲染器"
+    },
+    {
+      "key": "entry.Visual.Renderer.description",
+      "value": "建議使用 ScreenSpace。WorldTextMeshPro 使用 3D 文字。Both 會同時啟用兩種渲染器，主要用於除錯。Vanilla 使用遊戲內建的傷害文字，也就是打訓練假人時看到的那種。"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.name",
+      "value": "原版傷害類型顏色"
+    },
+    {
+      "key": "entry.Visual.VanillaUseDamageTypeColors.description",
+      "value": "僅適用於 Vanilla 渲染器。開啟時使用遊戲內建的傷害類型顏色，與訓練假人相同。關閉時在原版動畫上沿用本模組的弱點顏色。"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.name",
+      "value": "原版文字縮放"
+    },
+    {
+      "key": "entry.Visual.VanillaScale.description",
+      "value": "僅適用於 Vanilla 渲染器。遊戲內建傷害文字的大小。1.0 與訓練假人顯示的大小相同。"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.name",
+      "value": "使用弱點顏色"
+    },
+    {
+      "key": "entry.Visual.UseWeakspotColors.description",
+      "value": "依命中部位為傷害數字上色：眼睛為紅色，頭部為橙色，胸部為黃色，身體與四肢為白色。沒有命中部位的傷害（例如狀態效果與爆炸）為白色。"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
+      "value": "將 1.0x 視為一般傷害"
+    },
+    {
+      "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
+      "value": "將 1.0 倍率顯示為白色而非橙色。頭部命中的倍率是 1.0，開啟後頭部命中會和身體命中一樣顯示為白色。"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.name",
+      "value": "合併傷害顏色"
+    },
+    {
+      "key": "entry.Visual.AggregateColorMode.description",
+      "value": "PerTargetTotal 將多次命中合併成一個數字時使用的顏色規則。"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.name",
+      "value": "要求目標為 NPC"
+    },
+    {
+      "key": "entry.Filter.RequireNpcTarget.description",
+      "value": "只在 NPC 目標上顯示傷害數字。建議保持開啟，避免木桶等物件也顯示。"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.name",
+      "value": "要求來源單位為玩家"
+    },
+    {
+      "key": "entry.Filter.RequireSourceUnitPlayer.description",
+      "value": "要求 sourceData.sourceUnit 存在且為玩家。預設關閉，以相容投射物與爆炸。"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.name",
+      "value": "顯示玩家的二次傷害"
+    },
+    {
+      "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
+      "value": "顯示屬於玩家、且沒有武器或近戰來源的爆炸等二次傷害。狀態效果的持續傷害由「顯示狀態效果傷害」控制。"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.name",
+      "value": "顯示狀態效果傷害"
+    },
+    {
+      "key": "entry.Filter.ShowStatusEffectDamage.description",
+      "value": "顯示由玩家施加的狀態效果所造成的持續傷害，例如燃燒、中毒與觸電。這就是打訓練假人時看到的那些彩色數字。"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.name",
+      "value": "最低顯示傷害"
+    },
+    {
+      "key": "entry.Filter.MinDamageToShow.description",
+      "value": "最終傷害低於此數值時不顯示。"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.name",
+      "value": "顯示小數"
+    },
+    {
+      "key": "entry.Visual.ShowDecimals.description",
+      "value": "非整數傷害顯示一位小數。5.0 這類整數仍顯示為 5。Vanilla 渲染器一律顯示整數。"
+    },
+    {
+      "key": "entry.Visual.Lifetime.name",
+      "value": "持續時間"
+    },
+    {
+      "key": "entry.Visual.Lifetime.description",
+      "value": "每個傷害數字可見的時間，單位為秒。Vanilla 渲染器則改為依照遊戲內建的動畫。"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.name",
+      "value": "世界空間上浮速度"
+    },
+    {
+      "key": "entry.Visual.FloatSpeed.description",
+      "value": "僅適用於 WorldTextMeshPro 渲染器。世界空間傷害數字的上浮速度。"
+    },
+    {
+      "key": "entry.Visual.WorldScale.name",
+      "value": "世界空間縮放"
+    },
+    {
+      "key": "entry.Visual.WorldScale.description",
+      "value": "僅適用於 WorldTextMeshPro 渲染器。3D 傷害數字的縮放比例。"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.name",
+      "value": "隨機偏移"
+    },
+    {
+      "key": "entry.Visual.RandomJitter.description",
+      "value": "僅在 PerHit 模式下有效。為每個數字加上世界空間中的隨機水平偏移，適合霰彈槍彈丸。ScreenSpace 渲染器不使用此設定。"
+    },
+    {
+      "key": "entry.Visual.FontSize.name",
+      "value": "世界空間字型大小"
+    },
+    {
+      "key": "entry.Visual.FontSize.description",
+      "value": "僅適用於 WorldTextMeshPro 渲染器。3D 傷害數字的 TextMeshPro 字型大小。"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.name",
+      "value": "螢幕字型大小"
+    },
+    {
+      "key": "entry.Visual.ScreenFontSize.description",
+      "value": "僅適用於 ScreenSpace 渲染器。螢幕空間傷害數字的字型大小。"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.name",
+      "value": "螢幕上浮速度"
+    },
+    {
+      "key": "entry.Visual.ScreenFloatSpeed.description",
+      "value": "僅適用於 ScreenSpace 渲染器。額外的上浮速度，單位為像素/秒。數字也會隨目標上方的那個點緩慢上移，因此設為 0 也不會完全靜止。"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.name",
+      "value": "螢幕隨機偏移"
+    },
+    {
+      "key": "entry.Visual.ScreenJitter.description",
+      "value": "僅在 PerHit 模式且使用 ScreenSpace 渲染器時有效。為每個數字加上螢幕空間的隨機偏移，單位為像素，適合霰彈槍彈丸。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.name",
+      "value": "PerHit 螢幕擴散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackScreenSpread.description",
+      "value": "僅適用於 ScreenSpace 渲染器。同一影格中同一目標產生多個 PerHit 數字時，額外加入確定性的螢幕空間擴散。偏移上限為 42 像素。"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.name",
+      "value": "PerHit 世界擴散"
+    },
+    {
+      "key": "entry.Visual.PerHitStackWorldSpread.description",
+      "value": "同一影格中同一目標產生多個 PerHit 數字時，額外加入確定性的世界空間擴散。ScreenSpace 渲染器不使用此設定。偏移上限為 0.36。"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.name",
+      "value": "最大同時顯示數量"
+    },
+    {
+      "key": "entry.Performance.MaxActiveNumbers.description",
+      "value": "每個已啟用渲染器中同時顯示的傷害數字上限。強制限制在 1-256，Vanilla 渲染器為 1-64；達到上限時會重複使用最舊的數字。"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.name",
+      "value": "每影格最大數字數"
+    },
+    {
+      "key": "entry.Performance.MaxNumbersPerFrame.description",
+      "value": "單一影格內最多新產生的傷害數字數量。強制限制在 1-256。超出的事件會被捨棄，以避免命中洗版。"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.name",
+      "value": "擁擠保護"
+    },
+    {
+      "key": "entry.Performance.EnableCrowdingProtection.description",
+      "value": "當同一小塊螢幕區域內已有過多數字時，略過新數字。這只是視覺上的限制，不會合併傷害或改變彙總規則。"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.name",
+      "value": "擁擠半徑"
+    },
+    {
+      "key": "entry.Performance.CrowdingRadius.description",
+      "value": "擁擠保護使用的螢幕空間半徑（像素）。強制限制在 8-120。"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.name",
+      "value": "鄰近數字上限"
+    },
+    {
+      "key": "entry.Performance.MaxNearbyNumbers.description",
+      "value": "在略過新的被遮擋數字之前，擁擠半徑內允許存在的數字數量。強制限制在 1-32。"
+    },
+    {
+      "key": "entry.Debug.DebugLog.name",
+      "value": "除錯記錄"
+    },
+    {
+      "key": "entry.Debug.DebugLog.description",
+      "value": "將接受與拒絕的傷害事件輸出到 LogOutput.log。"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.name",
+      "value": "F8 測試數字"
+    },
+    {
+      "key": "entry.Debug.DebugSpawnTestOnF8.description",
+      "value": "在遊戲中按 F8，會在螢幕中央產生一個測試數字。測試數字一律使用 ScreenSpace 樣式。"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerTargetTotal",
+      "value": "依目標合計"
+    },
+    {
+      "key": "value.General.DamageDisplayMode.PerHit",
+      "value": "每次命中"
+    },
+    {
+      "key": "value.Visual.Renderer.ScreenSpace",
+      "value": "螢幕空間"
+    },
+    {
+      "key": "value.Visual.Renderer.WorldTextMeshPro",
+      "value": "世界 TextMeshPro"
+    },
+    {
+      "key": "value.Visual.Renderer.Both",
+      "value": "兩者同時"
+    },
+    {
+      "key": "value.Visual.Renderer.Vanilla",
+      "value": "原版"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.HighestMultiplier",
+      "value": "最高倍率"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.DamageWeightedAverage",
+      "value": "依傷害加權平均"
+    },
+    {
+      "key": "value.Visual.AggregateColorMode.LastHit",
+      "value": "最後命中"
+    }
+  ]
+}

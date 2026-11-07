@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal łączy obrażenia z tej samej klatki na tym samym celu. PerHit pokazuje każde realne zdarzenie obrażeń osobno."
+      "value": "PerTargetTotal łączy obrażenia jednego typu z tej samej klatki na tym samym celu w jedną liczbę; drugi typ obrażeń z tego samego trafienia pojawia się linię wyżej. PerHit pokazuje każde realne zdarzenie obrażeń osobno."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Koloruje liczby według mnożnika trafienia. Słabe punkty są żółte/pomarańczowe/czerwone; bez mnożnika obrażenia są białe."
+      "value": "Koloruje liczby obrażeń według trafionej części ciała: czerwony dla oczu, pomarańczowy dla głowy, żółty dla tułowia, biały dla korpusu i kończyn. Obrażenia bez części ciała, np. od efektów statusu i eksplozji, są białe."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Pokazuje mnożnik 1.0 jako biały zamiast pomarańczowego. Włącz, jeśli zwykłe trafienia w ciało są zgłaszane jako 1.0x."
+      "value": "Pokazuje mnożnik 1.0 jako biały zamiast pomarańczowego. Trafienia w głowę mają mnożnik 1.0, więc będą białe jak trafienia w ciało."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Pokazuje eksplozje i podobne wtórne obrażenia gracza. Wyłącz, jeśli ogień, trucizna lub DoT są zbyt hałaśliwe."
+      "value": "Pokazuje eksplozje gracza i podobne obrażenia wtórne, które nie pochodzą z broni ani ataku wręcz. Obrażeniami w czasie od efektów statusu steruje opcja „Pokaż obrażenia od efektów statusu”."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Pokazuje jedno miejsce dziesiętne dla obrażeń niecałkowitych. Liczby całkowite jak 5.0 nadal są pokazane jako 5."
+      "value": "Pokazuje jedno miejsce dziesiętne dla obrażeń niecałkowitych. Liczby całkowite jak 5.0 nadal są pokazane jako 5. Renderer Vanilla zawsze pokazuje liczby całkowite."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Jak długo każda liczba obrażeń pozostaje widoczna, w sekundach."
+      "value": "Jak długo każda liczba obrażeń pozostaje widoczna, w sekundach. Renderer Vanilla zamiast tego korzysta z animacji gry."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Prędkość unoszenia liczb w przestrzeni świata."
+      "value": "Tylko dla renderera WorldTextMeshPro. Prędkość unoszenia liczb obrażeń w przestrzeni świata."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Skala liczb TextMeshPro w przestrzeni świata."
+      "value": "Tylko dla renderera WorldTextMeshPro. Skala liczb obrażeń 3D."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Losowe poziome przesunięcie liczb. Przydatne dla śrutu w trybie PerHit."
+      "value": "Tylko w trybie PerHit. Losowe poziome przesunięcie każdej liczby w przestrzeni świata, przydatne dla śrutu. Nieużywane przez renderer ScreenSpace."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "Rozmiar czcionki TextMeshPro dla renderera WorldTextMeshPro."
+      "value": "Tylko dla renderera WorldTextMeshPro. Rozmiar czcionki TextMeshPro liczb obrażeń 3D."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Rozmiar czcionki dla liczb ekranowych."
+      "value": "Tylko dla renderera ScreenSpace. Rozmiar czcionki liczb obrażeń na ekranie."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Prędkość unoszenia liczb ekranowych w pikselach na sekundę."
+      "value": "Tylko dla renderera ScreenSpace. Dodatkowa prędkość unoszenia w pikselach na sekundę. Liczby i tak powoli unoszą się razem z punktem nad celem, więc 0 nie zatrzymuje ich całkowicie."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Losowe przesunięcie ekranu w pikselach. Przydatne dla śrutu w trybie PerHit."
+      "value": "Tylko w trybie PerHit z rendererem ScreenSpace. Losowe przesunięcie każdej liczby na ekranie w pikselach, przydatne dla śrutu."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Dodatkowe deterministyczne rozproszenie ekranowe dla wielu liczb PerHit na tym samym celu w tej samej klatce."
+      "value": "Tylko dla renderera ScreenSpace. Dodatkowe deterministyczne rozproszenie ekranowe dla wielu liczb PerHit na tym samym celu w tej samej klatce. Przesunięcie jest ograniczone do 42 pikseli."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Dodatkowe rozproszenie w świecie dla wielu liczb PerHit na tym samym celu w tej samej klatce."
+      "value": "Dodatkowe deterministyczne rozproszenie w przestrzeni świata dla wielu liczb PerHit na tym samym celu w tej samej klatce. Nieużywane przez renderer ScreenSpace. Przesunięcie jest ograniczone do 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maksymalna liczba aktywnych liczb obrażeń w każdym włączonym rendererze. Ograniczone do 1-256; po zapełnieniu najstarsza aktywna liczba jest używana ponownie."
+      "value": "Maksymalna liczba aktywnych liczb obrażeń w każdym włączonym rendererze. Ograniczone do 1-256, a dla renderera Vanilla do 1-64; po zapełnieniu najstarsza aktywna liczba jest używana ponownie."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Naciśnij F8 w grze, aby utworzyć testową liczbę na środku ekranu."
+      "value": "Naciśnij F8 w grze, aby utworzyć testową liczbę na środku ekranu. Testowa liczba zawsze używa stylu ScreenSpace."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

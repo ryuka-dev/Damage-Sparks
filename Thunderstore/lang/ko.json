@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal은 같은 프레임의 같은 대상 피해를 합산합니다. PerHit은 실제 피해 이벤트를 각각 표시합니다."
+      "value": "PerTargetTotal은 같은 프레임에 같은 대상이 받은 같은 속성의 피해를 숫자 하나로 합산합니다. 같은 명중의 두 번째 피해 속성은 한 줄 위에 표시됩니다. PerHit은 실제 피해 이벤트를 각각 표시합니다."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "명중 배율에 따라 숫자 색을 바꿉니다. 약점 명중은 노랑/주황/빨강이며, 배율이 없으면 흰색입니다."
+      "value": "명중한 부위에 따라 피해 숫자 색을 바꿉니다. 눈은 빨강, 머리는 주황, 흉부는 노랑, 몸통과 팔다리는 흰색입니다. 상태 효과나 폭발처럼 부위가 없는 피해는 흰색입니다."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "1.0 배율을 주황색 대신 흰색으로 표시합니다. 일반 몸통 명중이 1.0x로 보고될 때 사용하세요."
+      "value": "1.0 배율을 주황색 대신 흰색으로 표시합니다. 머리 명중은 1.0이므로, 켜면 몸통 명중처럼 흰색으로 표시됩니다."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "플레이어 소유 폭발 등 보조 피해를 표시합니다. 화염, 독, DoT가 너무 많으면 끄세요."
+      "value": "무기나 근접 공격에서 나오지 않은 플레이어 소유 폭발 등 보조 피해를 표시합니다. 상태 효과의 지속 피해는 '상태 효과 피해 표시'에서 설정합니다."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "정수가 아닌 피해는 소수 한 자리로 표시합니다. 5.0 같은 정수는 5로 표시합니다."
+      "value": "정수가 아닌 피해는 소수 한 자리로 표시합니다. 5.0 같은 정수는 5로 표시합니다. Vanilla 렌더러는 항상 정수로 표시합니다."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "각 데미지 숫자가 보이는 시간(초)입니다."
+      "value": "각 데미지 숫자가 보이는 시간(초)입니다. Vanilla 렌더러는 대신 게임 자체 연출을 따릅니다."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "월드 공간 숫자가 위로 움직이는 속도입니다."
+      "value": "WorldTextMeshPro 렌더러 전용. 월드 공간 피해 숫자가 위로 움직이는 속도입니다."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "월드 공간 TextMeshPro 숫자의 크기입니다."
+      "value": "WorldTextMeshPro 렌더러 전용. 3D 피해 숫자의 크기입니다."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "숫자의 무작위 가로 오프셋입니다. PerHit 산탄에 유용합니다."
+      "value": "PerHit 모드 전용. 숫자마다 월드 공간에서 무작위 가로 오프셋을 줍니다. 산탄에 유용합니다. ScreenSpace 렌더러에서는 사용하지 않습니다."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "WorldTextMeshPro 렌더러용 TextMeshPro 글꼴 크기입니다."
+      "value": "WorldTextMeshPro 렌더러 전용. 3D 피해 숫자의 TextMeshPro 글꼴 크기입니다."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "화면 공간 숫자의 글꼴 크기입니다."
+      "value": "ScreenSpace 렌더러 전용. 화면 공간 피해 숫자의 글꼴 크기입니다."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "화면 공간 숫자의 상승 속도입니다. 단위는 픽셀/초입니다."
+      "value": "ScreenSpace 렌더러 전용. 추가 상승 속도이며 단위는 픽셀/초입니다. 숫자는 대상 위의 기준점을 따라 천천히 올라가므로 0으로 해도 완전히 멈추지는 않습니다."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "화면 공간 무작위 오프셋입니다. 단위는 픽셀입니다. PerHit 산탄에 유용합니다."
+      "value": "PerHit 모드와 ScreenSpace 렌더러 전용. 숫자마다 화면 공간 무작위 오프셋(픽셀)을 줍니다. 산탄에 유용합니다."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 추가 확산을 적용합니다."
+      "value": "ScreenSpace 렌더러 전용. 같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 결정론적 화면 공간 확산을 추가로 적용합니다. 오프셋은 최대 42픽셀입니다."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 월드 공간 확산을 적용합니다."
+      "value": "같은 프레임의 같은 대상에 여러 PerHit 숫자가 생길 때 결정론적 월드 공간 확산을 추가로 적용합니다. ScreenSpace 렌더러에서는 사용하지 않습니다. 오프셋은 최대 0.36입니다."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "활성화된 각 렌더러의 데미지 숫자 최대 활성 수입니다. 1~256으로 제한되며, 가득 차면 가장 오래된 숫자를 재사용합니다."
+      "value": "활성화된 각 렌더러의 데미지 숫자 최대 활성 수입니다. 1~256(Vanilla 렌더러는 1~64)으로 제한되며, 가득 차면 가장 오래된 숫자를 재사용합니다."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "게임 내에서 F8을 누르면 화면 중앙에 테스트 숫자를 생성합니다."
+      "value": "게임 내에서 F8을 누르면 화면 중앙에 테스트 숫자를 생성합니다. 테스트 숫자는 항상 ScreenSpace 스타일을 사용합니다."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

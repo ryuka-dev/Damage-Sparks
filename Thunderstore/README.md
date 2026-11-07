@@ -4,7 +4,7 @@ Floating damage numbers for SULFUR.
 
 Damage Sparks shows damage numbers when the player damages enemies with guns, shotguns, thrown weapons, melee weapons, or other player-driven attacks.
 
-Weakpoint hits use colors based on the game's weakpoint multiplier. Normal damage is shown in white.
+Numbers are colored by the body part you hit: eyes red, heads orange, the thorax yellow, the body and limbs white. The optional vanilla renderer uses the game's damage-type colors instead, unless you turn that off.
 
 This mod does not change damage, weapon balance, enemy stats, loot, or progression. It only adds visual combat feedback.
 
@@ -12,13 +12,13 @@ This mod does not change damage, weapon balance, enemy stats, loot, or progressi
 
 - Floating damage numbers for player-caused damage
 - Supports guns, shotguns, melee weapons, thrown weapons, and player-owned attack effects
-- Uses the game's calculated damage log value
+- Shows the damage the game actually applied, so hits the game cancels (protected NPCs, for example) show nothing
 - Damage over time from player-applied burning, poison and electrocution
-- Weakpoint color feedback
-- Normal damage is white
+- Body-part color feedback
 - Two damage display modes
 - Optional vanilla renderer that uses SULFUR's own target-dummy damage text
 - Configurable number spread
+- Screen-space numbers hide while the game is paused or a menu is open, and all numbers are cleared when a level loads
 - SULFUR Config support with localized settings
 - Does not modify actual damage calculation
 
@@ -30,7 +30,7 @@ You can change the mode in:
 
 ```text
 BepInEx/config/ryuka.sulfur.damagenumbers.cfg
-````
+```
 
 or through SULFUR Config if installed.
 
@@ -49,7 +49,7 @@ If the same shotgun blast hits two enemies, the mod shows two damage numbers:
 
 This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
 
-Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit.
+Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit. The same happens for any further number on that enemy in the same frame, for example from a second weapon.
 
 It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
 
@@ -65,8 +65,8 @@ This mode gives more detailed feedback, but it can be visually busy with shotgun
 
 ## Renderers
 
-`Renderer` decides how a damage number is drawn. The display mode, the filters and the performance
-limits work the same way in every renderer.
+`Renderer` decides how a damage number is drawn. The display mode and the filters work the same way in
+every renderer.
 
 ```ini
 Renderer = ScreenSpace
@@ -93,17 +93,26 @@ VanillaScale = 1.0
 * `VanillaUseDamageTypeColors = false` keeps this mod's weakpoint colors on the vanilla animation.
 * `VanillaScale` resizes the text. `1.0` is the size the target dummies use.
 
-The game's damage text shows whole numbers only, so `ShowDecimals` has no effect in this renderer.
+The game's animation decides how long a number stays and how it moves, so `Lifetime` and the font
+size, float speed and screen jitter settings of the other renderers have no effect here. In Per Hit
+mode, `RandomJitter` and `PerHitStackWorldSpread` still move the starting point. The game's damage text
+shows whole numbers only, so `ShowDecimals` has no effect either. At most 64 vanilla numbers are on
+screen at once, whatever `MaxActiveNumbers` says.
+
 If the game does not provide the prefab, this renderer falls back to `ScreenSpace` and writes a
 warning to the log.
 
 ## Weakpoint Colors
 
-Damage number color is based on the game's weakpoint multiplier.
+Damage number color is based on the multiplier of the body part you hit.
 
-* Normal damage: white
-* Weakpoint / higher multiplier damage: colored
-* If the multiplier cannot be detected, the number falls back to white
+* Eyes (1.5x): red
+* Heads (1.0x): orange
+* Thorax (0.75x): yellow
+* Body and limbs (0.5x and less): white
+* Damage with no body part, such as status effects and explosions: white
+
+`TreatOneMultiplierAsNormal = true` turns head hits white as well.
 
 In Per Target Total mode, combined damage uses the highest multiplier color by default.
 This makes it easier to notice when a shotgun blast includes a weakpoint hit.
@@ -121,8 +130,6 @@ Important options:
 ```ini
 DamageDisplayMode = PerTargetTotal
 Renderer = ScreenSpace
-ScreenJitter = 26
-PerHitStackScreenSpread = 12.8
 MaxActiveNumbers = 160
 ```
 
@@ -153,16 +160,21 @@ Recommended setting for detailed hit testing:
 
 ```ini
 DamageDisplayMode = PerHit
+ScreenJitter = 26
 PerHitStackScreenSpread = 12.8
 ```
 
+`ScreenJitter`, `RandomJitter` and the two `PerHitStack` spreads only apply in Per Hit mode.
+
 ## Installation
 
-Install with a mod manager, or manually place the DLL here:
+Install with a mod manager, or manually place the DLL and the `lang` folder here:
 
 ```text
 SULFUR/BepInEx/plugins/DamageSparks/
 ```
+
+The `lang` folder holds the translated setting names that SULFUR Config shows.
 
 Start the game once to generate the config file.
 
@@ -173,13 +185,15 @@ Start the game once to generate the config file.
 
 ## Compatibility
 
-Damage Sparks reads SULFUR's final damage log value and displays it as a number.
+Damage Sparks reads the final damage SULFUR applies to a unit and displays it as a number.
 
 It does not modify the game's damage calculation.
 
-The mod should be compatible with most gameplay mods unless another mod heavily changes enemy damage logging.
+Target dummies already show the game's own damage text, so Damage Sparks draws nothing on them.
 
-If a future SULFUR update changes the internal damage log method, this mod may need an update.
+The mod should be compatible with most gameplay mods unless another mod heavily changes how enemies receive damage.
+
+If a future SULFUR update changes the internal damage methods, this mod may need an update.
 
 ## Source Code
 
@@ -200,19 +214,3 @@ GitHub repository:
 Thunderstore does not provide a convenient feedback channel.
 
 For bug reports or suggestions, please use NexusMods or GitHub.
-
-## v1.1.1
-
-Fixed damage numbers being drawn exactly on top of each other when one hit deals two damage types to the same enemy, for example with Scroll of Crusader. The weapon hit stays where it was and the extra damage type now appears one line above it. Merging, colors and Per Hit mode are unchanged.
-
-## v1.1.0
-
-Added a vanilla renderer. `Renderer = Vanilla` draws damage numbers with SULFUR's own damage text, the same one the target dummies use, including its animation, font and damage-type colors. It reuses the game's prefab rather than imitating it, so nothing new is shipped with the mod. The renderer default is unchanged and still uses the previous look.
-
-Also fixed damage over time from status effects the player applied, such as burning, poison and electrocution, which was never shown before. Those are the colored numbers the target dummies display. This adds numbers in every renderer, so set `ShowStatusEffectDamage = false` under `[Filter]` if you prefer the old behavior.
-
-Fixed weakpoint coloring for damage that has no hitbox, such as status damage over time and explosions. It used the head shot color before and is now white. Weapon hits are unchanged.
-
-## v1.0.12
-
-Reworked the damage number rendering system to improve performance and stability. Damage numbers now use pooled TextMeshPro objects instead of `OnGUI`, excessive overlapping numbers are automatically suppressed, renderer updates have been optimized, and the text outline and default font size have been improved. These changes significantly reduce frame-rate drops during high-damage or rapid-fire situations and may also address the reported GC stack overflow crashes.

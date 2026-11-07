@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal は同じフレームで同じ対象へのダメージを合算します。PerHit は実際の各ダメージイベントを個別に表示します。"
+      "value": "PerTargetTotal は同じフレームで同じ対象に入った同じ種類のダメージを 1 つの数字に合算します。同じヒットに含まれる 2 種類目のダメージは 1 行上に表示します。PerHit は実際の各ダメージイベントを個別に表示します。"
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "命中倍率に応じて色を変えます。弱点命中は黄/橙/赤、倍率が無い通常ダメージは白です。"
+      "value": "命中した部位に応じてダメージ数字に色を付けます。目は赤、頭は橙、胸部は黄、胴体と手足は白です。状態異常や爆発など部位のないダメージは白です。"
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "倍率 1.0 を橙ではなく白で表示します。通常の胴体命中が 1.0x として報告される場合に有効にします。"
+      "value": "倍率 1.0 を橙ではなく白で表示します。頭への命中は 1.0 なので、有効にすると胴体への命中と同じく白になります。"
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "プレイヤー由来の爆発などの二次ダメージを表示します。炎、毒、DoT がうるさい場合は無効にします。"
+      "value": "プレイヤー由来の爆発など、武器や近接攻撃が発生源ではない二次ダメージを表示します。状態異常による継続ダメージは「状態異常ダメージを表示」で切り替えます。"
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "整数でないダメージは小数 1 桁を表示します。5.0 のような整数は 5 と表示します。"
+      "value": "整数でないダメージは小数 1 桁を表示します。5.0 のような整数は 5 と表示します。Vanilla レンダラーは常に整数で表示します。"
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "各ダメージ数字が表示される秒数です。"
+      "value": "各ダメージ数字が表示される秒数です。Vanilla レンダラーでは代わりにゲーム本体の演出に従います。"
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "ワールド空間の数字が上に移動する速度です。"
+      "value": "WorldTextMeshPro レンダラー専用。ワールド空間のダメージ数字が上に移動する速度です。"
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "ワールド空間 TextMeshPro 数字のスケールです。"
+      "value": "WorldTextMeshPro レンダラー専用。3D ダメージ数字のスケールです。"
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "数字のランダムな横ずれです。PerHit のショットガン弾に有効です。"
+      "value": "PerHit モード専用。数字ごとにワールド空間でランダムな横ずれを加えます。ショットガンの散弾に有効です。ScreenSpace レンダラーでは使われません。"
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "WorldTextMeshPro レンダラーの TextMeshPro フォントサイズです。"
+      "value": "WorldTextMeshPro レンダラー専用。3D ダメージ数字の TextMeshPro フォントサイズです。"
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "画面空間の数字のフォントサイズです。"
+      "value": "ScreenSpace レンダラー専用。画面空間のダメージ数字のフォントサイズです。"
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "画面空間の数字が上に移動する速度です。単位はピクセル/秒です。"
+      "value": "ScreenSpace レンダラー専用。追加の上昇速度で、単位はピクセル/秒です。数字は対象の上にある基準点と一緒にゆっくり上がるため、0 にしても完全には止まりません。"
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "画面空間のランダムずれです。単位はピクセルです。PerHit のショットガン弾に有効です。"
+      "value": "PerHit モードかつ ScreenSpace レンダラー専用。数字ごとに画面空間でランダムなずれ（ピクセル単位）を加えます。ショットガンの散弾に有効です。"
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的な画面拡散を追加します。"
+      "value": "ScreenSpace レンダラー専用。同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的な画面拡散を追加します。ずれは最大 42 ピクセルです。"
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的なワールド拡散を追加します。"
+      "value": "同じフレームで同じ対象に複数の PerHit 数字が出る時、決定的なワールド拡散を追加します。ScreenSpace レンダラーでは使われません。ずれは最大 0.36 です。"
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "有効な各レンダラーごとのアクティブなダメージ数字の最大数です。1～256 に制限され、上限に達すると最も古い数字を再利用します。"
+      "value": "有効な各レンダラーごとのアクティブなダメージ数字の最大数です。1～256（Vanilla レンダラーは 1～64）に制限され、上限に達すると最も古い数字を再利用します。"
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "ゲーム内で F8 を押すと画面中央にテスト数字を表示します。"
+      "value": "ゲーム内で F8 を押すと画面中央にテスト数字を表示します。テスト数字は常に ScreenSpace のスタイルで表示されます。"
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

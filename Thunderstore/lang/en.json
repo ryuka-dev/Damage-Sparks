@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal merges same-frame damage on the same target. PerHit shows every real damage event separately."
+      "value": "PerTargetTotal merges same-frame damage of one type on the same target into one number; a second damage type in the same hit is shown one line higher. PerHit shows every real damage event separately."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Color damage numbers by hit multiplier. Weak hits are yellow/orange/red; normal damage is white when no multiplier is available."
+      "value": "Color damage numbers by the body part hit: red for eyes, orange for heads, yellow for the thorax, white for the body and limbs. Damage with no body part, such as status effects and explosions, is white."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "Show multiplier 1.0 as white instead of orange. Enable this if ordinary body hits are reported as 1.0x."
+      "value": "Show multiplier 1.0 as white instead of orange. Head hits are 1.0, so this makes them white like body hits."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Show player-owned explosions and similar secondary damage. Disable if fire, poison, or other DoT effects become too noisy."
+      "value": "Show player-owned explosions and similar secondary damage that has no weapon or melee source. Status damage over time is controlled by Show Status Effect Damage."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Show one decimal place for non-integer damage. Whole numbers such as 5.0 are still shown as 5."
+      "value": "Show one decimal place for non-integer damage. Whole numbers such as 5.0 are still shown as 5. The Vanilla renderer always shows whole numbers."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "How long each damage number remains visible, in seconds."
+      "value": "How long each damage number remains visible, in seconds. The Vanilla renderer follows the game's own animation instead."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Upward speed for world-space damage numbers."
+      "value": "WorldTextMeshPro renderer only. Upward speed for world-space damage numbers."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Scale of world-space TextMeshPro damage numbers."
+      "value": "WorldTextMeshPro renderer only. Scale of the 3D damage numbers."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Random horizontal offset for damage numbers. Useful for PerHit shotgun pellets."
+      "value": "PerHit mode only. Random horizontal world-space offset for each number, useful for shotgun pellets. Not used by the ScreenSpace renderer."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "TextMeshPro font size for the WorldTextMeshPro renderer."
+      "value": "WorldTextMeshPro renderer only. TextMeshPro font size of the 3D damage numbers."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Font size for screen-space damage numbers."
+      "value": "ScreenSpace renderer only. Font size for screen-space damage numbers."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Upward speed for screen-space numbers, in pixels per second."
+      "value": "ScreenSpace renderer only. Extra upward speed in pixels per second. Numbers also drift up slowly with the point above the target, so 0 does not hold them completely still."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Random screen-space offset in pixels. Useful for PerHit shotgun pellets."
+      "value": "PerHit mode and ScreenSpace renderer only. Random screen-space offset in pixels for each number, useful for shotgun pellets."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Extra deterministic screen-space spread for multiple PerHit numbers created on the same target in the same frame."
+      "value": "ScreenSpace renderer only. Extra deterministic screen-space spread for several PerHit numbers on the same target in the same frame. The offset is capped at 42 pixels."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Extra deterministic world-space spread for multiple PerHit numbers created on the same target in the same frame."
+      "value": "Extra deterministic world-space spread for several PerHit numbers on the same target in the same frame. Not used by the ScreenSpace renderer. The offset is capped at 0.36."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Maximum active damage numbers in each enabled renderer. Clamped to 1-256; the oldest active number is reused when full."
+      "value": "Maximum active damage numbers in each enabled renderer. Clamped to 1-256, or 1-64 for the Vanilla renderer; the oldest active number is reused when full."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Press F8 in-game to spawn a test number at the screen center."
+      "value": "Press F8 in-game to spawn a test number at the screen center. The test number always uses the ScreenSpace style."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",

@@ -42,7 +42,7 @@
     },
     {
       "key": "entry.General.DamageDisplayMode.description",
-      "value": "PerTargetTotal aynı karede aynı hedefe verilen hasarı birleştirir. PerHit her gerçek hasar olayını ayrı gösterir."
+      "value": "PerTargetTotal aynı karede aynı hedefe verilen tek türdeki hasarı tek bir sayıda birleştirir; aynı vuruştaki ikinci hasar türü bir satır yukarıda gösterilir. PerHit her gerçek hasar olayını ayrı gösterir."
     },
     {
       "key": "entry.Visual.Renderer.name",
@@ -74,7 +74,7 @@
     },
     {
       "key": "entry.Visual.UseWeakspotColors.description",
-      "value": "Sayıları vuruş çarpanına göre renklendirir. Zayıf noktalar sarı/turuncu/kırmızı; çarpan yoksa hasar beyazdır."
+      "value": "Hasar sayılarını vurulan vücut bölgesine göre renklendirir: gözler kırmızı, kafalar turuncu, göğüs sarı, gövde ve uzuvlar beyaz. Durum etkileri ve patlamalar gibi vücut bölgesi olmayan hasar beyazdır."
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.name",
@@ -82,7 +82,7 @@
     },
     {
       "key": "entry.Visual.TreatOneMultiplierAsNormal.description",
-      "value": "1.0 çarpanını turuncu yerine beyaz gösterir. Normal gövde vuruşları 1.0x olarak raporlanıyorsa açın."
+      "value": "1.0 çarpanını turuncu yerine beyaz gösterir. Kafa vuruşları 1.0 olduğundan bu ayar onları da gövde vuruşları gibi beyaz yapar."
     },
     {
       "key": "entry.Visual.AggregateColorMode.name",
@@ -114,7 +114,7 @@
     },
     {
       "key": "entry.Filter.ShowPlayerOwnedSecondaryEffects.description",
-      "value": "Oyuncuya ait patlama ve benzeri ikincil hasarı gösterir. Ateş, zehir veya DoT fazla gürültülü olursa kapatın."
+      "value": "Oyuncuya ait patlamaları ve kaynağı silah ya da yakın dövüş olmayan benzeri ikincil hasarı gösterir. Durum etkilerinin zamana yayılan hasarı “Durum etkisi hasarını göster” ayarıyla kontrol edilir."
     },
     {
       "key": "entry.Filter.ShowStatusEffectDamage.name",
@@ -138,7 +138,7 @@
     },
     {
       "key": "entry.Visual.ShowDecimals.description",
-      "value": "Tam sayı olmayan hasar için bir ondalık gösterir. 5.0 gibi tam değerler yine 5 görünür."
+      "value": "Tam sayı olmayan hasar için bir ondalık gösterir. 5.0 gibi tam değerler yine 5 görünür. Vanilla işleyicisi her zaman tam sayı gösterir."
     },
     {
       "key": "entry.Visual.Lifetime.name",
@@ -146,7 +146,7 @@
     },
     {
       "key": "entry.Visual.Lifetime.description",
-      "value": "Her hasar sayısının kaç saniye görünür kalacağı."
+      "value": "Her hasar sayısının kaç saniye görünür kalacağı. Vanilla işleyicisi bunun yerine oyunun kendi animasyonunu izler."
     },
     {
       "key": "entry.Visual.FloatSpeed.name",
@@ -154,7 +154,7 @@
     },
     {
       "key": "entry.Visual.FloatSpeed.description",
-      "value": "Dünya uzayındaki sayıların yukarı hareket hızı."
+      "value": "Yalnızca WorldTextMeshPro işleyicisi için. Dünya uzayındaki hasar sayılarının yukarı hareket hızı."
     },
     {
       "key": "entry.Visual.WorldScale.name",
@@ -162,7 +162,7 @@
     },
     {
       "key": "entry.Visual.WorldScale.description",
-      "value": "Dünya uzayındaki TextMeshPro hasar sayılarının ölçeği."
+      "value": "Yalnızca WorldTextMeshPro işleyicisi için. 3D hasar sayılarının ölçeği."
     },
     {
       "key": "entry.Visual.RandomJitter.name",
@@ -170,7 +170,7 @@
     },
     {
       "key": "entry.Visual.RandomJitter.description",
-      "value": "Sayılar için rastgele yatay kayma. PerHit saçma taneleri için yararlı."
+      "value": "Yalnızca PerHit modunda. Her sayıya dünya uzayında rastgele yatay kayma ekler; saçma taneleri için yararlı. ScreenSpace işleyicisi bunu kullanmaz."
     },
     {
       "key": "entry.Visual.FontSize.name",
@@ -178,7 +178,7 @@
     },
     {
       "key": "entry.Visual.FontSize.description",
-      "value": "WorldTextMeshPro için TextMeshPro yazı boyutu."
+      "value": "Yalnızca WorldTextMeshPro işleyicisi için. 3D hasar sayılarının TextMeshPro yazı boyutu."
     },
     {
       "key": "entry.Visual.ScreenFontSize.name",
@@ -186,7 +186,7 @@
     },
     {
       "key": "entry.Visual.ScreenFontSize.description",
-      "value": "Ekran uzayındaki sayıların yazı boyutu."
+      "value": "Yalnızca ScreenSpace işleyicisi için. Ekran uzayındaki hasar sayılarının yazı boyutu."
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.name",
@@ -194,7 +194,7 @@
     },
     {
       "key": "entry.Visual.ScreenFloatSpeed.description",
-      "value": "Ekran sayılarının yukarı hareket hızı, piksel/saniye."
+      "value": "Yalnızca ScreenSpace işleyicisi için. Piksel/saniye cinsinden ek yukarı hareket hızı. Sayılar hedefin üstündeki noktayla birlikte zaten yavaşça yükselir; bu yüzden 0 onları tamamen sabit tutmaz."
     },
     {
       "key": "entry.Visual.ScreenJitter.name",
@@ -202,7 +202,7 @@
     },
     {
       "key": "entry.Visual.ScreenJitter.description",
-      "value": "Ekranda rastgele kayma, piksel cinsinden. PerHit saçma taneleri için yararlı."
+      "value": "Yalnızca PerHit modunda ve ScreenSpace işleyicisiyle. Her sayıya piksel cinsinden rastgele ekran kayması ekler; saçma taneleri için yararlı."
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.name",
@@ -210,7 +210,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackScreenSpread.description",
-      "value": "Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek belirli ekran yayılımı."
+      "value": "Yalnızca ScreenSpace işleyicisi için. Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek deterministik ekran yayılımı. Kayma en fazla 42 pikseldir."
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.name",
@@ -218,7 +218,7 @@
     },
     {
       "key": "entry.Visual.PerHitStackWorldSpread.description",
-      "value": "Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek dünya yayılımı."
+      "value": "Aynı karede aynı hedefte oluşan birden fazla PerHit sayısı için ek deterministik dünya yayılımı. ScreenSpace işleyicisi bunu kullanmaz. Kayma en fazla 0.36'dır."
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.name",
@@ -226,7 +226,7 @@
     },
     {
       "key": "entry.Performance.MaxActiveNumbers.description",
-      "value": "Etkin her oluşturucuda en fazla aktif hasar sayısı. 1-256 ile sınırlıdır; dolduğunda en eski aktif sayı yeniden kullanılır."
+      "value": "Etkin her işleyicide en fazla aktif hasar sayısı. 1-256 ile, Vanilla işleyicisinde 1-64 ile sınırlıdır; dolduğunda en eski aktif sayı yeniden kullanılır."
     },
     {
       "key": "entry.Performance.MaxNumbersPerFrame.name",
@@ -274,7 +274,7 @@
     },
     {
       "key": "entry.Debug.DebugSpawnTestOnF8.description",
-      "value": "Oyunda F8’e basarak ekranın ortasında test sayısı oluşturur."
+      "value": "Oyunda F8’e basınca ekranın ortasında bir test sayısı oluşturulur. Test sayısı her zaman ScreenSpace stilini kullanır."
     },
     {
       "key": "value.General.DamageDisplayMode.PerTargetTotal",
