@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="SulfurDamageNumbersMod.csproj" Id="b7e71d21-5d41-4f5a-8a4b-bd7cc2931e02" />
+  <Project Path="SulfurTogetherAdapter/DamageSparks.SulfurTogether.csproj" />
 </Solution>

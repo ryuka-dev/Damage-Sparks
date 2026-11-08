@@ -104,6 +104,34 @@ namespace SulfurDamageNumbersMod
                 _instance.RegisterDamageInternal(target, sourceData, amount, hitMultiplier, sequence);
         }
 
+        /// <param name="target">The unit that was hit, or null when it no longer exists locally.</param>
+        /// <param name="fallbackPosition">Places the number when there is no unit to place it above.</param>
+        /// <param name="sourceId">Identity of the attack source, as in <see cref="DamageHit.SourceIdOf"/>; 0 for none.</param>
+        /// <param name="dealtFrame">The frame the hit was dealt in, which same-frame merging goes by.</param>
+        public static void RegisterResolvedDamage(Unit target, Vector3? fallbackPosition, int sourceId, bool melee, DamageTypes damageType, bool critical, float amount, float hitMultiplier, int dealtFrame, int sequence)
+        {
+            if (target == null && !fallbackPosition.HasValue) return;
+
+            EnsureExists();
+            if (_instance == null) return;
+
+            _instance.RegisterHit(new DamageHit
+            {
+                // No unit left to identify: the hits dealt in one frame still count as one target, so a
+                // shotgun blast on a unit that has since been destroyed stays one number.
+                TargetId = target != null ? target.GetInstanceID() : unchecked(int.MinValue + dealtFrame),
+                Frame = dealtFrame,
+                Position = target != null ? GetDamagePosition(target) : fallbackPosition.Value,
+                SourceId = sourceId,
+                Melee = melee,
+                DamageType = damageType,
+                Critical = critical,
+                Amount = amount,
+                Multiplier = hitMultiplier,
+                Sequence = sequence
+            });
+        }
+
         public static void SpawnScreenTestNumber()
         {
             EnsureExists();
@@ -141,53 +169,67 @@ namespace SulfurDamageNumbersMod
 
         private void RegisterDamageInternal(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier, int sequence)
         {
-            Vector3 position = GetDamagePosition(target);
-            int targetId = target.GetInstanceID();
+            RegisterHit(new DamageHit
+            {
+                TargetId = target.GetInstanceID(),
+                Frame = Time.frameCount,
+                Position = GetDamagePosition(target),
+                SourceId = DamageHit.SourceIdOf(sourceData),
+                Melee = sourceData.melee,
+                DamageType = sourceData.damageType,
+                Critical = sourceData.isCritical,
+                Amount = amount,
+                Multiplier = hitMultiplier,
+                Sequence = sequence
+            });
+        }
 
+        private void RegisterHit(DamageHit hit)
+        {
             if (Plugin.Mode.Value == DisplayMode.PerHit)
             {
                 _perHitQueue.Add(new PerHitEntry
                 {
-                    Position = position,
-                    Amount = amount,
-                    Multiplier = hitMultiplier,
-                    DamageType = sourceData.damageType,
-                    Critical = sourceData.isCritical,
-                    SpreadKey = PerHitSpreadKey.Create(target, sourceData),
-                    Sequence = sequence
+                    Position = hit.Position,
+                    Amount = hit.Amount,
+                    Multiplier = hit.Multiplier,
+                    DamageType = hit.DamageType,
+                    Critical = hit.Critical,
+                    SpreadKey = PerHitSpreadKey.Create(hit),
+                    Sequence = hit.Sequence
                 });
                 return;
             }
 
-            AggregateKey key = AggregateKey.Create(target, sourceData);
+            AggregateKey key = AggregateKey.Create(hit);
             AggregateEntry entry;
             if (!_aggregates.TryGetValue(key, out entry))
             {
                 entry = new AggregateEntry
                 {
                     Amount = 0f,
-                    Position = position,
+                    Position = hit.Position,
                     HighestMultiplier = 0f,
                     LastMultiplier = 0f,
                     WeightedMultiplierSum = 0f,
                     // AggregateKey already separates damage types, so every hit merged into one
                     // entry shares this value.
-                    DamageType = sourceData.damageType,
+                    DamageType = hit.DamageType,
                     AnyCritical = false,
-                    TargetId = targetId,
-                    FirstSequence = sequence
+                    TargetId = hit.TargetId,
+                    FirstSequence = hit.Sequence
                 };
             }
 
-            entry.Amount += amount;
-            entry.Position = position;
-            entry.LastMultiplier = hitMultiplier;
-            entry.AnyCritical = entry.AnyCritical || sourceData.isCritical;
-            entry.WeightedMultiplierSum += Mathf.Max(0f, hitMultiplier) * Mathf.Max(0f, amount);
-            if (hitMultiplier > entry.HighestMultiplier)
-                entry.HighestMultiplier = hitMultiplier;
-            if (sequence < entry.FirstSequence)
-                entry.FirstSequence = sequence;
+            entry.Amount += hit.Amount;
+            entry.Position = hit.Position;
+            entry.LastMultiplier = hit.Multiplier;
+            entry.AnyCritical = entry.AnyCritical || hit.Critical;
+            entry.WeightedMultiplierSum += Mathf.Max(0f, hit.Multiplier) * Mathf.Max(0f, hit.Amount);
+            if (hit.Multiplier > entry.HighestMultiplier)
+                entry.HighestMultiplier = hit.Multiplier;
+            if (hit.Sequence < entry.FirstSequence)
+                entry.FirstSequence = hit.Sequence;
 
             _aggregates[key] = entry;
         }
@@ -1455,27 +1497,45 @@ namespace SulfurDamageNumbersMod
         }
     }
 
+    /// <summary>One hit to show, however it was resolved.</summary>
+    internal struct DamageHit
+    {
+        public int TargetId;
+        public int Frame;
+        public Vector3 Position;
+        public int SourceId;
+        public bool Melee;
+        public DamageTypes DamageType;
+        public bool Critical;
+        public float Amount;
+        public float Multiplier;
+        public int Sequence;
+
+        public static int SourceIdOf(DamageSourceData sourceData)
+        {
+            if (sourceData.sourceWeapon != null)
+                return sourceData.sourceWeapon.GetInstanceID();
+            if (sourceData.instanceId != 0)
+                return sourceData.instanceId;
+            if (sourceData.sourceUnit != null)
+                return sourceData.sourceUnit.GetInstanceID();
+            return 0;
+        }
+    }
+
     internal struct PerHitSpreadKey : IEquatable<PerHitSpreadKey>
     {
         private int _targetId;
         private int _frame;
         private int _sourceId;
 
-        public static PerHitSpreadKey Create(Unit target, DamageSourceData sourceData)
+        public static PerHitSpreadKey Create(DamageHit hit)
         {
-            int sourceId = 0;
-            if (sourceData.sourceWeapon != null)
-                sourceId = sourceData.sourceWeapon.GetInstanceID();
-            else if (sourceData.instanceId != 0)
-                sourceId = sourceData.instanceId;
-            else if (sourceData.sourceUnit != null)
-                sourceId = sourceData.sourceUnit.GetInstanceID();
-
             return new PerHitSpreadKey
             {
-                _targetId = target.GetInstanceID(),
-                _frame = Time.frameCount,
-                _sourceId = sourceId
+                _targetId = hit.TargetId,
+                _frame = hit.Frame,
+                _sourceId = hit.SourceId
             };
         }
 
@@ -1511,23 +1571,15 @@ namespace SulfurDamageNumbersMod
         private int _damageType;
         private bool _melee;
 
-        public static AggregateKey Create(Unit target, DamageSourceData sourceData)
+        public static AggregateKey Create(DamageHit hit)
         {
-            int sourceId = 0;
-            if (sourceData.sourceWeapon != null)
-                sourceId = sourceData.sourceWeapon.GetInstanceID();
-            else if (sourceData.instanceId != 0)
-                sourceId = sourceData.instanceId;
-            else if (sourceData.sourceUnit != null)
-                sourceId = sourceData.sourceUnit.GetInstanceID();
-
             return new AggregateKey
             {
-                _targetId = target.GetInstanceID(),
-                _frame = Time.frameCount,
-                _sourceId = sourceId,
-                _damageType = Convert.ToInt32(sourceData.damageType),
-                _melee = sourceData.melee
+                _targetId = hit.TargetId,
+                _frame = hit.Frame,
+                _sourceId = hit.SourceId,
+                _damageType = Convert.ToInt32(hit.DamageType),
+                _melee = hit.Melee
             };
         }
 

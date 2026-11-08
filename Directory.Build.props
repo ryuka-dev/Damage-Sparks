@@ -7,6 +7,10 @@
     <SulfurBepInExPluginsDir Condition="'$(SulfurBepInExPluginsDir)' == ''">$(SulfurGaleProfileDir)\BepInEx\plugins</SulfurBepInExPluginsDir>
     <ThunderstoreDir Condition="'$(ThunderstoreDir)' == ''">$(MSBuildThisFileDirectory)Thunderstore</ThunderstoreDir>
 
+    <!-- The SULFUR Together repository. Its Release build is the compile-time home of the public API the
+         optional co-op adapter uses; the installed SULFUR Together provides it at run time. -->
+    <SulfurTogetherDir Condition="'$(SulfurTogetherDir)' == ''">C:\Users\LingYun67\source\SULFUR Together</SulfurTogetherDir>
+
     <!-- The Thunderstore package name. The build output keeps its own assembly name, so the
          deploy step renames the copy to match what the released package has always shipped. -->
     <ThunderstorePluginName Condition="'$(ThunderstorePluginName)' == ''">DamageSparks</ThunderstorePluginName>

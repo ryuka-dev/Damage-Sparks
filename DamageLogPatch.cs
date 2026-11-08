@@ -66,6 +66,7 @@ namespace SulfurDamageNumbersMod
             PendingStack.Clear();
             _depth = 0;
             _nextSequence = 0;
+            DamageNumbersIntegration.Reset();
         }
 
         private static MethodBase FindCreateDamageLog()
@@ -173,20 +174,18 @@ namespace SulfurDamageNumbersMod
                     return;
                 }
 
-                float finalDamage = __0;
-                if (float.IsNaN(finalDamage) || float.IsInfinity(finalDamage))
+                // On a co-op host another player's hit runs through the game's own damage functions,
+                // and damage dealt from inside it can name the host's player as its source.
+                if (DamageNumbersIntegration.IsResolvingRemoteHit)
                 {
                     if (Plugin.DebugLog.Value)
-                        Plugin.Log.LogInfo("[DamageNumbers] reject non-finite damage amount=" + finalDamage + " target=" + SafeName(__instance));
+                        Plugin.Log.LogInfo("[DamageNumbers] reject source: another player's hit target=" + SafeName(__instance));
                     return;
                 }
 
-                if (finalDamage < Plugin.MinDamageToShow.Value)
-                {
-                    if (Plugin.DebugLog.Value)
-                        Plugin.Log.LogInfo("[DamageNumbers] reject low damage amount=" + finalDamage + " target=" + SafeName(__instance));
+                float finalDamage = __0;
+                if (!IsShowableAmount(finalDamage, __instance))
                     return;
-                }
 
                 string rejectReason;
                 if (!IsAllowedTarget(__instance, out rejectReason))
@@ -229,6 +228,76 @@ namespace SulfurDamageNumbersMod
             {
                 Plugin.Log.LogWarning("[DamageNumbers] CreateDamageLog postfix failed: " + e);
             }
+        }
+
+        /// <summary>
+        /// A hit the game did not resolve on this machine: the amount, the body part and the outcome are
+        /// already final, so only this mod's own display filters apply.
+        /// </summary>
+        internal static void ShowResolvedHit(ResolvedHit hit)
+        {
+            if (!Plugin.Enabled.Value) return;
+
+            try
+            {
+                Unit target = hit.Target as Unit;
+                if (!IsShowableAmount(hit.Damage, target))
+                    return;
+
+                string rejectReason;
+                if (target != null && !IsAllowedTarget(target, out rejectReason))
+                {
+                    if (Plugin.DebugLog.Value)
+                        Plugin.Log.LogInfo("[DamageNumbers] reject target: " + rejectReason + " target=" + SafeName(target));
+                    return;
+                }
+
+                UnityEngine.Object weapon = hit.Weapon as UnityEngine.Object;
+                if (weapon == null && !hit.Melee && !Plugin.ShowPlayerOwnedSecondaryEffects.Value)
+                {
+                    if (Plugin.DebugLog.Value)
+                        Plugin.Log.LogInfo("[DamageNumbers] reject source: player-owned secondary damage is disabled target=" + SafeName(target));
+                    return;
+                }
+
+                if (Plugin.DebugLog.Value)
+                    Plugin.Log.LogInfo("[DamageNumbers] accept resolved amount=" + hit.Damage + " multiplier=" + hit.HitMultiplier + " damageType=" + (DamageTypes)hit.DamageType + " critical=" + hit.IsCritical + " target=" + SafeName(target) + " weapon=" + SafeName(weapon));
+
+                DamageNumberManager.RegisterResolvedDamage(
+                    target,
+                    hit.Position,
+                    weapon == null ? 0 : weapon.GetInstanceID(),
+                    hit.Melee,
+                    (DamageTypes)hit.DamageType,
+                    hit.IsCritical,
+                    hit.Damage,
+                    Mathf.Max(0f, hit.HitMultiplier),
+                    hit.DealtFrame > 0 ? hit.DealtFrame : Time.frameCount,
+                    ++_nextSequence);
+            }
+            catch (Exception e)
+            {
+                Plugin.Log.LogWarning("[DamageNumbers] Showing a resolved hit failed: " + e);
+            }
+        }
+
+        private static bool IsShowableAmount(float amount, Unit target)
+        {
+            if (float.IsNaN(amount) || float.IsInfinity(amount))
+            {
+                if (Plugin.DebugLog.Value)
+                    Plugin.Log.LogInfo("[DamageNumbers] reject non-finite damage amount=" + amount + " target=" + SafeName(target));
+                return false;
+            }
+
+            if (amount < Plugin.MinDamageToShow.Value)
+            {
+                if (Plugin.DebugLog.Value)
+                    Plugin.Log.LogInfo("[DamageNumbers] reject low damage amount=" + amount + " target=" + SafeName(target));
+                return false;
+            }
+
+            return true;
         }
 
         private static bool IsAllowedTarget(Unit target, out string reason)

@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="DamageLogPatch.cs" />
     <Compile Include="DamageNumberManager.cs" />
+    <Compile Include="DamageNumbersIntegration.cs" />
     <Compile Include="DamageNumberView.cs" />
     <Compile Include="DamageReceivePatch.cs" />
     <Compile Include="GameStateProbe.cs" />

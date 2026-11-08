@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The optional SULFUR Together adapter: a companion BepInEx plugin shipped inside the Damage Sparks
+    package. Both [BepInDependency] attributes are hard, so without SULFUR Together BepInEx skips this
+    plugin and never loads this assembly.
+
+    The dependency points one way. This project references the mod; the mod never references this
+    project, so a player without SULFUR Together has no path to its assembly.
+
+    SULFUR Together is a compile-time reference only (Private=false): the installed plugin provides the
+    assembly. An older build has the GUID but not the API this adapter uses, so no SULFURTogether.Api
+    type may end up in a field of this assembly, including compiler-generated ones. See NetCombatBridge.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DamageSparks.SulfurTogether</AssemblyName>
+    <RootNamespace>SulfurDamageNumbersMod.SulfurTogether</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SulfurDamageNumbersMod.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>$(SulfurBepInExCoreDir)\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(SulfurManagedDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(SulfurManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SULFUR Together">
+      <HintPath>$(SulfurTogetherDir)\bin\Release\net472\SULFUR Together.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="StageForThunderstore" AfterTargets="Build" Condition="'$(DeployToSulfurProfile)' == 'true' And '$(ThunderstoreDir)' != ''">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ThunderstoreDir)" OverwriteReadOnlyFiles="true" />
+  </Target>
+
+</Project>
