@@ -168,7 +168,7 @@ PerHitStackScreenSpread = 12.8
 
 ## Installation
 
-Install with a mod manager, or manually place the DLL and the `lang` folder here:
+Install with a mod manager, or manually place both DLLs and the `lang` folder here:
 
 ```text
 SULFUR/BepInEx/plugins/DamageSparks/
@@ -194,6 +194,16 @@ Target dummies already show the game's own damage text, so Damage Sparks draws n
 The mod should be compatible with most gameplay mods unless another mod heavily changes how enemies receive damage.
 
 If a future SULFUR update changes the internal damage methods, this mod may need an update.
+
+### SULFUR Together
+
+In co-op, each player sees numbers for their own hits. A client's numbers show what the host actually applied, so they appear a moment after the hit. Damage over time is not shown on a client, because the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
+
+The adapter that connects the two mods is included and only loads when SULFUR Together is installed. Without it, BepInEx writes a line like this to the log, which is expected and harmless:
+
+```text
+[Error  :   BepInEx] Could not load [Damage Sparks - SULFUR Together Adapter 1.1.1] because it has missing dependencies: com.ryuka.sulfur.together
+```
 
 ## Source Code
 

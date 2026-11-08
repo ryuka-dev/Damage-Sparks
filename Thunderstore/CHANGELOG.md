@@ -27,6 +27,12 @@
 
 - Target dummies already show the game's own damage text. Damage Sparks no longer adds a second set of numbers on them.
 
+**Co-op (SULFUR Together)**
+
+- A co-op client now sees numbers for its own hits on enemies the host owns. They show what the host actually applied, including critical hits, body-part colors and Crusader's Holy damage. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two is included in this package and only loads when SULFUR Together is installed.
+- On the host, another player's weapon hits no longer appear as the host's own numbers.
+- Damage over time on a client is not shown: the host runs those ticks and does not report them.
+
 **Settings**
 
 - Status damage over time is now recognised by the game's own marker. Other player-owned damage without a weapon, such as reflected thorns damage, now follows `ShowPlayerOwnedSecondaryEffects` instead of `ShowStatusEffectDamage`. With the default settings both are shown, as before.

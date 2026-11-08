@@ -146,7 +146,7 @@ PerHitStackScreenSpread = 12.8[/code]
 
 [color=RoyalBlue][b]Installation[/b][/color]
 
-Install with a mod manager, or manually place the DLL and the [color=#ffff00]lang[/color] folder here:
+Install with a mod manager, or manually place both DLLs and the [color=#ffff00]lang[/color] folder here:
 
 [code]SULFUR/BepInEx/plugins/DamageSparks/[/code]
 The [color=#ffff00]lang[/color] folder holds the translated setting names that SULFUR Config shows.
@@ -171,6 +171,13 @@ The mod should be compatible with most gameplay mods unless another mod heavily 
 
 If a future SULFUR update changes the internal damage methods, this mod may need an update.
 
+[color=DodgerBlue][b]SULFUR Together[/b][/color]
+
+In co-op, each player sees numbers for their own hits. A client's numbers show what the host actually applied, so they appear a moment after the hit. Damage over time is not shown on a client, because the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
+
+The adapter that connects the two mods is included and only loads when SULFUR Together is installed. Without it, BepInEx writes a line like this to the log, which is expected and harmless:
+
+[code][Error  :   BepInEx] Could not load [Damage Sparks - SULFUR Together Adapter 1.1.1] because it has missing dependencies: com.ryuka.sulfur.together[/code]
 [color=RoyalBlue][b]Source Code[/b][/color]
 
 The source code for this mod is available in my GitHub repository.
@@ -224,6 +231,13 @@ For bug reports or suggestions, please use NexusMods or GitHub.
 
 [list]
 [*]Target dummies already show the game's own damage text. Damage Sparks no longer adds a second set of numbers on them.[/*]
+[/list]
+[b]Co-op (SULFUR Together)[/b]
+
+[list]
+[*]A co-op client now sees numbers for its own hits on enemies the host owns. They show what the host actually applied, including critical hits, body-part colors and Crusader's Holy damage. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two is included in this package and only loads when SULFUR Together is installed.[/*]
+[*]On the host, another player's weapon hits no longer appear as the host's own numbers.[/*]
+[*]Damage over time on a client is not shown: the host runs those ticks and does not report them.[/*]
 [/list]
 [b]Settings[/b]
 

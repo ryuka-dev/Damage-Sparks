@@ -2,6 +2,33 @@
 
 BepInEx 5 plugin for SULFUR. Displays damage numbers for player-executed attacks.
 
+## SULFUR Together adapter
+
+`SulfurTogetherAdapter/` is a separate BepInEx plugin shipped in the same package
+(`DamageSparks.SulfurTogether.dll`, GUID `ryuka.sulfur.damagenumbers_sulfur_together`).
+
+- Both `[BepInDependency]` attributes are hard, so without SULFUR Together BepInEx skips the plugin and
+  never loads its assembly. The mod itself never references the adapter or SULFUR Together.
+- The adapter references the mod and uses only `DamageNumbersIntegration`, the mod's public surface for
+  integrations. `NetCombatBridge` is the one class that names `SULFURTogether.Api` types.
+- An older SULFUR Together has the GUID but not `NetCombat`, so no API type may appear in a field of the
+  adapter, including compiler-generated ones. That is why the event handlers are instance methods: the
+  compiler caches a static method group in a generated static field typed with the argument class.
+- On a client, `LocalHitResolved` is the only record of the player's hit on a host-owned enemy. Only
+  `Applied` results are shown, plus each `Secondary` entry as its own number. On the host,
+  `IsResolvingRemoteHit` excludes another player's hit, including damage dealt from inside it that names
+  the host's player as its source.
+- SULFUR Together is a compile-time reference to `$(SulfurTogetherDir)\bin\Release\net472\SULFUR Together.dll`,
+  so that build has to exist before the adapter compiles.
+
+The adapter is only staged into `Thunderstore/`; a profile deploy of the mod does not copy it.
+
+There are two projects, so the packaging script has to be given the solution:
+
+```powershell
+Build-ThunderstorePackage.ps1 -RepoRoot <repo> -Project <repo>\SulfurDamageNumbersMod.slnx
+```
+
 ## v1.1.1 damage pipeline
 
 - `Unit.ReceiveDamage` calls `CreateDamageLog` before it decides whether the damage is applied:
