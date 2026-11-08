@@ -13,15 +13,14 @@ This mod does not change damage, weapon balance, enemy stats, loot, or progressi
 [list]
 [*]Floating damage numbers for player-caused damage[/*]
 [*]Supports guns, shotguns, melee weapons, thrown weapons, and player-owned attack effects[/*]
-[*]Shows the damage the game actually applied, so hits the game cancels (protected NPCs, for example) show nothing[/*]
+[*]Hits the game cancels, like shooting a trader, show nothing[/*]
 [*]Damage over time from player-applied burning, poison and electrocution[/*]
 [*]Body-part color feedback[/*]
 [*]Two damage display modes[/*]
 [*]Optional vanilla renderer that uses SULFUR's own target-dummy damage text[/*]
 [*]Configurable number spread[/*]
-[*]Screen-space numbers hide while the game is paused or a menu is open, and all numbers are cleared when a level loads[/*]
+[*]Numbers stay out of the way of the pause menu, the inventory and level loads[/*]
 [*]SULFUR Config support with localized settings[/*]
-[*]Does not modify actual damage calculation[/*]
 [/list]
 [color=RoyalBlue][b]Damage Display Modes[/b][/color]
 
@@ -48,17 +47,17 @@ If the same shotgun blast hits two enemies, the mod shows two damage numbers:
 [/list]
 This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
 
-Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit. The same happens for any further number on that enemy in the same frame, for example from a second weapon.
+There's no long delay window (like 200 ms), so separate hits from fast-firing weapons don't get merged.
 
-It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
+Each damage type gets its own number. If a hit also deals a second type, like the Holy damage from Scroll of Crusader, that number goes one line above the weapon hit. A second weapon hitting in the same frame stacks the same way.
 
 [color=DodgerBlue][b]Per Hit[/b][/color]
 
-This mode shows one number for each actual damage hit.
+This mode shows one number for each hit.
 
 Shotgun example:
 
-If one shotgun blast has 15 pellets that actually hit enemies, the mod shows 15 damage numbers.
+If 15 pellets from one shotgun blast hit enemies, the mod shows 15 damage numbers.
 
 This mode gives more detailed feedback, but it can be visually busy with shotguns or high pellet-count weapons. Per Hit mode has extra number spread so shotgun pellet numbers do not overlap too tightly.
 
@@ -163,8 +162,6 @@ Start the game once to generate the config file.
 
 Damage Sparks reads the final damage SULFUR applies to a unit and displays it as a number.
 
-It does not modify the game's damage calculation.
-
 Target dummies already show the game's own damage text, so Damage Sparks draws nothing on them.
 
 The mod should be compatible with most gameplay mods unless another mod heavily changes how enemies receive damage.
@@ -173,16 +170,14 @@ If a future SULFUR update changes the internal damage methods, this mod may need
 
 [color=DodgerBlue][b]SULFUR Together[/b][/color]
 
-In co-op, each player sees numbers for their own hits. A client's numbers show what the host actually applied, so they appear a moment after the hit. Damage over time is not shown on a client, because the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
+In co-op, each player sees numbers for their own hits. If you're the client, the amounts come from the host, so they show up a moment after the hit. You won't get numbers for damage over time, since the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
 
-The adapter that connects the two mods is included and only loads when SULFUR Together is installed. Without it, BepInEx writes a line like this to the log, which is expected and harmless:
+The adapter that connects the two mods is included. If you don't have SULFUR Together, BepInEx skips the adapter and logs this, which you can ignore:
 
 [code][Error  :   BepInEx] Could not load [Damage Sparks - SULFUR Together Adapter 1.1.1] because it has missing dependencies: com.ryuka.sulfur.together[/code]
 [color=RoyalBlue][b]Source Code[/b][/color]
 
 The source code for this mod is available in my GitHub repository.
-
-It is shared for learning, reference, and transparency.
 
 The repository only contains my original mod source code and packaging text. It does not include SULFUR game files, Unity assemblies, BepInEx binaries, paid assets, or decompiled game source.
 
@@ -205,45 +200,44 @@ For bug reports or suggestions, please use NexusMods or GitHub.
 [b]Stacked numbers[/b]
 
 [list]
-[*]Fixed numbers drawn exactly on top of each other in [color=#ffff00]PerTargetTotal[/color] mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader is the common case: its Holy damage lands in the same frame as the weapon hit.[/*]
-[*]The weapon hit stays where it was. Each additional number on that enemy in the same frame, such as another damage type or a second weapon, is now drawn one text line higher, in the [color=#ffff00]ScreenSpace[/color], [color=#ffff00]WorldTextMeshPro[/color] and [color=#ffff00]Vanilla[/color] renderers.[/*]
-[*]Merging and colors are unchanged. Shotgun pellets of one damage type still add up to a single number, and each damage type keeps its own number and color.[/*]
-[*][color=#ffff00]PerHit[/color] mode is unchanged.[/*]
+[*]Fixed numbers drawn exactly on top of each other in [color=#ffff00]PerTargetTotal[/color] mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader was the usual cause: its Holy damage lands in the same frame as the weapon hit.[/*]
+[*]The weapon hit stays where it was. Anything else on that enemy in the same frame (another damage type, a second weapon) goes one line higher. This works in every renderer.[/*]
+[*]Shotgun pellets of one damage type still add up to a single number, and colors and [color=#ffff00]PerHit[/color] mode haven't changed.[/*]
 [/list]
-[b]Damage that never happened[/b]
+[b]Cancelled damage[/b]
 
 [list]
-[*]Fixed numbers appearing for damage the game cancels: hits on protected NPCs such as traders, healing ally bullets, same-faction hits and damage turned off in the game settings. A number now appears only when the game actually takes health off the target.[/*]
+[*]Hits the game cancels no longer show a number. That covers protected NPCs such as traders, healing ally bullets, same-faction hits and damage turned off in the game settings.[/*]
 [/list]
 [b]Pause and level loading[/b]
 
 [list]
-[*]Fixed screen-space numbers freezing on top of the pause menu. They now hide while the game is paused or the inventory or a dialogue is open, and finish once play resumes. [color=#ffff00]WorldTextMeshPro[/color] and [color=#ffff00]Vanilla[/color] numbers are part of the 3D scene and stay behind the menu, as before.[/*]
+[*]Fixed screen-space numbers freezing on top of the pause menu. They now hide while the game is paused or the inventory or a dialogue is open, and carry on when you get back. [color=#ffff00]WorldTextMeshPro[/color] and [color=#ffff00]Vanilla[/color] numbers are part of the 3D scene, so they stay behind the menu as before.[/*]
 [*]Numbers on screen when a level starts loading are cleared instead of carrying over into the next level.[/*]
 [/list]
 [b]Vanilla renderer[/b]
 
 [list]
-[*]Fixed [color=#ffff00]Renderer = Vanilla[/color] never working when it was already selected when the game started. It fell back to [color=#ffff00]ScreenSpace[/color] for the whole session, so after the first launch it never appeared again.[/*]
-[*]Vanilla numbers are switched off as soon as the game's animation has finished, and crowding protection now follows where the text is actually drawn.[/*]
+[*]Fixed [color=#ffff00]Renderer = Vanilla[/color] not working if it was already set when the game started. You got [color=#ffff00]ScreenSpace[/color] for the whole session instead, so once it was saved in the config it never showed up again.[/*]
+[*]Vanilla numbers now turn off when their animation ends, and crowding protection goes by where the text is on screen.[/*]
 [/list]
 [b]Target dummies[/b]
 
 [list]
-[*]Target dummies already show the game's own damage text. Damage Sparks no longer adds a second set of numbers on them.[/*]
+[*]Target dummies already show the game's own damage text, so Damage Sparks no longer adds a second set of numbers on them.[/*]
 [/list]
 [b]Co-op (SULFUR Together)[/b]
 
 [list]
-[*]A co-op client now sees numbers for its own hits on enemies the host owns. They show what the host actually applied, including critical hits, body-part colors and Crusader's Holy damage. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two is included in this package and only loads when SULFUR Together is installed.[/*]
-[*]On the host, another player's weapon hits no longer appear as the host's own numbers.[/*]
-[*]Damage over time on a client is not shown: the host runs those ticks and does not report them.[/*]
+[*]Clients now see numbers for their own hits on enemies. The amounts come from the host, crits and Crusader's Holy damage included, and the colors work as usual. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two mods is in this package and only loads if you have SULFUR Together.[/*]
+[*]The host no longer sees another player's weapon hits as its own numbers.[/*]
+[*]Clients don't get numbers for damage over time, because the host runs those ticks and doesn't report them.[/*]
 [/list]
 [b]Settings[/b]
 
 [list]
-[*]Status damage over time is now recognised by the game's own marker. Other player-owned damage without a weapon, such as reflected thorns damage, now follows [color=#ffff00]ShowPlayerOwnedSecondaryEffects[/color] instead of [color=#ffff00]ShowStatusEffectDamage[/color]. With the default settings both are shown, as before.[/*]
-[*]Corrected several setting descriptions: the color rules (head hits are orange, so [color=#ffff00]TreatOneMultiplierAsNormal[/color] turns head hits white), which settings apply to which renderer and mode, the 64-number limit of the [color=#ffff00]Vanilla[/color] renderer and the spread limits.[/*]
+[*]Player-owned damage without a weapon, such as reflected thorns, now follows [color=#ffff00]ShowPlayerOwnedSecondaryEffects[/color] instead of [color=#ffff00]ShowStatusEffectDamage[/color]. Both are on by default, so nothing changes unless you turned one off.[/*]
+[*]Setting descriptions now say which renderer and mode each one applies to, and list the limits that weren't documented. [color=#ffff00]TreatOneMultiplierAsNormal[/color] was described wrongly: head hits are 1.0x, so it turns them white.[/*]
 [*]Added Traditional Chinese (zh-TW) setting names for SULFUR Config.[/*]
 [/list]
 [b]Compatibility[/b]

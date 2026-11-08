@@ -4,39 +4,38 @@
 
 **Stacked numbers**
 
-- Fixed numbers drawn exactly on top of each other in `PerTargetTotal` mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader is the common case: its Holy damage lands in the same frame as the weapon hit.
-- The weapon hit stays where it was. Each additional number on that enemy in the same frame, such as another damage type or a second weapon, is now drawn one text line higher, in the `ScreenSpace`, `WorldTextMeshPro` and `Vanilla` renderers.
-- Merging and colors are unchanged. Shotgun pellets of one damage type still add up to a single number, and each damage type keeps its own number and color.
-- `PerHit` mode is unchanged.
+- Fixed numbers drawn exactly on top of each other in `PerTargetTotal` mode when one hit deals more than one damage type to the same enemy. Scroll of Crusader was the usual cause: its Holy damage lands in the same frame as the weapon hit.
+- The weapon hit stays where it was. Anything else on that enemy in the same frame (another damage type, a second weapon) goes one line higher. This works in every renderer.
+- Shotgun pellets of one damage type still add up to a single number, and colors and `PerHit` mode haven't changed.
 
-**Damage that never happened**
+**Cancelled damage**
 
-- Fixed numbers appearing for damage the game cancels: hits on protected NPCs such as traders, healing ally bullets, same-faction hits and damage turned off in the game settings. A number now appears only when the game actually takes health off the target.
+- Hits the game cancels no longer show a number. That covers protected NPCs such as traders, healing ally bullets, same-faction hits and damage turned off in the game settings.
 
 **Pause and level loading**
 
-- Fixed screen-space numbers freezing on top of the pause menu. They now hide while the game is paused or the inventory or a dialogue is open, and finish once play resumes. `WorldTextMeshPro` and `Vanilla` numbers are part of the 3D scene and stay behind the menu, as before.
+- Fixed screen-space numbers freezing on top of the pause menu. They now hide while the game is paused or the inventory or a dialogue is open, and carry on when you get back. `WorldTextMeshPro` and `Vanilla` numbers are part of the 3D scene, so they stay behind the menu as before.
 - Numbers on screen when a level starts loading are cleared instead of carrying over into the next level.
 
 **Vanilla renderer**
 
-- Fixed `Renderer = Vanilla` never working when it was already selected when the game started. It fell back to `ScreenSpace` for the whole session, so after the first launch it never appeared again.
-- Vanilla numbers are switched off as soon as the game's animation has finished, and crowding protection now follows where the text is actually drawn.
+- Fixed `Renderer = Vanilla` not working if it was already set when the game started. You got `ScreenSpace` for the whole session instead, so once it was saved in the config it never showed up again.
+- Vanilla numbers now turn off when their animation ends, and crowding protection goes by where the text is on screen.
 
 **Target dummies**
 
-- Target dummies already show the game's own damage text. Damage Sparks no longer adds a second set of numbers on them.
+- Target dummies already show the game's own damage text, so Damage Sparks no longer adds a second set of numbers on them.
 
 **Co-op (SULFUR Together)**
 
-- A co-op client now sees numbers for its own hits on enemies the host owns. They show what the host actually applied, including critical hits, body-part colors and Crusader's Holy damage. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two is included in this package and only loads when SULFUR Together is installed.
-- On the host, another player's weapon hits no longer appear as the host's own numbers.
-- Damage over time on a client is not shown: the host runs those ticks and does not report them.
+- Clients now see numbers for their own hits on enemies. The amounts come from the host, crits and Crusader's Holy damage included, and the colors work as usual. This needs SULFUR Together 1.7.0 or newer. The adapter that connects the two mods is in this package and only loads if you have SULFUR Together.
+- The host no longer sees another player's weapon hits as its own numbers.
+- Clients don't get numbers for damage over time, because the host runs those ticks and doesn't report them.
 
 **Settings**
 
-- Status damage over time is now recognised by the game's own marker. Other player-owned damage without a weapon, such as reflected thorns damage, now follows `ShowPlayerOwnedSecondaryEffects` instead of `ShowStatusEffectDamage`. With the default settings both are shown, as before.
-- Corrected several setting descriptions: the color rules (head hits are orange, so `TreatOneMultiplierAsNormal` turns head hits white), which settings apply to which renderer and mode, the 64-number limit of the `Vanilla` renderer and the spread limits.
+- Player-owned damage without a weapon, such as reflected thorns, now follows `ShowPlayerOwnedSecondaryEffects` instead of `ShowStatusEffectDamage`. Both are on by default, so nothing changes unless you turned one off.
+- Setting descriptions now say which renderer and mode each one applies to, and list the limits that weren't documented. `TreatOneMultiplierAsNormal` was described wrongly: head hits are 1.0x, so it turns them white.
 - Added Traditional Chinese (zh-TW) setting names for SULFUR Config.
 
 **Compatibility**

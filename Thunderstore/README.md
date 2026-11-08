@@ -12,15 +12,14 @@ This mod does not change damage, weapon balance, enemy stats, loot, or progressi
 
 - Floating damage numbers for player-caused damage
 - Supports guns, shotguns, melee weapons, thrown weapons, and player-owned attack effects
-- Shows the damage the game actually applied, so hits the game cancels (protected NPCs, for example) show nothing
+- Hits the game cancels, like shooting a trader, show nothing
 - Damage over time from player-applied burning, poison and electrocution
 - Body-part color feedback
 - Two damage display modes
 - Optional vanilla renderer that uses SULFUR's own target-dummy damage text
 - Configurable number spread
-- Screen-space numbers hide while the game is paused or a menu is open, and all numbers are cleared when a level loads
+- Numbers stay out of the way of the pause menu, the inventory and level loads
 - SULFUR Config support with localized settings
-- Does not modify actual damage calculation
 
 ## Damage Display Modes
 
@@ -49,17 +48,17 @@ If the same shotgun blast hits two enemies, the mod shows two damage numbers:
 
 This mode is cleaner and easier to read, especially for shotguns and other multi-hit weapons.
 
-Each damage type gets its own number. When one hit also deals a second damage type, such as the Holy damage from Scroll of Crusader, that number appears one line above the weapon hit. The same happens for any further number on that enemy in the same frame, for example from a second weapon.
+There's no long delay window (like 200 ms), so separate hits from fast-firing weapons don't get merged.
 
-It does not use a long delay window such as 200 ms, so it should not incorrectly merge separate hits from fast-firing weapons.
+Each damage type gets its own number. If a hit also deals a second type, like the Holy damage from Scroll of Crusader, that number goes one line above the weapon hit. A second weapon hitting in the same frame stacks the same way.
 
 ### Per Hit
 
-This mode shows one number for each actual damage hit.
+This mode shows one number for each hit.
 
 Shotgun example:
 
-If one shotgun blast has 15 pellets that actually hit enemies, the mod shows 15 damage numbers.
+If 15 pellets from one shotgun blast hit enemies, the mod shows 15 damage numbers.
 
 This mode gives more detailed feedback, but it can be visually busy with shotguns or high pellet-count weapons. Per Hit mode has extra number spread so shotgun pellet numbers do not overlap too tightly.
 
@@ -187,8 +186,6 @@ Start the game once to generate the config file.
 
 Damage Sparks reads the final damage SULFUR applies to a unit and displays it as a number.
 
-It does not modify the game's damage calculation.
-
 Target dummies already show the game's own damage text, so Damage Sparks draws nothing on them.
 
 The mod should be compatible with most gameplay mods unless another mod heavily changes how enemies receive damage.
@@ -197,9 +194,9 @@ If a future SULFUR update changes the internal damage methods, this mod may need
 
 ### SULFUR Together
 
-In co-op, each player sees numbers for their own hits. A client's numbers show what the host actually applied, so they appear a moment after the hit. Damage over time is not shown on a client, because the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
+In co-op, each player sees numbers for their own hits. If you're the client, the amounts come from the host, so they show up a moment after the hit. You won't get numbers for damage over time, since the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
 
-The adapter that connects the two mods is included and only loads when SULFUR Together is installed. Without it, BepInEx writes a line like this to the log, which is expected and harmless:
+The adapter that connects the two mods is included. If you don't have SULFUR Together, BepInEx skips the adapter and logs this, which you can ignore:
 
 ```text
 [Error  :   BepInEx] Could not load [Damage Sparks - SULFUR Together Adapter 1.1.1] because it has missing dependencies: com.ryuka.sulfur.together
@@ -208,8 +205,6 @@ The adapter that connects the two mods is included and only loads when SULFUR To
 ## Source Code
 
 The source code for this mod is available in my GitHub repository.
-
-It is shared for learning, reference, and transparency.
 
 The repository only contains my original mod source code and packaging text. It does not include SULFUR game files, Unity assemblies, BepInEx binaries, paid assets, or decompiled game source.
 
