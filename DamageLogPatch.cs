@@ -137,7 +137,7 @@ namespace SulfurDamageNumbersMod
 
             try
             {
-                DamageNumberManager.RegisterDamage(hit.Target, hit.Source, hit.Amount, hit.Multiplier, hit.Sequence);
+                DamageNumberManager.RegisterDamage(hit.Target, hit.Source, hit.Amount, hit.Multiplier, hit.Bonus, hit.Sequence);
             }
             catch (Exception e)
             {
@@ -211,8 +211,12 @@ namespace SulfurDamageNumbersMod
                     ? 0f
                     : Mathf.Max(0f, __3.GetShapeMultiplier());
 
+                // Read here because it describes the damage call that is running: once the call has
+                // returned, the answer belongs to whatever runs next. The amount already includes it.
+                float bonus = DamageNumbersIntegration.CurrentHitBonus;
+
                 if (Plugin.DebugLog.Value)
-                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " part=" + __3.shapeId.part + " damageType=" + __4.damageType + " critical=" + __4.isCritical + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
+                    Plugin.Log.LogInfo("[DamageNumbers] accept amount=" + finalDamage + " multiplier=" + hitMultiplier + " bonus=" + bonus + " part=" + __3.shapeId.part + " damageType=" + __4.damageType + " critical=" + __4.isCritical + " target=" + SafeName(__instance) + " source=" + DescribeSource(__4));
 
                 PendingStack[_depth - 1] = new PendingHit
                 {
@@ -221,6 +225,7 @@ namespace SulfurDamageNumbersMod
                     Source = __4,
                     Amount = finalDamage,
                     Multiplier = hitMultiplier,
+                    Bonus = bonus,
                     Sequence = ++_nextSequence
                 };
             }
@@ -260,8 +265,10 @@ namespace SulfurDamageNumbersMod
                     return;
                 }
 
+                float bonus = DamageNumbersIntegration.SanitizeBonus(hit.BonusMultiplier);
+
                 if (Plugin.DebugLog.Value)
-                    Plugin.Log.LogInfo("[DamageNumbers] accept resolved amount=" + hit.Damage + " multiplier=" + hit.HitMultiplier + " damageType=" + (DamageTypes)hit.DamageType + " critical=" + hit.IsCritical + " target=" + SafeName(target) + " weapon=" + SafeName(weapon));
+                    Plugin.Log.LogInfo("[DamageNumbers] accept resolved amount=" + hit.Damage + " multiplier=" + hit.HitMultiplier + " bonus=" + bonus + " damageType=" + (DamageTypes)hit.DamageType + " critical=" + hit.IsCritical + " target=" + SafeName(target) + " weapon=" + SafeName(weapon));
 
                 DamageNumberManager.RegisterResolvedDamage(
                     target,
@@ -272,6 +279,7 @@ namespace SulfurDamageNumbersMod
                     hit.IsCritical,
                     hit.Damage,
                     Mathf.Max(0f, hit.HitMultiplier),
+                    bonus,
                     hit.DealtFrame > 0 ? hit.DealtFrame : Time.frameCount,
                     ++_nextSequence);
             }
@@ -405,6 +413,7 @@ namespace SulfurDamageNumbersMod
             public DamageSourceData Source;
             public float Amount;
             public float Multiplier;
+            public float Bonus;
             public int Sequence;
         }
     }

@@ -18,6 +18,19 @@ BepInEx 5 plugin for SULFUR. Displays damage numbers for player-executed attacks
   `Applied` results are shown, plus each `Secondary` entry as its own number. On the host,
   `IsResolvingRemoteHit` excludes another player's hit, including damage dealt from inside it that names
   the host's player as its source.
+- Team marks (combat API 2): a hit that took the team bonus shows a small `×1.5` / `×1.75` beside its
+  number. A client reads it from `LocalHitResolvedArgs.TeamMultiplier`; the host reads
+  `NetCombat.LocalHostHitMultiplier` in the `CreateDamageLog` postfix through
+  `DamageNumbersIntegration.SetHitBonusScope`. The damage on both ends already includes the bonus, so it is
+  only drawn. `Secondary` entries carry none. Hits merged into one number show the highest bonus among them.
+- `TeamBonusBridge` holds every API 2 call and is only created when `NetCombat.ApiVersion >= 2`; its
+  methods that name an API 2 member are `NoInlining`, so on API 1 they are never compiled. On API 1 the
+  adapter works as before and shows no bonus.
+- SULFUR Together hides its crosshair multiplier while a hit presenter is registered. The adapter is
+  registered exactly while `DamageNumbersIntegration.ShowsHitBonus` is true: the mod is enabled and the
+  renderer in use is not Vanilla. The game's damage text prefab takes a whole number only, so with
+  `Renderer=Vanilla` the multiplier stays next to the crosshair (while Vanilla falls back to ScreenSpace,
+  the mod draws it).
 - SULFUR Together is a compile-time reference to `$(SulfurTogetherDir)\bin\Release\net472\SULFUR Together.dll`,
   so that build has to exist before the adapter compiles.
 

@@ -21,28 +21,64 @@ namespace SulfurDamageNumbersMod.SulfurTogether
     /// This assembly stays loadable on a SULFUR Together build without the API, so no API type may appear in a
     /// field, including compiler-generated ones. The handlers are instance methods because the compiler caches a
     /// delegate for a static method group in a generated static field typed with the API's argument class.
+    ///
+    /// Everything API 2 added lives in <see cref="TeamBonusBridge"/>, which exists only on a SULFUR Together
+    /// that has it. A method here that named an API 2 member would fail to compile at run time on API 1.
     /// </summary>
     internal sealed class NetCombatBridge : IDisposable
     {
         private const int SupportedApiVersion = 1;
+        private const int TeamMarksApiVersion = 2;
+
+        /// <summary>The combat API version of the installed SULFUR Together.</summary>
+        public readonly int ApiVersion;
+
+        // Null on API 1.
+        private TeamBonusBridge _teamBonus;
+
+        private NetCombatBridge(int apiVersion)
+        {
+            ApiVersion = apiVersion;
+        }
 
         private readonly Dictionary<int, HitGroup> _groupBySequence = new Dictionary<int, HitGroup>();
         private readonly Dictionary<int, HitGroup> _groupByFrame = new Dictionary<int, HitGroup>();
 
         public static NetCombatBridge TryCreate()
         {
-            if (NetCombat.ApiVersion < SupportedApiVersion)
+            int apiVersion = NetCombat.ApiVersion;
+            if (apiVersion < SupportedApiVersion)
                 return null;
 
-            NetCombatBridge bridge = new NetCombatBridge();
+            NetCombatBridge bridge = new NetCombatBridge(apiVersion);
             NetCombat.LocalHitForwarded += bridge.OnLocalHitForwarded;
             NetCombat.LocalHitResolved += bridge.OnLocalHitResolved;
             DamageNumbersIntegration.SetRemoteHitScope(bridge.IsResolvingRemoteHit);
+            if (apiVersion >= TeamMarksApiVersion)
+            {
+                try
+                {
+                    bridge._teamBonus = TeamBonusBridge.Attach();
+                }
+                catch
+                {
+                    // Nobody would hold the bridge to dispose it, and its handlers are already subscribed.
+                    bridge.Dispose();
+                    throw;
+                }
+            }
+
             return bridge;
         }
 
         public void Dispose()
         {
+            if (_teamBonus != null)
+            {
+                _teamBonus.Dispose();
+                _teamBonus = null;
+            }
+
             NetCombat.LocalHitForwarded -= OnLocalHitForwarded;
             NetCombat.LocalHitResolved -= OnLocalHitResolved;
             DamageNumbersIntegration.SetRemoteHitScope(null);
@@ -91,8 +127,11 @@ namespace SulfurDamageNumbersMod.SulfurTogether
                 DamageNumbersIntegration.ShowResolvedHit(group.Hits[i]);
         }
 
-        private static void Collect(LocalHitResolvedArgs result, HitGroup group)
+        private void Collect(LocalHitResolvedArgs result, HitGroup group)
         {
+            // The host's damage already includes the bonus; it is carried along only to be shown.
+            float teamMultiplier = _teamBonus != null ? _teamBonus.MultiplierOf(result) : 1f;
+
             Report(group, new ResolvedHit
             {
                 Target = result.Target,
@@ -103,11 +142,12 @@ namespace SulfurDamageNumbersMod.SulfurTogether
                 DamageType = result.DamageType,
                 HitMultiplier = result.HitMultiplier,
                 IsCritical = result.IsCritical,
+                BonusMultiplier = teamMultiplier,
                 DealtFrame = group != null ? group.Frame : 0
             });
 
             // Damage the game dealt from inside this hit, such as Crusader's Holy damage. It carries no body part
-            // of its own, so it is colored like any other damage without one.
+            // of its own, so it is colored like any other damage without one, and the host gives it no team bonus.
             IReadOnlyList<SecondaryHit> secondary = result.Secondary;
             for (int i = 0; i < secondary.Count; i++)
             {

@@ -95,20 +95,22 @@ namespace SulfurDamageNumbersMod
         }
 
         /// <param name="sequence">Order in which the game dealt the hit (DamageLogPatch numbers them).</param>
-        public static void RegisterDamage(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier, int sequence)
+        /// <param name="bonus">A bonus multiplier the amount already includes, shown beside it; 0 for none.</param>
+        public static void RegisterDamage(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier, float bonus, int sequence)
         {
             if (target == null) return;
 
             EnsureExists();
             if (_instance != null)
-                _instance.RegisterDamageInternal(target, sourceData, amount, hitMultiplier, sequence);
+                _instance.RegisterDamageInternal(target, sourceData, amount, hitMultiplier, bonus, sequence);
         }
 
         /// <param name="target">The unit that was hit, or null when it no longer exists locally.</param>
         /// <param name="fallbackPosition">Places the number when there is no unit to place it above.</param>
         /// <param name="sourceId">Identity of the attack source, as in <see cref="DamageHit.SourceIdOf"/>; 0 for none.</param>
+        /// <param name="bonus">A bonus multiplier the amount already includes, shown beside it; 0 for none.</param>
         /// <param name="dealtFrame">The frame the hit was dealt in, which same-frame merging goes by.</param>
-        public static void RegisterResolvedDamage(Unit target, Vector3? fallbackPosition, int sourceId, bool melee, DamageTypes damageType, bool critical, float amount, float hitMultiplier, int dealtFrame, int sequence)
+        public static void RegisterResolvedDamage(Unit target, Vector3? fallbackPosition, int sourceId, bool melee, DamageTypes damageType, bool critical, float amount, float hitMultiplier, float bonus, int dealtFrame, int sequence)
         {
             if (target == null && !fallbackPosition.HasValue) return;
 
@@ -128,6 +130,7 @@ namespace SulfurDamageNumbersMod
                 Critical = critical,
                 Amount = amount,
                 Multiplier = hitMultiplier,
+                Bonus = bonus,
                 Sequence = sequence
             });
         }
@@ -167,7 +170,7 @@ namespace SulfurDamageNumbersMod
             }
         }
 
-        private void RegisterDamageInternal(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier, int sequence)
+        private void RegisterDamageInternal(Unit target, DamageSourceData sourceData, float amount, float hitMultiplier, float bonus, int sequence)
         {
             RegisterHit(new DamageHit
             {
@@ -180,6 +183,7 @@ namespace SulfurDamageNumbersMod
                 Critical = sourceData.isCritical,
                 Amount = amount,
                 Multiplier = hitMultiplier,
+                Bonus = bonus,
                 Sequence = sequence
             });
         }
@@ -193,6 +197,7 @@ namespace SulfurDamageNumbersMod
                     Position = hit.Position,
                     Amount = hit.Amount,
                     Multiplier = hit.Multiplier,
+                    Bonus = hit.Bonus,
                     DamageType = hit.DamageType,
                     Critical = hit.Critical,
                     SpreadKey = PerHitSpreadKey.Create(hit),
@@ -212,6 +217,7 @@ namespace SulfurDamageNumbersMod
                     HighestMultiplier = 0f,
                     LastMultiplier = 0f,
                     WeightedMultiplierSum = 0f,
+                    HighestBonus = 0f,
                     // AggregateKey already separates damage types, so every hit merged into one
                     // entry shares this value.
                     DamageType = hit.DamageType,
@@ -228,6 +234,11 @@ namespace SulfurDamageNumbersMod
             entry.WeightedMultiplierSum += Mathf.Max(0f, hit.Multiplier) * Mathf.Max(0f, hit.Amount);
             if (hit.Multiplier > entry.HighestMultiplier)
                 entry.HighestMultiplier = hit.Multiplier;
+            // One number carries one bonus label. Hits merged into it can differ when a bonus starts or
+            // ends between the pellets of one shot; the label then names the highest one, the same choice
+            // MergedColorMode.HighestMultiplier makes for the color.
+            if (hit.Bonus > entry.HighestBonus)
+                entry.HighestBonus = hit.Bonus;
             if (hit.Sequence < entry.FirstSequence)
                 entry.FirstSequence = hit.Sequence;
 
@@ -236,7 +247,17 @@ namespace SulfurDamageNumbersMod
 
         private void LateUpdate()
         {
+            // Shutdown destroys this object at the end of the frame. Until then it must not show
+            // anything or report to an integration that it still can.
+            if (_instance != this) return;
+
             UpdateVanillaAvailability();
+
+            // The game's damage text prefab takes a whole number and nothing else, so the vanilla
+            // renderer has nowhere to put a bonus multiplier. This follows the renderer actually in
+            // use: while Vanilla is selected but falls back to ScreenSpace, the bonus is drawn.
+            DamageNumbersIntegration.SetShowsHitBonus(
+                Plugin.Enabled.Value && ResolveActiveRenderMode() != RenderMode.Vanilla);
 
             GameplayPhase phase = GameStateProbe.Read();
             if (phase == GameplayPhase.Loading)
@@ -380,7 +401,7 @@ namespace SulfurDamageNumbersMod
                 {
                     PerHitEntry hit = _perHitQueue[i];
                     PerHitSpreadOffset spread = GetNextPerHitSpread(hit.SpreadKey);
-                    SpawnNumber(hit.Position, hit.Amount, hit.Multiplier, hit.DamageType, hit.Critical,
+                    SpawnNumber(hit.Position, hit.Amount, hit.Multiplier, hit.Bonus, hit.DamageType, hit.Critical,
                         true, spread.WorldOffset, spread.ScreenOffset, 0, true);
                 }
 
@@ -405,7 +426,7 @@ namespace SulfurDamageNumbersMod
                     int row;
                     _shownRowsPerTarget.TryGetValue(entry.TargetId, out row);
 
-                    if (SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), entry.DamageType, entry.AnyCritical,
+                    if (SpawnNumber(entry.Position, entry.Amount, ResolveAggregateMultiplier(entry), entry.HighestBonus, entry.DamageType, entry.AnyCritical,
                             false, Vector3.zero, Vector2.zero, row, true))
                     {
                         _shownRowsPerTarget[entry.TargetId] = row + 1;
@@ -420,8 +441,9 @@ namespace SulfurDamageNumbersMod
         /// 0 for the normal position. A higher row is drawn that many text lines above it, in the
         /// line height of the renderer that draws it.
         /// </param>
+        /// <param name="bonus">A bonus multiplier to draw beside the number; 0 for none. The vanilla renderer cannot draw it.</param>
         /// <returns>True when the number was shown, false when crowding or the frame budget dropped it.</returns>
-        private bool SpawnNumber(Vector3 position, float amount, float hitMultiplier, DamageTypes damageType, bool critical, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, int stackRow, bool applyCrowding)
+        private bool SpawnNumber(Vector3 position, float amount, float hitMultiplier, float bonus, DamageTypes damageType, bool critical, bool useJitter, Vector3 extraWorldJitter, Vector2 extraScreenJitter, int stackRow, bool applyCrowding)
         {
             EnsureFrameCounters();
 
@@ -490,7 +512,7 @@ namespace SulfurDamageNumbersMod
             }
             else
             {
-                string text = FormatDamage(amount);
+                string text = DamageNumberText.WithBonus(FormatDamage(amount), bonus);
                 Color color = DamageNumberColor.ForMultiplier(hitMultiplier);
 
                 drawn = false;
@@ -1220,6 +1242,7 @@ namespace SulfurDamageNumbersMod
             public float HighestMultiplier;
             public float LastMultiplier;
             public float WeightedMultiplierSum;
+            public float HighestBonus;
             public DamageTypes DamageType;
             public bool AnyCritical;
             public int TargetId;
@@ -1231,6 +1254,7 @@ namespace SulfurDamageNumbersMod
             public Vector3 Position;
             public float Amount;
             public float Multiplier;
+            public float Bonus;
             public DamageTypes DamageType;
             public bool Critical;
             public PerHitSpreadKey SpreadKey;
@@ -1509,6 +1533,9 @@ namespace SulfurDamageNumbersMod
         public bool Critical;
         public float Amount;
         public float Multiplier;
+
+        /// <summary>A bonus multiplier the amount already includes, shown beside it; 0 for none.</summary>
+        public float Bonus;
         public int Sequence;
 
         public static int SourceIdOf(DamageSourceData sourceData)
@@ -1607,6 +1634,60 @@ namespace SulfurDamageNumbersMod
                 hash = (hash * 397) ^ _damageType;
                 hash = (hash * 397) ^ (_melee ? 1 : 0);
                 return hash;
+            }
+        }
+    }
+
+    /// <summary>The text of a number in the two renderers this mod draws itself.</summary>
+    internal static class DamageNumberText
+    {
+        // The label is a fraction of the number's size, raised toward its top edge.
+        private const string LabelOpen = "<size=55%><voffset=0.55em>";
+        private const string LabelClose = "</voffset></size>";
+
+        /// <summary>
+        /// Adds a small raised "x1.5" after the number. The views center their text, and a label on one
+        /// side alone would push the number off the point it belongs to, so the same label goes in front
+        /// as well, fully transparent: it takes up the same width and draws nothing.
+        /// </summary>
+        public static string WithBonus(string number, float bonus)
+        {
+            if (bonus <= 0f)
+                return number;
+
+            // A bonus takes one of a few values, so the label of the last one is usually the one needed.
+            if (bonus != _labelBonus)
+            {
+                _labelBonus = bonus;
+                _label = LabelOpen + MultiplySign + bonus.ToString("0.##", CultureInfo.InvariantCulture) + LabelClose;
+                _hiddenLabel = "<alpha=#00>" + _label + "<alpha=#FF>";
+            }
+
+            return _hiddenLabel + number + _label;
+        }
+
+        private static float _labelBonus;
+        private static string _label;
+        private static string _hiddenLabel;
+        private static string _multiplySign;
+
+        /// <summary>
+        /// The multiplication sign, or a plain "x" when the font cannot draw it. Both renderers leave
+        /// their texts on TextMeshPro's default font, and the game's has no such glyph on 1.0.6.
+        /// Fallback fonts do not count: a glyph from one is drawn by a separate sub-mesh, which the
+        /// screen renderer's fade does not reach.
+        /// </summary>
+        private static string MultiplySign
+        {
+            get
+            {
+                if (_multiplySign == null)
+                {
+                    TMP_FontAsset font = TMP_Settings.defaultFontAsset;
+                    _multiplySign = font != null && font.HasCharacter('×', false) ? "×" : "x";
+                }
+
+                return _multiplySign;
             }
         }
     }

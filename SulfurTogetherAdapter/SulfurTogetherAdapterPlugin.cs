@@ -29,9 +29,10 @@ namespace SulfurDamageNumbersMod.SulfurTogether
         {
             try
             {
-                _bridge = Attach();
+                int apiVersion;
+                _bridge = Attach(out apiVersion);
                 Logger.LogInfo(_bridge != null
-                    ? "Connected to SULFUR Together's combat events."
+                    ? "Connected to SULFUR Together's combat events (API " + apiVersion + ")."
                     : "The installed SULFUR Together has an unknown combat API; co-op client damage numbers are unavailable.");
             }
             catch (Exception e) when (
@@ -53,9 +54,11 @@ namespace SulfurDamageNumbersMod.SulfurTogether
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static IDisposable Attach()
+        private static IDisposable Attach(out int apiVersion)
         {
-            return NetCombatBridge.TryCreate();
+            NetCombatBridge bridge = NetCombatBridge.TryCreate();
+            apiVersion = bridge != null ? bridge.ApiVersion : 0;
+            return bridge;
         }
     }
 }
