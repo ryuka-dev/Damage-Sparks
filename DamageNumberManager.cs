@@ -1641,12 +1641,14 @@ namespace SulfurDamageNumbersMod
     /// <summary>The text of a number in the two renderers this mod draws itself.</summary>
     internal static class DamageNumberText
     {
-        // The label is a fraction of the number's size, raised toward its top edge.
-        private const string LabelOpen = "<size=55%><voffset=0.55em>";
-        private const string LabelClose = "</voffset></size>";
+        // The label is a fraction of the number's size and sits on the number's baseline, so the two line
+        // up along the bottom. The gap is measured in the number's own size.
+        private const string Gap = "<space=0.25em>";
+        private const string LabelOpen = "<size=55%>";
+        private const string LabelClose = "</size>";
 
         /// <summary>
-        /// Adds a small raised "x1.5" after the number. The views center their text, and a label on one
+        /// Adds a small "x1.5" after the number, a short gap away. The views center their text, and a label on one
         /// side alone would push the number off the point it belongs to, so the same label goes in front
         /// as well, fully transparent: it takes up the same width and draws nothing.
         /// </summary>
@@ -1660,7 +1662,8 @@ namespace SulfurDamageNumbersMod
             {
                 _labelBonus = bonus;
                 _label = LabelOpen + MultiplySign + bonus.ToString("0.##", CultureInfo.InvariantCulture) + LabelClose;
-                _hiddenLabel = "<alpha=#00>" + _label + "<alpha=#FF>";
+                _hiddenLabel = "<alpha=#00>" + _label + "<alpha=#FF>" + Gap;
+                _label = Gap + _label;
             }
 
             return _hiddenLabel + number + _label;
