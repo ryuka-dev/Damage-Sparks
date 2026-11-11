@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+**Co-op (SULFUR Together)**
+
+- A hit that gets SULFUR Together's team mark bonus now shows a small `x1.5` or `x1.75` after its number. The number already includes the bonus. This needs SULFUR Together 1.8.0 or newer, with team marks on in the host's settings.
+- While Damage Sparks shows the multiplier, SULFUR Together stops showing it next to the crosshair. `Renderer = Vanilla` uses the game's own damage text, which can't carry it, so there it stays next to the crosshair.
+- When hits in the same frame add up to one number and only some of them got the bonus, the number shows the highest multiplier.
+- Everything else still works with SULFUR Together 1.7.0, just without the multiplier.
+
+**Compatibility**
+
+- Verified against SULFUR 1.0.6.
+
 ## 1.1.1
 
 **Stacked numbers**
