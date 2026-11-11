@@ -196,7 +196,7 @@ If a future SULFUR update changes the internal damage methods, this mod may need
 
 In co-op, each player sees numbers for their own hits. If you're the client, the amounts come from the host, so they show up a moment after the hit. You won't get numbers for damage over time, since the host runs those ticks. This needs SULFUR Together 1.7.0 or newer.
 
-With SULFUR Together 1.8.0 or newer, a hit that gets the team mark bonus shows a small `x1.5` or `x1.75` after its number. The number already includes the bonus. SULFUR Together then stops showing the multiplier next to the crosshair, except with `Renderer = Vanilla`, where the game's own damage text can't carry it.
+With SULFUR Together 1.8.0 or newer, a hit that gets the team mark bonus shows a small `x1.5` or `x1.75` after its number. It's only a label: the number is already the damage you dealt. SULFUR Together hides its own multiplier next to the crosshair while Damage Sparks is showing it. `Renderer = Vanilla` is the exception: the game's own damage text only shows a plain number, so the multiplier stays next to the crosshair.
 
 The adapter that connects the two mods is included. If you don't have SULFUR Together, BepInEx skips the adapter and logs this, which you can ignore:
 
